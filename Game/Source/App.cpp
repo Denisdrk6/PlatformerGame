@@ -62,21 +62,21 @@ void App::AddModule(Module* module)
 // Called before render is available
 bool App::Awake()
 {
-	// TODO 3: Load config from XML
+	// L01: DONE 3: Load config from XML
 	bool ret = LoadConfig();
-
-	// TODO 4: Read the title from the config file
-	title.create(configApp.child("title").child_value());
-	win->SetTitle(title.GetString());
 
 	if(ret == true)
 	{
+		// L01: DONE 4: Read the title from the config file
+		title.create(configApp.child("title").child_value());
+		win->SetTitle(title.GetString());
+
 		ListItem<Module*>* item;
 		item = modules.start;
 
 		while(item != NULL && ret == true)
 		{
-			// TODO 5: Add a new argument to the Awake method to receive a pointer to an xml node.
+			// L01: DONE 5: Add a new argument to the Awake method to receive a pointer to an xml node.
 			// If the section with the module name exists in config.xml, fill the pointer with the valid xml_node
 			// that can be used to read all variables for that module.
 			// Send nullptr if the node does not exist in config.xml
@@ -131,10 +131,10 @@ bool App::LoadConfig()
 {
 	bool ret = true;
 
-	// TODO 3: Load config.xml file using load_file() method from the xml_document class
+	// L01: DONE 3: Load config.xml file using load_file() method from the xml_document class
 	pugi::xml_parse_result result = configFile.load_file("config.xml");
 
-	// TODO 3: Check result for loading errors
+	// L01: DONE 3: Check result for loading errors
 	if(result == NULL)
 	{
 		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
@@ -157,7 +157,7 @@ void App::PrepareUpdate()
 // ---------------------------------------------
 void App::FinishUpdate()
 {
-	// This is a good place to call Load / Save functions
+	// L02: TODO 1: This is a good place to call Load / Save methods
 }
 
 // Call modules before each loop iteration
@@ -267,5 +267,12 @@ const char* App::GetOrganization() const
 {
 	return organization.GetString();
 }
+
+// L02: TODO 5: Create a method to actually load an xml file
+// then call all the modules to load themselves
+
+// L02: TODO 7: Implement the xml save method for current state
+
+
 
 

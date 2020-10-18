@@ -1,4 +1,5 @@
 <!-- Config file for the game -->
+<!-- L01: DONE 1: Create configuration file-->
 <config>
   <app>
     <title>Game Development Testbed</title>
