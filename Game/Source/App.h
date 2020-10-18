@@ -47,6 +47,9 @@ public:
 
     // L02: TODO 1: Create methods to request Load / Save
 
+	void LoadGameRequest(const char* filename);
+	void SaveGameRequest(const char* filename) const;
+
 private:
 
 	// Load config file
@@ -66,6 +69,10 @@ private:
 
 	// Call modules after each loop iteration
 	bool PostUpdate();
+
+	//load/save
+	bool LoadGame();
+	bool SaveGame() const;
 
 public:
 
@@ -93,11 +100,15 @@ private:
 	pugi::xml_node config;
 	pugi::xml_node configApp;
 
-	uint frames;
-	float dt;
-
+	
 	// L02: TODO 1: Create required variables to request load / save and 
 	// the filename for save / load
+	uint frames;
+	float dt;
+	mutable bool saveGameRequested;
+	bool loadGameRequested;
+	SString loadedGame;
+	mutable SString savedGame;
 };
 
 extern App* app;

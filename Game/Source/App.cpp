@@ -158,6 +158,8 @@ void App::PrepareUpdate()
 void App::FinishUpdate()
 {
 	// L02: TODO 1: This is a good place to call Load / Save methods
+	if (saveGameRequested == true)SaveGame();
+	if (loadGameRequested == true) LoadGame();
 }
 
 // Call modules before each loop iteration
@@ -270,6 +272,26 @@ const char* App::GetOrganization() const
 
 // L02: TODO 5: Create a method to actually load an xml file
 // then call all the modules to load themselves
+
+void App::LoadGameRequest(const char* fileName) 
+{
+	loadGameRequested = true;
+	loadedGame.create(fileName);
+}
+
+
+void App::SaveGameRequest(const char* fileName)const
+{
+	saveGameRequested = true;
+
+	if (savedGame != loadedGame) savedGame.create(fileName);
+}
+
+bool App::LoadGame()
+{
+}
+
+
 
 // L02: TODO 7: Implement the xml save method for current state
 
