@@ -15,4 +15,9 @@
     <resizable value="false"/>
     <fullscreen_window value="false"/>
   </window>
+
+  <!-- L03: Added maps folder as config option -->
+  <map>
+    <folder>Assets/maps/</folder>
+  </map>
 </config>

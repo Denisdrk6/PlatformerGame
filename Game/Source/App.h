@@ -6,6 +6,9 @@
 
 #include "PugiXml/src/pugixml.hpp"
 
+#define CONFIG_FILENAME		"config.xml"
+#define SAVE_STATE_FILENAME "save_game.xml"
+
 // Modules
 class Window;
 class Input;
@@ -13,6 +16,7 @@ class Render;
 class Textures;
 class Audio;
 class Scene;
+class Map;
 
 class App
 {
@@ -45,15 +49,15 @@ public:
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
 
-    // L02: TODO 1: Create methods to request Load / Save
-
-	void LoadGameRequest(const char* filename);
-	void SaveGameRequest(const char* filename) const;
+    // L02: DONE 1: Create methods to request Load / Save
+	void LoadGameRequest();
+	void SaveGameRequest() const;
 
 private:
 
 	// Load config file
-	bool LoadConfig();
+	// NOTE: It receives config document
+	pugi::xml_node LoadConfig(pugi::xml_document&) const;
 
 	// Call modules before each loop iteration
 	void PrepareUpdate();
@@ -83,6 +87,7 @@ public:
 	Textures* tex;
 	Audio* audio;
 	Scene* scene;
+	Map* map;
 
 private:
 
@@ -93,12 +98,11 @@ private:
 
 	List<Module *> modules;
 
-	// L01: DONE 2: Create new variables from pugui namespace:
-	// xml_document to store the config file and
-	// xml_node(s) to read specific branches of the xml
-	pugi::xml_document configFile;
-	pugi::xml_node config;
-	pugi::xml_node configApp;
+	// L01: DONE 2: Create new variables from pugui namespace
+	// NOTE: Redesigned LoadConfig() to avoid storing this variables
+	//pugi::xml_document configFile;
+	//pugi::xml_node config;
+	//pugi::xml_node configApp;
 
 	
 	// L02: TODO 1: Create required variables to request load / save and 
@@ -107,8 +111,8 @@ private:
 	float dt;
 	mutable bool saveGameRequested;
 	bool loadGameRequested;
-	SString loadedGame;
-	mutable SString savedGame;
+	/*SString loadedGame;
+	mutable SString savedGame;*/
 };
 
 extern App* app;

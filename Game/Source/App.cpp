@@ -5,6 +5,7 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "Scene.h"
+#include "Map.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -23,6 +24,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new Textures();
 	audio = new Audio();
 	scene = new Scene();
+	map = new Map();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -31,6 +33,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(scene);
+	AddModule(map);
 
 	// Render last to swap buffer
 	AddModule(render);
@@ -50,7 +53,7 @@ App::~App()
 
 	modules.clear();
 
-	configFile.reset();
+	//configFile.reset();
 }
 
 void App::AddModule(Module* module)
@@ -62,14 +65,28 @@ void App::AddModule(Module* module)
 // Called before render is available
 bool App::Awake()
 {
-	// L01: DONE 3: Load config from XML
-	bool ret = LoadConfig();
+	pugi::xml_document configFile;
+	pugi::xml_node config;
+	pugi::xml_node configApp;
 
-	if(ret == true)
+	bool ret = false;
+
+	// L01: DONE 3: Load config from XML
+	config = LoadConfig(configFile);
+
+	if (config.empty() == false)
 	{
+		ret = true;
+		configApp = config.child("app");
+
 		// L01: DONE 4: Read the title from the config file
-		title.create(configApp.child("title").child_value());
-		win->SetTitle(title.GetString());
+		title.Create(configApp.child("title").child_value());
+		organization.Create(configApp.child("organization").child_value());
+	}
+
+	if (ret == true)
+	{
+		
 
 		ListItem<Module*>* item;
 		item = modules.start;
@@ -127,24 +144,16 @@ bool App::Update()
 }
 
 // Load config from XML file
-bool App::LoadConfig()
+// NOTE: Function has been redesigned to avoid storing additional variables on the class
+pugi::xml_node App::LoadConfig(pugi::xml_document& configFile) const
 {
-	bool ret = true;
+	pugi::xml_node ret;
 
 	// L01: DONE 3: Load config.xml file using load_file() method from the xml_document class
-	pugi::xml_parse_result result = configFile.load_file("config.xml");
+	pugi::xml_parse_result result = configFile.load_file(CONFIG_FILENAME);
 
-	// L01: DONE 3: Check result for loading errors
-	if(result == NULL)
-	{
-		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
-		ret = false;
-	}
-	else
-	{
-		config = configFile.child("config");
-		configApp = config.child("app");
-	}
+	if (result == NULL) LOG("Could not load xml file: %s. pugi error: %s", CONFIG_FILENAME, result.description());
+	else ret = configFile.child("config");
 
 	return ret;
 }
@@ -273,18 +282,18 @@ const char* App::GetOrganization() const
 // L02: TODO 5: Create a method to actually load an xml file
 // then call all the modules to load themselves
 
-void App::LoadGameRequest(const char* fileName) 
+void App::LoadGameRequest() 
 {
+	// NOTE: We should check if SAVE_STATE_FILENAME actually exist
 	loadGameRequested = true;
-	loadedGame.create(fileName);
 }
 
 
-void App::SaveGameRequest(const char* fileName)const
+void App::SaveGameRequest()const
 {
+	// NOTE: We should check if SAVE_STATE_FILENAME actually exist and... should we overwriten
 	saveGameRequested = true;
 
-	if (savedGame != loadedGame) savedGame.create(fileName);
 }
 
 bool App::LoadGame()
@@ -293,11 +302,11 @@ bool App::LoadGame()
 	pugi::xml_document data;
 	pugi::xml_node root;
 	//loadedGame = "load_game.xml";
-	pugi::xml_parse_result result = data.load_file(loadedGame.GetString());
+	pugi::xml_parse_result result = data.load_file(SAVE_STATE_FILENAME);
 
 	if (result != NULL)
 	{
-		LOG("Loading new Game State from %s...", loadedGame.GetString());
+		LOG("Loading new Game State from %s...", SAVE_STATE_FILENAME);
 
 		root = data.child("game_state");
 
@@ -317,7 +326,7 @@ bool App::LoadGame()
 			LOG("...loading process interrupted with error on module %s", (item != NULL) ? item->data->name.GetString() : "unknown");
 	}
 	else
-		LOG("Could not parse game state xml file %s. pugi error: %s", loadedGame.GetString(), result.description());
+		LOG("Could not parse game state xml file %s. pugi error: %s", SAVE_STATE_FILENAME, result.description());
 
 	loadGameRequested = false;
 	return ret;
@@ -327,7 +336,7 @@ bool App::SaveGame() const
 	bool ret = true;
 	//savedGame = "savedame.xml";
 
-	LOG("Saving Game State to %s...", savedGame.GetString());
+	LOG("Saving Game State to %s...", SAVE_STATE_FILENAME);
 
 	// xml object were we will store all data
 	pugi::xml_document data;
@@ -345,7 +354,7 @@ bool App::SaveGame() const
 
 	if (ret == true)
 	{
-		data.save_file(savedGame.GetString());
+		data.save_file(SAVE_STATE_FILENAME);
 		LOG("... finished saving", );
 	}
 	else
