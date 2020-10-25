@@ -12,18 +12,6 @@
 
 struct TileSetInfo
 {
-   /* pugi::xml_node tileSet;
-    int firstGid = tileSet.attribute("firstgid").as_int();
-    SString name = tileSet.attribute("Desert").as_string();
-    int tileWidth = tileSet.attribute("tilewidth").as_int();
-    int tileHeight = tileSet.attribute("tilehright").as_int();
-    int spacing = tileSet.attribute("spacing").as_int();
-    int margin = tileSet.attribute("margin").as_int();
-
-    pugi::xml_node image = tileSet.child("image");
-    SString source = image.attribute("source").as_string();
-    int imageWidth = image.attribute("width").as_int();
-    int imageHeight = image.attribute("height").as_int();*/
 
     int firstGid;
     SString name;
@@ -31,12 +19,17 @@ struct TileSetInfo
     int tileHeight;
     int spacing;
     int margin;
+	int	numTilesWidth;
+	int	numTilesHeight;
 
     SString source;
     int imageWidth;
     int imageHeight;
 
-    SDL_Texture* tilesetTexture;
+    SDL_Texture* texture;
+	
+	// L04: TODO 7: Create a method that receives a tile id and returns it's Rectfind the Rect associated with a specific tile id
+	SDL_Rect GetTileRect(int id) const;
 };
 
 enum MapTypes
@@ -45,6 +38,29 @@ enum MapTypes
     MAPTYPE_ORTHOGONAL,
     MAPTYPE_ISOMETRIC,
     MAPTYPE_STAGGERED
+};
+
+// L04: DONE 1: Create a struct for the map layer
+struct MapLayer
+{
+	SString	name;
+	int width;
+	int height;
+	uint* data;
+
+	MapLayer() : data(NULL)
+	{}
+
+	~MapLayer()
+	{
+		RELEASE(data);
+	}
+
+	// L04: TODO 6: Short function to get the value of x,y
+	inline uint Get(int x, int y) const
+	{
+		return data[(y * width) + x];
+	}
 };
 
 // L03: TODO 1: Create a struct needed to hold the information to Map node
@@ -60,6 +76,8 @@ struct MapInfo
     int nextObjectId;
     MapTypes type;
     List<TileSetInfo*> tilesets;
+	// L04: TODO 2: Add a list/array of layers to the map
+	List<MapLayer*> layers;
 };
 
 
@@ -84,8 +102,10 @@ public:
     // Load new map
     bool Load(const char* path);
 
+	// L04: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
+	iPoint MapToWorld(int x, int y) const;
     // L03: TODO 1: Add your struct for map info as public for now
-    MapInfo mapInfo;
+    MapInfo data;
 
 private:
 
@@ -95,6 +115,7 @@ private:
 
     bool LoadMapData(pugi::xml_node);
     bool LoadTileset(pugi::xml_node, TileSetInfo*);
+	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 };
 
 #endif // __MAP_H__

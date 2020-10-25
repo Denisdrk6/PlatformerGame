@@ -18,8 +18,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 {
 	frames = 0;
 
-	input = new Input();
+	
 	win = new Window();
+	input = new Input();
 	render = new Render();
 	tex = new Textures();
 	audio = new Audio();
@@ -28,8 +29,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
-	AddModule(input);
+	
 	AddModule(win);
+	AddModule(input);
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(scene);
