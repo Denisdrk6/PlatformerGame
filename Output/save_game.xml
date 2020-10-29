@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <game_state>
-	<input />
 	<window />
+	<input />
 	<textures />
 	<audio />
 	<scene />
 	<map />
 	<renderer>
-		<camera x="0" y="0" />
+		<camera x="-537" y="0" />
 	</renderer>
 </game_state>

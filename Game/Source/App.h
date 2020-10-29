@@ -17,6 +17,7 @@ class Textures;
 class Audio;
 class Scene;
 class Map;
+class Animation;
 
 class App
 {
@@ -88,6 +89,7 @@ public:
 	Audio* audio;
 	Scene* scene;
 	Map* map;
+	Animation* animation;
 
 private:
 
@@ -95,6 +97,7 @@ private:
 	char** args;
 	SString title;
 	SString organization;
+
 
 	List<Module *> modules;
 
