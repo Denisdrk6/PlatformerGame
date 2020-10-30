@@ -66,6 +66,22 @@ bool Scene::Update(float dt)
 	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		app->render->camera.x -= 5;
 
+	//Camera limits
+	if (app->render->camera.x > 0) {
+		app->render->camera.x = 0;
+	}
+
+	if (app->render->camera.y < -2480) {
+		app->render->camera.y = -2480;
+	}
+
+	if (app->render->camera.x < -800) {
+		app->render->camera.x = -800;
+	}
+
+	if (app->render->camera.y > -1610) {
+		app->render->camera.y = -1610;
+	}
 	//app->render->DrawTexture(img, 380, 100); // Placeholder not needed any more
 
 	// Draw map
