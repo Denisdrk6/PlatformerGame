@@ -38,7 +38,7 @@ Player::Player() : Module()
 	rWalkAnim.PushBack({ 96, 70, 32, 32 });
 	rWalkAnim.PushBack({ 128, 70, 32, 32 });
 	rWalkAnim.PushBack({ 160, 70, 32, 32 });
-	rWalkAnim.speed = 0.05f;
+	rWalkAnim.speed = 0.15f;
 
 	lWalkAnim.PushBack({ 160, 104, 32, 32 });
 	lWalkAnim.PushBack({ 128, 104, 32, 32 });
@@ -46,7 +46,7 @@ Player::Player() : Module()
 	lWalkAnim.PushBack({ 64, 104, 32, 32 });
 	lWalkAnim.PushBack({ 32, 104, 32, 32 });
 	lWalkAnim.PushBack({ 0, 104, 32, 32 });
-	lWalkAnim.speed = 0.05f;
+	lWalkAnim.speed = 0.15f;
 }
 
 Player::~Player()
@@ -102,7 +102,7 @@ bool Player::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_REPEAT)
 	{
 		currentAnimation = &lWalkAnim;
-		if (position.x > app->win->screenSurface->w / 4)
+		if (position.x > app->win->screenSurface->w / 12)
 		{
 			app->render->camera.x += speed;
 		}
@@ -113,7 +113,7 @@ bool Player::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_D) == KeyState::KEY_REPEAT)
 	{
 		currentAnimation = &rWalkAnim;
-		if (position.x > app->win->screenSurface->w / 4)
+		if (position.x > app->win->screenSurface->w / 12)
 		{
 			app->render->camera.x -= speed;
 		}
