@@ -3,7 +3,7 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Map.h"
-
+#include "Collisions.h"
 #include "Defs.h"
 #include "Log.h"
 
@@ -112,6 +112,17 @@ bool Map::CleanUp()
 	}
 	data.layers.clear();
 
+	// Remove colliders
+	ListItem<Collider*>* item3;
+	item3 = data.colliders.start;
+
+	while (item3 != NULL)
+	{
+		RELEASE(item3->data);
+		item3 = item3->next;
+	}
+	data.colliders.clear();
+
 	// Clean up the pugui tree
 	mapFile.reset();
 
@@ -179,6 +190,46 @@ bool Map::Load(const char* filename)
 				LOG("spacing: %d margin: %d", data.tilesets.At(i)->data->spacing, data.tilesets.At(i)->data->margin);
 			}
 		}
+
+		//Load colliders info 
+		if (ret == true) {
+			ret = app->col->LoadColliders(mapFile.child("map"));
+		}
+
+		if (ret == true)
+		{
+			LOG("Successfully parsed map XML file: %s", filename);
+			LOG("width: %d height: %d", data.width, data.height);
+			LOG("tile_width: %d tile_height: %d", data.tileWidth, data.tileHeight);
+			LOG("");
+
+			ListItem<TileSetInfo*>* item = data.tilesets.start;
+			while (item != NULL)
+			{
+				TileSetInfo* s = item->data;
+				LOG("Tileset ----");
+				//LOG("name: %s firstgid: %d", s->name.GetString(), s->firstgid);
+				LOG("tile width: %d tile height: %d", s->tileWidth, s->tileHeight);
+				LOG("spacing: %d margin: %d", s->spacing, s->margin);
+
+				item = item->next;
+			}
+
+			ListItem<MapLayer*>* item_layer = data.layers.start;
+			while (item_layer != NULL)
+			{
+				MapLayer* l = item_layer->data;
+				LOG("Layer ----");
+				LOG("name: %s", l->name.GetString());
+				LOG("tile width: %d tile height: %d", l->width, l->height);
+				LOG("");
+				item_layer = item_layer->next;
+			}
+		}
+
+
+
+		
 
 		mapLoaded = ret;
 
@@ -254,3 +305,26 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 
 	return ret;
 }
+void Map::OnCollision(Collider* c1, Collider* c2) {
+	if (c1->type == COLLIDER_FLOOR && c2->type == COLLIDER_PLAYER) {
+		if (c2->rect.y < c1->rect.y) {
+			if (c1->rect.y < c2->rect.y + c2->rect.h - 3) {
+				if (c1->rect.x < c2->rect.x + c2->rect.w && c1->rect.x + c1->rect.w / 2 > c2->rect.x) {
+					//app->player->position.x = c1->rect.x - c2->rect.w;
+				}
+				if (c1->rect.x + c1->rect.w > c2->rect.x && c1->rect.x + c1->rect.w / 2 < c2->rect.x) {
+					//app->player->position.x = c1->rect.x + c1->rect.w;
+				}
+			}
+		}
+		else {
+			if (c1->rect.x < c2->rect.x + c2->rect.w && c1->rect.x + c1->rect.w / 2 > c2->rect.x) {
+				//app->player->position.x = c1->rect.x - c2->rect.w;
+			}
+			if (c1->rect.x + c1->rect.w > c2->rect.x && c1->rect.x + c1->rect.w / 2 < c2->rect.x) {
+				//app->player->position.x = c1->rect.x + c1->rect.w;
+			}
+		}
+	}
+}
+

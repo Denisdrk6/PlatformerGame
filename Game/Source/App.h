@@ -19,6 +19,7 @@ class Scene;
 class Map;
 class Animation;
 class Player;
+class Collisions;
 
 class App
 {
@@ -92,6 +93,7 @@ public:
 	Map* map;
 	Animation* animation;
 	Player* player;
+	Collisions* col;
 
 private:
 

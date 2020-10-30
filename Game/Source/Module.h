@@ -6,6 +6,7 @@
 #include "PugiXml/src/pugixml.hpp"
 
 class App;
+struct Collider;
 
 class Module
 {
@@ -66,6 +67,8 @@ public:
 	{
 		return true;
 	}
+
+	virtual void OnCollision(Collider*, Collider*) {}
 
 public:
 

@@ -78,6 +78,7 @@ struct MapInfo
     List<TileSetInfo*> tilesets;
 	// L04: TODO 2: Add a list/array of layers to the map
 	List<MapLayer*> layers;
+    List<Collider*>colliders;
 };
 
 
@@ -102,6 +103,8 @@ public:
     // Load new map
     bool Load(const char* path);
 
+    void OnCollision(Collider* c1, Collider* c2);
+
 	// L04: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
 	iPoint MapToWorld(int x, int y) const;
     // L03: TODO 1: Add your struct for map info as public for now
@@ -116,6 +119,7 @@ private:
     bool LoadMapData(pugi::xml_node);
     bool LoadTileset(pugi::xml_node, TileSetInfo*);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
+
 };
 
 #endif // __MAP_H__
