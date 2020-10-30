@@ -53,7 +53,7 @@ void Map::Draw()
 		}
 		i++;
 		layer = layer->next;
-		tileset = tileset->next;
+		
 	}
 }
 
