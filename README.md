@@ -1,8 +1,8 @@
-# {Project Name}
+# {Platformer Game}
 
 ## Description
 
-{project description}
+{This project presents a quick platformer game where the player must move arround the map in order to reach the blue esphere}
 
 ## Key Features
 
@@ -17,12 +17,11 @@
 
 ## Developers
 
- - {Dev01} - {Role(s)}
- - {Dev02} - {Role(s)}
- - {Dev03} - {Role(s)}
- - {Dev04} - {Role(s)}
- - {Dev05} - {Role(s)}
-
+ - {Denis Deconinck Soriano} - {Programer}
+ - {Marc Ramos Gomez} - {Programer}
+ - {Pol Pallares Mur} - {Level Designer}
+ 
+ 
 ## License
 
 This project is licensed under an unmodified MIT license, which is an OSI-certified license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
