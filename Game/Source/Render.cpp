@@ -4,6 +4,7 @@
 
 #include "Defs.h"
 #include "Log.h"
+#include "player.h"
 
 #define VSYNC true
 
@@ -133,14 +134,33 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 	bool ret = true;
 	uint scale = app->win->GetScale();
 
+	bool texturePlayer = texture == app->player->texture;
+
 	SDL_Rect rect;
-	rect.x = (int)(camera.x * speed) + x * scale;
-	rect.y = (int)(camera.y * speed) + y * scale;
+	if (texturePlayer == false)
+	{
+		rect.x = (int)(camera.x * speed) + x * scale;
+		rect.y = (int)(camera.y * speed) + y * scale;
+	}
+	
+	else
+	{
+		rect.x = x;
+		rect.y = y;
+	}
 
 	if(section != NULL)
 	{
-		rect.w = section->w;
-		rect.h = section->h;
+		if (texturePlayer == false)
+		{
+			rect.w = section->w;
+			rect.h = section->h;
+		}
+		else
+		{
+			rect.w = section->w * 2;
+			rect.h = section->h * 2;
+		}
 	}
 	else
 	{

@@ -18,6 +18,7 @@ class Audio;
 class Scene;
 class Map;
 class Animation;
+class Player;
 
 class App
 {
@@ -90,6 +91,7 @@ public:
 	Scene* scene;
 	Map* map;
 	Animation* animation;
+	Player* player;
 
 private:
 
