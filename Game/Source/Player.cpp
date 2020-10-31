@@ -6,7 +6,7 @@
 #include "Render.h"
 //#include "Particles.h"
 #include "Audio.h"
-//#include "Collisions.h"
+#include "Collisions.h"
 //#include "FadeToBlack.h"
 //#include "Fonts.h"
 #include "Log.h"
@@ -55,7 +55,7 @@ Player::Player() : Module()
 	rJumpAnim.PushBack({ 160, 0, 32, 32 });
 	rJumpAnim.PushBack({ 192, 0, 32, 32 });
 	rJumpAnim.PushBack({ 224, 0, 32, 32 });
-	rJumpAnim.speed = 0.03f;
+	rJumpAnim.speed = 0.025f;
 
 	lJumpAnim.PushBack({ 224, 36, 32, 32 });
 	lJumpAnim.PushBack({ 192, 36, 32, 32 });
@@ -65,7 +65,7 @@ Player::Player() : Module()
 	lJumpAnim.PushBack({ 64, 36, 32, 32 });
 	lJumpAnim.PushBack({ 32, 36, 32, 32 });
 	lJumpAnim.PushBack({ 0, 36, 32, 32 });
-	lJumpAnim.speed = 0.03f;
+	lJumpAnim.speed = 0.025f;
 }
 
 Player::~Player()
@@ -95,11 +95,11 @@ bool Player::Start()
 	//++activeFx; ++totalFx;
 
 	position.x = 2 * app->map->data.tileWidth;
-	position.y = 11.5 * app->map->data.tileHeight;
+	position.y = 89 * app->map->data.tileHeight;
 
 	destroyed = false;
 
-	//collider = app->collisions->AddCollider({ position.x, position.y, 32, 16 }, Collider::Type::PLAYER, this);
+	collider = app->col->AddCollider({ position.x, position.y, 50, 64 }, COLLIDER_TYPE::COLLIDER_PLAYER, this);
 	//++activeColliders; ++totalColliders;
 
 	/*char lookupTable[] = { "! @,_./0123456789$;< ?abcdefghijklmnopqrstuvwxyz" };
@@ -158,16 +158,18 @@ bool Player::Update(float dt)
 		if (position.x > app->win->screenSurface->w / 12)
 		{
 			app->render->camera.x -= speed;
+			
 		}
 		position.x += speed;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_REPEAT)
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_REPEAT && jump == false)
 	{
 		if (jump == false) jump = true;
+		fall = false;
 	}
 
-	if (jump == true)
+	if (jump == true && fall == false)
 	{
 		if (currentAnimation != &rJumpAnim && currentAnimation != &lJumpAnim)
 		{
@@ -184,11 +186,11 @@ bool Player::Update(float dt)
 			}
 		}
 
-		position.y -= speed;
+		position.y -= speed * 2;
 
-		if (position.y < app->win->screenSurface->w / 4)
+		if ((position.y + app->render->camera.y) < app->win->screenSurface->h / 4)
 		{
-			app->render->camera.y += speed * 2;
+			app->render->camera.y += speed;
 		}
 	}
 
@@ -219,16 +221,19 @@ bool Player::Update(float dt)
 
 	//Gravity
 	//TODO 5 no funciona que si está en mitad de la animacion de salto se active la gravedad, hay que hacer que se active si está cayendo
-	if ((currentAnimation != &rJumpAnim && currentAnimation != &lJumpAnim) || (currentAnimation == &rJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), rJumpAnim.frames[4]) || (currentAnimation == &lJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), lJumpAnim.frames[4]))))
+	if ((currentAnimation == &rJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), rJumpAnim.frames[4]) || (currentAnimation == &lJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), lJumpAnim.frames[4]))) || fall == true)
 	{
 		//TODO 4 falta añadir si esta colisionando con el suelo que no lo haga
-		//position.y += speed;
+		fall = true;
+		position.y += speed;
 	}
 
 	//TODO 1 acabar colisiones
-	//collider->SetPos(position.x, position.y);
+	collider->SetPos(position.x, position.y);
 
 	//currentAnimation->Update();
+
+	//TODO 7 hacer que si el jugador colisiona con suelo, fall se haga false
 
 	//TODO 6 hacer que la camara solo baje si el jugador está cayendo, para esto hace falta poner colisiones del jugador porque cuando se acaba la animacion de salto se pone la de idle, aunque tendria que cambiar a una animacion de caer y cuando tocase el suelo cambiar a idle
 	/*if ((currentAnimation == )&& position.y > app->win->screenSurface->w / 4)
@@ -292,24 +297,11 @@ bool Player::CleanUp()
 	return true;
 }
 
-/*void Player::OnCollision(Collider* c1, Collider* c2)
+void Player::OnCollision(Collider* c1, Collider* c2)
 {
-	if (c1 == collider && destroyed == false)
+	if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_FLOOR)
 	{
-		App->particles->AddParticle(App->particles->explosion, position.x, position.y, Collider::Type::NONE, 9);
-		App->particles->AddParticle(App->particles->explosion, position.x + 8, position.y + 11, Collider::Type::NONE, 14);
-		App->particles->AddParticle(App->particles->explosion, position.x - 7, position.y + 12, Collider::Type::NONE, 40);
-		App->particles->AddParticle(App->particles->explosion, position.x + 5, position.y - 5, Collider::Type::NONE, 28);
-		App->particles->AddParticle(App->particles->explosion, position.x - 4, position.y - 4, Collider::Type::NONE, 21);
-
-		App->audio->PlayFx(explosionFx);
-		App->fade->FadeToBlack((Module*)App->sceneLevel_1, (Module*)App->sceneIntro, 60);
-
-		destroyed = true;
+		if(c2->rect.y - (c1->rect.h + c1->rect.y) >= -1)
+		fall = false;
 	}
-
-	if (c1->type == Collider::Type::PLAYER_SHOT && c2->type == Collider::Type::ENEMY)
-	{
-		score += 23;
-	}
-}*/
+}

@@ -34,7 +34,7 @@ public:
 	bool CleanUp();
 
 	// Collision callback, called when the player intersects with another collider
-	//void OnCollision(Collider* c1, Collider* c2) override;
+	void OnCollision(Collider* c1, Collider* c2) override;
 
 	//Check if two animation frames are equal
 	bool EqualFrames(SDL_Rect, SDL_Rect);
@@ -61,7 +61,8 @@ public:
 	Animation rJumpAnim;
 	Animation lJumpAnim;
 
-	bool jump;
+	bool jump = false;
+	bool fall;
 
 	// The player's collider
 	Collider* collider = nullptr;

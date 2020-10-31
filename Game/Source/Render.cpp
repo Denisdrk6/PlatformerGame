@@ -137,17 +137,9 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 	bool texturePlayer = texture == app->player->texture;
 
 	SDL_Rect rect;
-	if (texturePlayer == false)
-	{
-		rect.x = (int)(camera.x * speed) + x * scale;
-		rect.y = (int)(camera.y * speed) + y * scale;
-	}
-	
-	else
-	{
-		rect.x = x;
-		rect.y = y;
-	}
+
+	rect.x = (int)(camera.x * speed) + x * scale;
+	rect.y = (int)(camera.y * speed) + y * scale;
 
 	if(section != NULL)
 	{

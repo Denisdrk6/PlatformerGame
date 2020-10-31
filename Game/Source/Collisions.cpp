@@ -171,7 +171,7 @@ void Collisions::DebugDraw() {
 	LOG("showing colliders");
 
 	Uint8 alpha = 80;
-	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	/*for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
 		if (colliders[i] == nullptr)
 			continue;
@@ -194,7 +194,7 @@ void Collisions::DebugDraw() {
 			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 0, alpha);
 			break;
 		}
-	}
+	}*/
 
 	ListItem<Collider*>* col = app->map->data.colliders.start;
 	while (col != NULL) {
