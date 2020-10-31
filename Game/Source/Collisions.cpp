@@ -19,8 +19,6 @@ Collisions::Collisions()
 	matrix[COLLIDER_PLAYER][COLLIDER_DEAD] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_END] = true;
 
-
-
 	matrix[COLLIDER_FLOOR][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_FLOOR][COLLIDER_FLOOR] = false;
 	matrix[COLLIDER_FLOOR][COLLIDER_WALL] = false;
