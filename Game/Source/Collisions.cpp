@@ -68,14 +68,14 @@ bool Collisions::LoadColliders(pugi::xml_node& node) {
 
 			SDL_Rect rect;
 			type = object.attribute("name").as_string();
-			if (type == "Floor")
+			if (type == "floor")
 			{
 				coltype = COLLIDER_FLOOR;
 				LOG("Collider floor");
 				call = app->map;
 
 			}
-			else if (type == "Wall") {
+			else if (type == "wall") {
 				coltype = COLLIDER_WALL;
 				LOG("Collider wall");
 				call = app->map;
@@ -84,9 +84,9 @@ bool Collisions::LoadColliders(pugi::xml_node& node) {
 				coltype = COLLIDER_DEAD;
 				LOG("Collider dead");
 			}
-			else if (type == "End") {
+			else if (type == "win") {
 				coltype = COLLIDER_END;
-				LOG("Collider end");
+				LOG("Collider win");
 			}
 			else
 			{
