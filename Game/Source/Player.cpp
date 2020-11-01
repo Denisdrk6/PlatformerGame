@@ -66,6 +66,14 @@ Player::Player() : Module()
 	lJumpAnim.PushBack({ 32, 36, 32, 32 });
 	lJumpAnim.PushBack({ 0, 36, 32, 32 });
 	lJumpAnim.speed = 0.025f;
+
+	rFallAnim.PushBack({ 128, 0, 32, 32 });
+	rFallAnim.PushBack({ 160, 0, 32, 32 });
+	rFallAnim.speed = 0.015f;
+
+	lFallAnim.PushBack({ 96, 36, 32, 32 });
+	lFallAnim.PushBack({ 64, 36, 32, 32 });
+	lFallAnim.speed = 0.015f;
 }
 
 Player::~Player()
@@ -118,7 +126,7 @@ bool Player::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_REPEAT)
 	{
 		
-		if (currentAnimation != &lJumpAnim && currentAnimation != &rJumpAnim || (currentAnimation == &lJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), lJumpAnim.frames[lJumpAnim.last_frame - 1])))
+		if ((currentAnimation != &lJumpAnim && currentAnimation != &rJumpAnim && currentAnimation != &rFallAnim && currentAnimation != &lFallAnim) || (currentAnimation == &lJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), lJumpAnim.frames[lJumpAnim.last_frame - 1])))
 		{
 			currentAnimation = &lWalkAnim;
 			jump = false;
@@ -128,6 +136,13 @@ bool Player::Update(float dt)
 		{
 			float frame = currentAnimation->current_frame;
 			currentAnimation = &lJumpAnim;
+			currentAnimation->current_frame = frame;
+		}
+
+		else if (currentAnimation == &rFallAnim)
+		{
+			float frame = currentAnimation->current_frame;
+			currentAnimation = &lFallAnim;
 			currentAnimation->current_frame = frame;
 		}
 
@@ -142,7 +157,7 @@ bool Player::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_D) == KeyState::KEY_REPEAT)
 	{
 		
-		if ((currentAnimation != &rJumpAnim && currentAnimation != &lJumpAnim) || (currentAnimation == &rJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), rJumpAnim.frames[rJumpAnim.last_frame - 1])))
+		if ((currentAnimation != &rJumpAnim && currentAnimation != &lJumpAnim && currentAnimation != &rFallAnim && currentAnimation != &lFallAnim) || (currentAnimation == &rJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), rJumpAnim.frames[rJumpAnim.last_frame - 1])))
 		{
 			currentAnimation = &rWalkAnim;
 			jump = false;
@@ -155,6 +170,13 @@ bool Player::Update(float dt)
 			currentAnimation->current_frame = frame;
 		}
 
+		else if (currentAnimation == &lFallAnim)
+		{
+			float frame = currentAnimation->current_frame;
+			currentAnimation = &rFallAnim;
+			currentAnimation->current_frame = frame;
+		}
+
 		if (position.x > app->win->screenSurface->w / 12)
 		{
 			app->render->camera.x -= speed;
@@ -163,8 +185,9 @@ bool Player::Update(float dt)
 		position.x += speed;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_REPEAT && jump == false && fall == false)
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_REPEAT && jump == false && doubleJump == false)
 	{
+		if (currentAnimation == &rFallAnim || currentAnimation == &lFallAnim) doubleJump = true;
 		jump = true;
 		fall = false;
 	}
@@ -173,7 +196,8 @@ bool Player::Update(float dt)
 	{
 		if (currentAnimation != &rJumpAnim && currentAnimation != &lJumpAnim)
 		{
-			if (currentAnimation == &rWalkAnim || currentAnimation == &rIdleAnim)
+
+			if (currentAnimation == &rWalkAnim || currentAnimation == &rIdleAnim || currentAnimation == &rFallAnim)
 			{
 				currentAnimation = &rJumpAnim; 
 				currentAnimation->Reset();
@@ -194,26 +218,19 @@ bool Player::Update(float dt)
 		}
 	}
 
-	/*if (app->input->keys[SDL_SCANCODE_SPACE] == Key_State::KEY_DOWN)
-	{
-		Particle* newParticle = app->particles->AddParticle(app->particles->laser, position.x + 20, position.y, Collider::Type::PLAYER_SHOT);
-		newParticle->collider->AddListener(this);
-		app->audio->PlayFx(laserFx);
-	}*/
-
 	 //If no right/left/up movement detected, set the current animation back to idle
 	if (app->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_IDLE
 		&& app->input->GetKey(SDL_SCANCODE_D) == KeyState::KEY_IDLE
 		&& app->input->GetKey(SDL_SCANCODE_W) == KeyState::KEY_IDLE
 		&& (currentAnimation != &rIdleAnim && currentAnimation != &lIdleAnim))
 	{
-		if (currentAnimation == &rWalkAnim || (currentAnimation == &rJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), rJumpAnim.frames[rJumpAnim.last_frame - 1])))
+		if (currentAnimation == &rWalkAnim || (currentAnimation == &rJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), rJumpAnim.frames[rJumpAnim.last_frame - 1])) || (currentAnimation == &rFallAnim && fall == false))
 		{
 			//TODO 8 if fall == true currentAnim = &rFallAnim
 			currentAnimation = &rIdleAnim;
 			jump = false;
 		}
-		else if (currentAnimation == &lWalkAnim || (currentAnimation == &lJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), lJumpAnim.frames[lJumpAnim.last_frame - 1])))
+		else if (currentAnimation == &lWalkAnim || (currentAnimation == &lJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), lJumpAnim.frames[lJumpAnim.last_frame - 1])) || (currentAnimation == &lFallAnim && fall == false))
 		{
 			currentAnimation = &lIdleAnim;
 			jump = false;
@@ -224,7 +241,13 @@ bool Player::Update(float dt)
 	//TODO 5 no funciona que si está en mitad de la animacion de salto se active la gravedad, hay que hacer que se active si está cayendo
 	if ((currentAnimation == &rJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), rJumpAnim.frames[4]) || (currentAnimation == &lJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), lJumpAnim.frames[4]))) || fall == true)
 	{
-		if (fall == true) position.y += speed;
+		if (fall == true)
+		{
+			position.y += speed;
+			if (currentAnimation == &rJumpAnim)currentAnimation = &rFallAnim;
+			else if (currentAnimation == &lJumpAnim) currentAnimation = &lFallAnim;
+			jump = false;
+		}
 
 		fall = true;
 	}
@@ -305,7 +328,9 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		if (c2->rect.y - (c1->rect.h + c1->rect.y) >= -1)
 		{
 			fall = false;
-			jump = false;
+			if (doubleJump == true && currentAnimation != &rFallAnim && currentAnimation != &lFallAnim && currentAnimation != &rJumpAnim && currentAnimation != &lJumpAnim) doubleJump = false;
+			if (currentAnimation == &rFallAnim) currentAnimation = &rJumpAnim;
+			else if (currentAnimation == &lFallAnim) currentAnimation = &lJumpAnim;
 		}
 	}
 }

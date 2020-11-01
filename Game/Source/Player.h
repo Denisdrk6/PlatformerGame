@@ -60,9 +60,12 @@ public:
 	Animation lWalkAnim;
 	Animation rJumpAnim;
 	Animation lJumpAnim;
+	Animation rFallAnim;
+	Animation lFallAnim;
 
 	bool jump = false;
 	bool fall;
+	bool doubleJump;
 
 	// The player's collider
 	Collider* collider = nullptr;
