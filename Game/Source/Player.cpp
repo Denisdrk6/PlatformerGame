@@ -4,11 +4,8 @@
 #include "Textures.h"
 #include "Input.h"
 #include "Render.h"
-//#include "Particles.h"
 #include "Audio.h"
 #include "Collisions.h"
-//#include "FadeToBlack.h"
-//#include "Fonts.h"
 #include "Log.h"
 #include "Map.h"
 #include "Window.h"
@@ -93,14 +90,11 @@ bool Player::Start()
 	bool ret = true;
 
 	texture = app->tex->Load("Assets/player/player.png");
-	//++activeTextures; ++totalTextures;
 	currentAnimation = &rIdleAnim;
 
 	laserFx = app->audio->LoadFx("Assets/Fx/laser.wav");
-	//++activeFx; ++totalFx;
 
 	explosionFx = app->audio->LoadFx("Assets/Fx/explosion.wav");
-	//++activeFx; ++totalFx;
 
 	position.x = 2 * app->map->data.tileWidth;
 	position.y = 89 * app->map->data.tileHeight;
@@ -108,11 +102,6 @@ bool Player::Start()
 	destroyed = false;
 
 	collider = app->col->AddCollider({ position.x, position.y, 50, 64 }, COLLIDER_TYPE::COLLIDER_PLAYER, this);
-	//++activeColliders; ++totalColliders;
-
-	/*char lookupTable[] = { "! @,_./0123456789$;< ?abcdefghijklmnopqrstuvwxyz" };
-	scoreFont = app->fonts->Load("Assets/Fonts/rtype_font3.png", lookupTable, 2);
-	++activeFonts; ++totalFonts;*/
 
 	return ret;
 }
@@ -121,7 +110,6 @@ bool Player::Update(float dt)
 {
 	bool ret = true;
 
-	//TODO 3 fix camera movement with player
 
 	if (app->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_REPEAT)
 	{
@@ -146,8 +134,7 @@ bool Player::Update(float dt)
 			currentAnimation->current_frame = frame;
 		}
 
-		//TODO 9 arreglar la segunda condicion (está hardcodeada porque toma en cuenta el tamaño de pantalla y no el del mundo)
-		if (position.x > app->win->screenSurface->w / 12 && position.x < 14* app->win->screenSurface->w / 11)
+		if (position.x > app->win->screenSurface->w / 12 && position.x < 14* app->win->screenSurface->w / 11 && wallCol == false)
 		{
 			app->render->camera.x += speed;
 		}
@@ -178,7 +165,8 @@ bool Player::Update(float dt)
 			currentAnimation->current_frame = frame;
 		}
 
-		if (position.x > app->win->screenSurface->w / 12)
+
+		if (position.x > app->win->screenSurface->w / 12 && wallCol == false)
 		{
 			app->render->camera.x -= speed;
 		}
@@ -227,7 +215,6 @@ bool Player::Update(float dt)
 	{
 		if (currentAnimation == &rWalkAnim || (currentAnimation == &rJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), rJumpAnim.frames[rJumpAnim.last_frame - 1])) || (currentAnimation == &rFallAnim && fall == false))
 		{
-			//TODO 8 if fall == true currentAnim = &rFallAnim
 			currentAnimation = &rIdleAnim;
 			jump = false;
 		}
@@ -239,7 +226,6 @@ bool Player::Update(float dt)
 	}
 
 	//Gravity
-	//TODO 5 no funciona que si está en mitad de la animacion de salto se active la gravedad, hay que hacer que se active si está cayendo
 	if ((currentAnimation == &rJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), rJumpAnim.frames[4]) || (currentAnimation == &lJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), lJumpAnim.frames[4]))) || fall == true)
 	{
 		if (fall == true)
@@ -258,18 +244,7 @@ bool Player::Update(float dt)
 		app->render->camera.y -= speed * 2;
 	}
 
-	//TODO 1 acabar colisiones
 	collider->SetPos(position.x, position.y);
-
-	//currentAnimation->Update();
-
-	//TODO 7 hacer que si el jugador colisiona con suelo, fall se haga false
-
-	//TODO 6 hacer que la camara solo baje si el jugador está cayendo, para esto hace falta poner colisiones del jugador porque cuando se acaba la animacion de salto se pone la de idle, aunque tendria que cambiar a una animacion de caer y cuando tocase el suelo cambiar a idle
-	/*if ((currentAnimation == )&& position.y > app->win->screenSurface->w / 4)
-	{
-		app->render->camera.y -= speed * 2;
-	}*/
 
 	return ret;
 }
@@ -290,45 +265,32 @@ bool Player::PostUpdate()
 		ret = true;
 	}
 
-	/*
-	// Draw UI (score) --------------------------------------
-	sprintf_s(scoreText, 10, "%7d", score);
-
-	app->fonts->BlitText(58, 248, scoreFont, scoreText);
-
-	app->fonts->BlitText(150, 248, scoreFont, "this is just a font test");*/
-
 	return ret;
 }
 
 bool Player::CleanUp()
 {
-	//activeTextures = activeColliders = activeFonts = activeFx = 0;
-
-	// TODO 1: Remove ALL remaining resources. Update resource count properly
 
 	app->tex->UnLoad(texture);
-	//--totalTextures;
 
-	//TODO 2 acabar audios (sonnido salto, etc...)
-	/*
-	app->audio->UnloadFx(laserFx);
-	//--totalFx;
-
-	app->audio->UnloadFx(explosionFx);
-	//--totalFx;*/
-
-	/*app->collisions->RemoveCollider(collider);
-	--totalColliders;
-
-	app->fonts->UnLoad(scoreFont);
-	--totalFonts;*/
+	app->col->DeleteCollider(collider);
 
 	return true;
 }
 
 void Player::OnCollision(Collider* c1, Collider* c2)
 {
+	if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_WALL)
+	{
+		if (((c1->rect.x + c1->rect.w) > c2->rect.x) && (currentAnimation == &rWalkAnim || currentAnimation == &rJumpAnim || currentAnimation == &rFallAnim))
+			position.x = c2->rect.x - c1->rect.w;
+
+		else if(c1->rect.x < (c2->rect.x + c2->rect.w))
+			position.x = c2->rect.x + c2->rect.w;
+
+		wallCol = true;
+	}
+
 	if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_FLOOR)
 	{
 		if (c2->rect.y - (c1->rect.h + c1->rect.y) >= -1)

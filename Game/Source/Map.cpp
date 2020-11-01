@@ -46,7 +46,6 @@ void Map::Draw()
 				int tileId = layer->data->Get(x, y);
 				if (tileId > 0)
 				{
-					// L04: TODO 9: Complete the draw function
 					app->render->DrawTexture(tileset->data->texture, MapToWorld(x, y).x, MapToWorld(x, y).y, &tileset->data->GetTileRect(tileId));
 				}
 			}
@@ -73,7 +72,6 @@ SDL_Rect TileSetInfo::GetTileRect(int id) const
 {
 	SDL_Rect rect = { 0 };
 	
-	// L04: TODO 7: Get relative Tile rectangle
 	int relativeId = id - firstGid;
 	rect.w = tileWidth;
 	rect.h = tileHeight;
@@ -100,7 +98,6 @@ bool Map::CleanUp()
 	}
 	data.tilesets.clear();
 
-	// L04: TODO 2: clean up all layer data
 	// Remove all layers
 	ListItem<MapLayer*>* item2;
 	item2 = data.layers.start;
@@ -145,7 +142,6 @@ bool Map::Load(const char* filename)
 
 	if (ret == true)
 	{
-		// L03: TODO 3: Create and call a private function to load and fill all your map data
 		LOG("Loading map data...");
 		ret = LoadMapData(mapFile.child("map"));
 	}
@@ -156,14 +152,13 @@ bool Map::Load(const char* filename)
 	{
 		if (ret == true)
 		{
-			TileSetInfo* info = new TileSetInfo; //TODO: LIMPIAR ESTE USO DE MEMORIA DINAMICA
+			TileSetInfo* info = new TileSetInfo;
 
 			LOG("Loading tilesets data...");
 
 			ret = LoadTileset(tileset, info);
 			data.tilesets.add(info);
 		}
-		// L04: TODO 4: Iterate all layers and load each of them
 		pugi::xml_node layer;
 		for (layer = mapFile.child("map").child("layer"); layer && ret; layer = layer.next_sibling("layer"))
 		{
@@ -177,7 +172,6 @@ bool Map::Load(const char* filename)
 
 		if (ret == true)
 		{
-			// L03: TODO 5: LOG all the data loaded iterate all tilesets and LOG everything
 			LOG("Succesfully parsed XML file: %s", filename);
 			LOG("width: %d height: %d", data.width, data.height);
 			LOG("tile_width: %d tile_height %d", data.tileWidth, data.tileHeight);
@@ -281,16 +275,10 @@ bool Map::LoadTileset(pugi::xml_node tileset, TileSetInfo* info)
     return ret;
 }
 
-
-
-	
-
-// L04: TODO 3: Create the definition for a function that loads a single layer
 bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 {
 	bool ret = true;
 	
-	// L04: TODO 3: Load a single layer
 	layer->width = node.attribute("width").as_int();
 	layer->height = node.attribute("height").as_int();
 	layer->name = node.attribute("name").as_string();

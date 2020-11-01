@@ -40045,7 +40045,7 @@
   <object id="40" name="floor" x="1664.5" y="1855.5" width="195" height="65.5"/>
   <object id="41" name="floor" x="1855" y="1791.5" width="225" height="66"/>
   <object id="42" name="win" x="2047" y="1727" width="33" height="32"/>
-  <object id="45" name="wall" x="1279.5" y="2878" width="32.5" height="317"/>
+  <object id="45" name="wall" x="1280.75" y="2879.52" width="31.25" height="315.477"/>
   <object id="46" name="floor" x="993" y="2080.5" width="94.5" height="32.5"/>
   <object id="47" name="floor" x="1184" y="2110.5" width="95.5" height="33.5"/>
   <object id="48" name="wall" x="1055" y="2110.5" width="32" height="129.5"/>

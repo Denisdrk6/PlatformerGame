@@ -66,6 +66,7 @@ public:
 	bool jump = false;
 	bool fall;
 	bool doubleJump;
+	bool wallCol = false;
 
 	// The player's collider
 	Collider* collider = nullptr;

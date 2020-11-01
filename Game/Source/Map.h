@@ -7,7 +7,6 @@
 
 #include "PugiXml\src\pugixml.hpp"
 
-// L03: TODO 2: Create a struct to hold information for a TileSet
 // Ignore Terrain Types and Tile Types for now, but we want the image!
 
 struct TileSetInfo
@@ -28,7 +27,6 @@ struct TileSetInfo
 
     SDL_Texture* texture;
 	
-	// L04: TODO 7: Create a method that receives a tile id and returns it's Rectfind the Rect associated with a specific tile id
 	SDL_Rect GetTileRect(int id) const;
 };
 
@@ -56,14 +54,12 @@ struct MapLayer
 		RELEASE(data);
 	}
 
-	// L04: TODO 6: Short function to get the value of x,y
 	inline uint Get(int x, int y) const
 	{
 		return data[(y * width) + x];
 	}
 };
 
-// L03: TODO 1: Create a struct needed to hold the information to Map node
 
 struct MapInfo
 {
@@ -76,7 +72,6 @@ struct MapInfo
     int nextObjectId;
     MapTypes type;
     List<TileSetInfo*> tilesets;
-	// L04: TODO 2: Add a list/array of layers to the map
 	List<MapLayer*> layers;
     List<Collider*>colliders;
 };
@@ -105,9 +100,7 @@ public:
 
     void OnCollision(Collider* c1, Collider* c2);
 
-	// L04: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
 	iPoint MapToWorld(int x, int y) const;
-    // L03: TODO 1: Add your struct for map info as public for now
     MapInfo data;
 
 private:

@@ -96,7 +96,7 @@ bool Collisions::LoadColliders(pugi::xml_node& node) {
 			rect.x = object.attribute("x").as_int();
 			rect.y = object.attribute("y").as_int();
 			rect.w = object.attribute("width").as_int();
-			rect.h = object.attribute("heigth").as_int();
+			rect.h = object.attribute("height").as_int();
 
 			app->map->data.colliders.add(AddCollider(rect, coltype, call));
 			LOG("%i x %i", rect.x, rect.y);
@@ -107,7 +107,9 @@ bool Collisions::LoadColliders(pugi::xml_node& node) {
 
 bool Collisions::PreUpdate() {
 
-	playerCol = 0;
+	//Checks if player stops colliding with floor/wall
+	playerFloorCol = 0;
+	playerWallCol = 0;
 
 	for (uint i = 0; i < MAX_COLLIDERS; ++i) {
 		if (colliders[i] != nullptr && colliders[i]->to_delete == true) {
@@ -140,8 +142,27 @@ bool Collisions::PreUpdate() {
 
 			c2 = colliders[k];
 
+			if ((c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_WALL) || (c2->type == COLLIDER_TYPE::COLLIDER_PLAYER && c1->type == COLLIDER_TYPE::COLLIDER_WALL))
+			{
+				LOG("Player collides with wall");
+			}
+
 			if (c1->CheckCollision(c2->rect) == true)
 			{
+				/*if (matrix[c1->type][c2->type] && c1->callback) {
+					if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_FLOOR && app->player->fall == true)
+						c1->callback->OnCollision(c1, c2);
+					else if (c1->type != COLLIDER_TYPE::COLLIDER_PLAYER && c2->type != COLLIDER_TYPE::COLLIDER_FLOOR && c2->type != COLLIDER_TYPE::COLLIDER_PLAYER && c1->type != COLLIDER_TYPE::COLLIDER_FLOOR)
+						c1->callback->OnCollision(c1, c2);
+				}
+
+				if (matrix[c2->type][c1->type] && c2->callback) {
+					if (c2->type == COLLIDER_TYPE::COLLIDER_PLAYER && c1->type == COLLIDER_TYPE::COLLIDER_FLOOR && app->player->fall == true)
+						c2->callback->OnCollision(c2, c1);
+					else if (c2->type != COLLIDER_TYPE::COLLIDER_PLAYER && c1->type != COLLIDER_TYPE::COLLIDER_FLOOR && c1->type != COLLIDER_TYPE::COLLIDER_PLAYER && c2->type != COLLIDER_TYPE::COLLIDER_FLOOR)
+						c2->callback->OnCollision(c2, c1);
+				}*/
+
 				if (matrix[c1->type][c2->type] && c1->callback) {
 					c1->callback->OnCollision(c1, c2);
 				}
@@ -150,12 +171,19 @@ bool Collisions::PreUpdate() {
 					c2->callback->OnCollision(c2, c1);
 				}
 
-				if ((c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_FLOOR) || (c2->type == COLLIDER_TYPE::COLLIDER_PLAYER && c1->type == COLLIDER_TYPE::COLLIDER_FLOOR)) playerCol++;
+				//Checks if player stops colliding with floor/wall
+				if ((c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_FLOOR) || (c2->type == COLLIDER_TYPE::COLLIDER_PLAYER && c1->type == COLLIDER_TYPE::COLLIDER_FLOOR)) 
+					playerFloorCol++;
+
+				if ((c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_WALL) || (c2->type == COLLIDER_TYPE::COLLIDER_PLAYER && c1->type == COLLIDER_TYPE::COLLIDER_WALL))
+					playerWallCol++;
 			}
 		}
 	}
 
-	if (playerCol == 0 && app->player->jump == false) app->player->fall = true;
+	if (playerFloorCol == 0 && app->player->jump == false) app->player->fall = true;
+
+	if (playerWallCol == 0) app->player->wallCol = false;
 
 	return true;
 }
@@ -179,7 +207,7 @@ void Collisions::DebugDraw() {
 	LOG("showing colliders");
 
 	Uint8 alpha = 80;
-	/*for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
 		if (colliders[i] == nullptr)
 			continue;
@@ -202,29 +230,6 @@ void Collisions::DebugDraw() {
 			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 0, alpha);
 			break;
 		}
-	}*/
-
-	ListItem<Collider*>* col = app->map->data.colliders.start;
-	while (col != NULL) {
-		switch (col->data->type)
-		{
-		case COLLIDER_PLAYER: // green
-			app->render->DrawRectangle(col->data->rect, 0, 255, 0, alpha);
-			break;
-		case COLLIDER_FLOOR: // blue
-			app->render->DrawRectangle(col->data->rect, 255, 255, 0, alpha);
-			break;
-		case COLLIDER_WALL:
-			app->render->DrawRectangle(col->data->rect, 0, 0, 255, alpha);
-			break;
-		case COLLIDER_END:
-			app->render->DrawRectangle(col->data->rect, 0, 255, 255, alpha);
-			break;
-		case COLLIDER_DEAD:
-			app->render->DrawRectangle(col->data->rect, 255, 0, 0, alpha);
-			break;
-		}
-		col = col->next;
 	}
 }
 

@@ -72,14 +72,16 @@ public:
 	void DebugDraw();
 	void DeleteCollider(Collider*);
 
+	bool debug = false;
+
 private:
 	//bool LoadColliders();
 	SString			folder;
 	pugi::xml_document collisions_data;
 	Collider* colliders[MAX_COLLIDERS];
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX];
-	bool debug = false;
-	int playerCol;
+	int playerFloorCol;
+	int playerWallCol;
 };
 
 #endif // __j1COLLISIONS_H__

@@ -5,6 +5,7 @@
 #include "Defs.h"
 #include "Log.h"
 #include "player.h"
+#include "Collisions.h"
 
 #define VSYNC true
 
@@ -89,9 +90,6 @@ bool Render::CleanUp()
 	return true;
 }
 
-// L02: TODO 6: Implement a method to load the state
-// for now load camera's x and y
-
 bool Render::Load(pugi::xml_node& data)
 {
 	camera.x = data.child("camera").attribute("x").as_int();
@@ -100,7 +98,6 @@ bool Render::Load(pugi::xml_node& data)
 	return true;
 }
 
-// L02: TODO 8: Create a method to save the state of the renderer
 // using append_child and append_attribute
 
 bool Render::Save(pugi::xml_node& data)const

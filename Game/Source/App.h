@@ -112,7 +112,6 @@ private:
 	//pugi::xml_node configApp;
 
 	
-	// L02: TODO 1: Create required variables to request load / save and 
 	// the filename for save / load
 	uint frames;
 	float dt;
