@@ -32,7 +32,7 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	app->map->Load("map.tmx");
-	//img = app->tex->Load("Assets/textures/test.png");
+	img = app->tex->Load("Assets/textures/BG.png");
 	app->audio->PlayMusic("Assets/audio/music/Friends.ogg");
 	app->render->camera.y = -77.5 * app->map->data.tileHeight;
 	return true;
@@ -82,9 +82,10 @@ bool Scene::Update(float dt)
 	if (app->render->camera.y > -1610) {
 		app->render->camera.y = -1610;
 	}
-	//app->render->DrawTexture(img, 380, 100); // Placeholder not needed any more
 
 	// Draw map
+	app->render->DrawTexture(img, 0, 1470, NULL);
+
 	app->map->Draw();
 
 	// L03: TODO 7: Set the window title with map/tileset info
