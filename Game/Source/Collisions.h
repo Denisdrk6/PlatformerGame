@@ -28,7 +28,7 @@ enum COLLIDER_TYPE
 struct Collider
 {
 	SDL_Rect rect;
-	bool to_delete = false;
+	bool toDelete = false;
 	COLLIDER_TYPE type;
 	Module* callback = nullptr;
 
@@ -78,7 +78,7 @@ public:
 private:
 	//bool LoadColliders();
 	SString			folder;
-	pugi::xml_document collisions_data;
+	pugi::xml_document collisionsData;
 	Collider* colliders[MAX_COLLIDERS];
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX];
 	int playerFloorCol;

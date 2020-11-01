@@ -112,7 +112,7 @@ bool Collisions::PreUpdate() {
 	playerWallCol = 0;
 
 	for (uint i = 0; i < MAX_COLLIDERS; ++i) {
-		if (colliders[i] != nullptr && colliders[i]->to_delete == true) {
+		if (colliders[i] != nullptr && colliders[i]->toDelete == true) {
 			delete colliders[i];
 			colliders[i] = nullptr;
 		}
@@ -271,6 +271,6 @@ void Collider::SetPos(int x, int y) {
 }
 void Collisions::DeleteCollider(Collider* collider) {
 	if (collider != nullptr) {
-		collider->to_delete = true;
+		collider->toDelete = true;
 	}
 }
