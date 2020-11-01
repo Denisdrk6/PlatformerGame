@@ -3,6 +3,7 @@
 #include "Render.h"
 #include "Window.h"
 #include "Log.h"
+#include "Player.h"
 
 #include "Collisions.h"
 
@@ -106,6 +107,8 @@ bool Collisions::LoadColliders(pugi::xml_node& node) {
 
 bool Collisions::PreUpdate() {
 
+	playerCol = 0;
+
 	for (uint i = 0; i < MAX_COLLIDERS; ++i) {
 		if (colliders[i] != nullptr && colliders[i]->to_delete == true) {
 			delete colliders[i];
@@ -146,9 +149,14 @@ bool Collisions::PreUpdate() {
 				if (matrix[c2->type][c1->type] && c2->callback) {
 					c2->callback->OnCollision(c2, c1);
 				}
+
+				if ((c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_FLOOR) || (c2->type == COLLIDER_TYPE::COLLIDER_PLAYER && c1->type == COLLIDER_TYPE::COLLIDER_FLOOR)) playerCol++;
 			}
 		}
 	}
+
+	if (playerCol == 0 && app->player->jump == false) app->player->fall = true;
+
 	return true;
 }
 

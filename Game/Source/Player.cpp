@@ -37,7 +37,7 @@ Player::Player() : Module()
 	rWalkAnim.PushBack({ 96, 70, 32, 32 });
 	rWalkAnim.PushBack({ 128, 70, 32, 32 });
 	rWalkAnim.PushBack({ 160, 70, 32, 32 });
-	rWalkAnim.speed = 0.15f;
+	rWalkAnim.speed = 0.1f;
 
 	lWalkAnim.PushBack({ 160, 104, 32, 32 });
 	lWalkAnim.PushBack({ 128, 104, 32, 32 });
@@ -45,7 +45,7 @@ Player::Player() : Module()
 	lWalkAnim.PushBack({ 64, 104, 32, 32 });
 	lWalkAnim.PushBack({ 32, 104, 32, 32 });
 	lWalkAnim.PushBack({ 0, 104, 32, 32 });
-	lWalkAnim.speed = 0.15f;
+	lWalkAnim.speed = 0.1f;
 
 	rJumpAnim.PushBack({ 0, 0, 32, 32 });
 	rJumpAnim.PushBack({ 32, 0, 32, 32 });
@@ -163,9 +163,9 @@ bool Player::Update(float dt)
 		position.x += speed;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_REPEAT && jump == false)
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_REPEAT && jump == false && fall == false)
 	{
-		if (jump == false) jump = true;
+		jump = true;
 		fall = false;
 	}
 
@@ -190,7 +190,7 @@ bool Player::Update(float dt)
 
 		if ((position.y + app->render->camera.y) < app->win->screenSurface->h / 4)
 		{
-			app->render->camera.y += speed;
+			app->render->camera.y += speed * 2;
 		}
 	}
 
@@ -209,6 +209,7 @@ bool Player::Update(float dt)
 	{
 		if (currentAnimation == &rWalkAnim || (currentAnimation == &rJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), rJumpAnim.frames[rJumpAnim.last_frame - 1])))
 		{
+			//TODO 8 if fall == true currentAnim = &rFallAnim
 			currentAnimation = &rIdleAnim;
 			jump = false;
 		}
@@ -223,9 +224,9 @@ bool Player::Update(float dt)
 	//TODO 5 no funciona que si está en mitad de la animacion de salto se active la gravedad, hay que hacer que se active si está cayendo
 	if ((currentAnimation == &rJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), rJumpAnim.frames[4]) || (currentAnimation == &lJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), lJumpAnim.frames[4]))) || fall == true)
 	{
-		//TODO 4 falta añadir si esta colisionando con el suelo que no lo haga
+		if (fall == true) position.y += speed;
+
 		fall = true;
-		position.y += speed;
 	}
 
 	//TODO 1 acabar colisiones
@@ -301,7 +302,10 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 {
 	if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_FLOOR)
 	{
-		if(c2->rect.y - (c1->rect.h + c1->rect.y) >= -1)
-		fall = false;
+		if (c2->rect.y - (c1->rect.h + c1->rect.y) >= -1)
+		{
+			fall = false;
+			jump = false;
+		}
 	}
 }

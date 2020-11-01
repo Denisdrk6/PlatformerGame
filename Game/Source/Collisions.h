@@ -79,6 +79,7 @@ private:
 	Collider* colliders[MAX_COLLIDERS];
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX];
 	bool debug = false;
+	int playerCol;
 };
 
 #endif // __j1COLLISIONS_H__
