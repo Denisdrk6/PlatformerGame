@@ -146,7 +146,8 @@ bool Player::Update(float dt)
 			currentAnimation->current_frame = frame;
 		}
 
-		if (position.x > app->win->screenSurface->w / 12)
+		//TODO 9 arreglar la segunda condicion (está hardcodeada porque toma en cuenta el tamaño de pantalla y no el del mundo)
+		if (position.x > app->win->screenSurface->w / 12 && position.x < 14* app->win->screenSurface->w / 11)
 		{
 			app->render->camera.x += speed;
 		}
@@ -180,8 +181,8 @@ bool Player::Update(float dt)
 		if (position.x > app->win->screenSurface->w / 12)
 		{
 			app->render->camera.x -= speed;
-			
 		}
+
 		position.x += speed;
 	}
 
@@ -244,12 +245,17 @@ bool Player::Update(float dt)
 		if (fall == true)
 		{
 			position.y += speed;
-			if (currentAnimation == &rJumpAnim)currentAnimation = &rFallAnim;
-			else if (currentAnimation == &lJumpAnim) currentAnimation = &lFallAnim;
+			if (currentAnimation == &rJumpAnim || currentAnimation == &rWalkAnim) currentAnimation = &rFallAnim;
+			else if (currentAnimation == &lJumpAnim || currentAnimation == &lWalkAnim) currentAnimation = &lFallAnim;
 			jump = false;
 		}
 
 		fall = true;
+	}
+
+	if ((position.y + app->render->camera.y) > 3 * app->win->screenSurface->h / 5)
+	{
+		app->render->camera.y -= speed * 2;
 	}
 
 	//TODO 1 acabar colisiones
