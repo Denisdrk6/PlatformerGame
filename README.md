@@ -15,11 +15,10 @@
 ## Controls
 
  - A & D for player movement, left and right.
- - Space for jumping.
- - Arrow keys move the camera around the map.
+ - Space for jumping/double jumping.
  - F5 & F6 saves and loads the game state.
- - F10 enables God Mode.
  - F9 Lets you see the coliders/logic in-game.
+ - F10 enables God Mode.
  
 
 ## Developers
