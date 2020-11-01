@@ -174,12 +174,14 @@ bool Player::Update(float dt)
 		position.x += speed;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_REPEAT && jump == false && doubleJump == false)
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_REPEAT && jump == false && doubleJump == false && collider->type != COLLIDER_GODMODE)
 	{
-		if (currentAnimation == &rFallAnim || currentAnimation == &lFallAnim) doubleJump = true;
-		jump = true;
-		fall = false;
+			if (currentAnimation == &rFallAnim || currentAnimation == &lFallAnim) doubleJump = true;
+			jump = true;
+			fall = false;
 	}
+
+	else if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_REPEAT && collider->type == COLLIDER_GODMODE) position.y -= speed * 2;
 
 	if (jump == true && fall == false)
 	{
@@ -207,6 +209,11 @@ bool Player::Update(float dt)
 		}
 	}
 
+	if (app->input->GetKey(SDL_SCANCODE_S) == KeyState::KEY_REPEAT && collider->type == COLLIDER_GODMODE)
+	{
+		position.y += speed * 2;
+	}
+
 	 //If no right/left/up movement detected, set the current animation back to idle
 	if (app->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_IDLE
 		&& app->input->GetKey(SDL_SCANCODE_D) == KeyState::KEY_IDLE
@@ -226,7 +233,7 @@ bool Player::Update(float dt)
 	}
 
 	//Gravity
-	if ((currentAnimation == &rJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), rJumpAnim.frames[4]) || (currentAnimation == &lJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), lJumpAnim.frames[4]))) || fall == true)
+	if (((currentAnimation == &rJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), rJumpAnim.frames[4]) || (currentAnimation == &lJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), lJumpAnim.frames[4]))) || fall == true) && collider->type == COLLIDER_PLAYER)
 	{
 		if (fall == true)
 		{
@@ -280,25 +287,28 @@ bool Player::CleanUp()
 
 void Player::OnCollision(Collider* c1, Collider* c2)
 {
-	if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_WALL)
+	if (collider->type != COLLIDER_GODMODE)
 	{
-		if (((c1->rect.x + c1->rect.w) > c2->rect.x) && (currentAnimation == &rWalkAnim || currentAnimation == &rJumpAnim || currentAnimation == &rFallAnim))
-			position.x = c2->rect.x - c1->rect.w;
-
-		else if(c1->rect.x < (c2->rect.x + c2->rect.w))
-			position.x = c2->rect.x + c2->rect.w;
-
-		wallCol = true;
-	}
-
-	if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_FLOOR)
-	{
-		if (c2->rect.y - (c1->rect.h + c1->rect.y) >= -1)
+		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_WALL)
 		{
-			fall = false;
-			if (doubleJump == true && currentAnimation != &rFallAnim && currentAnimation != &lFallAnim && currentAnimation != &rJumpAnim && currentAnimation != &lJumpAnim) doubleJump = false;
-			if (currentAnimation == &rFallAnim) currentAnimation = &rJumpAnim;
-			else if (currentAnimation == &lFallAnim) currentAnimation = &lJumpAnim;
+			if (((c1->rect.x + c1->rect.w) > c2->rect.x) && (currentAnimation == &rWalkAnim || currentAnimation == &rJumpAnim || currentAnimation == &rFallAnim))
+				position.x = c2->rect.x - c1->rect.w;
+
+			else if (c1->rect.x < (c2->rect.x + c2->rect.w))
+				position.x = c2->rect.x + c2->rect.w;
+
+			wallCol = true;
+		}
+
+		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_FLOOR)
+		{
+			if (c2->rect.y - (c1->rect.h + c1->rect.y) >= -1)
+			{
+				fall = false;
+				if (doubleJump == true && currentAnimation != &rFallAnim && currentAnimation != &lFallAnim && currentAnimation != &rJumpAnim && currentAnimation != &lJumpAnim) doubleJump = false;
+				if (currentAnimation == &rFallAnim) currentAnimation = &rJumpAnim;
+				else if (currentAnimation == &lFallAnim) currentAnimation = &lJumpAnim;
+			}
 		}
 	}
 }

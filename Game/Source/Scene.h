@@ -34,6 +34,7 @@ public:
 
 private:
 	SDL_Texture* img;
+	bool playerCol = true;
 };
 
 #endif // __SCENE_H__

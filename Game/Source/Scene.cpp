@@ -6,6 +6,8 @@
 #include "Window.h"
 #include "Scene.h"
 #include "Map.h"
+#include "Player.h"
+#include "Collisions.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -48,39 +50,53 @@ bool Scene::PreUpdate()
 bool Scene::Update(float dt)
 {
     // L02: DONE 3: Request Load / Save when pressing L/S
-	if(app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	if(app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		app->LoadGameRequest();
 
-	if(app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+	if(app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		app->SaveGameRequest();
 
-	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		app->render->camera.y += 5;
+	if (app->player->collider->type == COLLIDER_GODMODE)
+	{
+		if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+			app->render->camera.y += 5;
 
-	if(app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		app->render->camera.y -= 5;
+		if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+			app->render->camera.y -= 5;
 
-	if(app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		app->render->camera.x += 5;
+		if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+			app->render->camera.x += 5;
 
-	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		app->render->camera.x -= 5;
+		if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+			app->render->camera.x -= 5;
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	{
+		playerCol = !playerCol;
+		if (playerCol) app->player->collider->type = COLLIDER_GODMODE;
+		else  app->player->collider->type = COLLIDER_PLAYER;
+	}
 
 	//Camera limits
-	if (app->render->camera.x > 0) {
-		app->render->camera.x = 0;
-	}
 
-	if (app->render->camera.y < -2480) {
-		app->render->camera.y = -2480;
-	}
+	if (app->player->collider->type == COLLIDER_PLAYER)
+	{
+		if (app->render->camera.x > 0) {
+			app->render->camera.x = 0;
+		}
 
-	if (app->render->camera.x < -800) {
-		app->render->camera.x = -800;
-	}
+		if (app->render->camera.y < -2480) {
+			app->render->camera.y = -2480;
+		}
 
-	if (app->render->camera.y > -1610) {
-		app->render->camera.y = -1610;
+		if (app->render->camera.x < -800) {
+			app->render->camera.x = -800;
+		}
+
+		if (app->render->camera.y > -1610) {
+			app->render->camera.y = -1610;
+		}
 	}
 
 	// Draw map

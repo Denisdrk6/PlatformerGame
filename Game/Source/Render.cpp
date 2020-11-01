@@ -95,6 +95,9 @@ bool Render::Load(pugi::xml_node& data)
 	camera.x = data.child("camera").attribute("x").as_int();
 	camera.y = data.child("camera").attribute("y").as_int();
 
+	app->player->position.x = data.child("player").attribute("x").as_int();
+	app->player->position.y = data.child("player").attribute("y").as_int();
+
 	return true;
 }
 
@@ -106,6 +109,11 @@ bool Render::Save(pugi::xml_node& data)const
 
 	cam.append_attribute("x") = camera.x;
 	cam.append_attribute("y") = camera.y;
+
+	pugi::xml_node player = data.append_child("player");
+
+	player.append_attribute("x") = app->player->position.x;
+	player.append_attribute("y") = app->player->position.y;
 
 	return true;
 }

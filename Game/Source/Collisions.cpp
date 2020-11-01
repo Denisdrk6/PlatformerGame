@@ -149,19 +149,6 @@ bool Collisions::PreUpdate() {
 
 			if (c1->CheckCollision(c2->rect) == true)
 			{
-				/*if (matrix[c1->type][c2->type] && c1->callback) {
-					if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_FLOOR && app->player->fall == true)
-						c1->callback->OnCollision(c1, c2);
-					else if (c1->type != COLLIDER_TYPE::COLLIDER_PLAYER && c2->type != COLLIDER_TYPE::COLLIDER_FLOOR && c2->type != COLLIDER_TYPE::COLLIDER_PLAYER && c1->type != COLLIDER_TYPE::COLLIDER_FLOOR)
-						c1->callback->OnCollision(c1, c2);
-				}
-
-				if (matrix[c2->type][c1->type] && c2->callback) {
-					if (c2->type == COLLIDER_TYPE::COLLIDER_PLAYER && c1->type == COLLIDER_TYPE::COLLIDER_FLOOR && app->player->fall == true)
-						c2->callback->OnCollision(c2, c1);
-					else if (c2->type != COLLIDER_TYPE::COLLIDER_PLAYER && c1->type != COLLIDER_TYPE::COLLIDER_FLOOR && c1->type != COLLIDER_TYPE::COLLIDER_PLAYER && c2->type != COLLIDER_TYPE::COLLIDER_FLOOR)
-						c2->callback->OnCollision(c2, c1);
-				}*/
 
 				if (matrix[c1->type][c2->type] && c1->callback) {
 					c1->callback->OnCollision(c1, c2);
@@ -228,6 +215,9 @@ void Collisions::DebugDraw() {
 			break;
 		case COLLIDER_DEAD:
 			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 0, alpha);
+			break;
+		case COLLIDER_GODMODE:
+			app->render->DrawRectangle(colliders[i]->rect, 255, 255, 255, alpha);
 			break;
 		}
 	}
