@@ -6,6 +6,7 @@
 #include "Log.h"
 #include "player.h"
 #include "Collisions.h"
+#include "Scene.h"
 
 #define VSYNC true
 
@@ -143,8 +144,17 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 
 	SDL_Rect rect;
 
-	rect.x = (int)(camera.x * speed) + x * scale;
-	rect.y = (int)(camera.y * speed) + y * scale;
+	if (texture != app->scene->saveTex.texture && texture != app->scene->loadTex.texture)
+	{
+		rect.x = (int)(camera.x * speed) + x * scale;
+		rect.y = (int)(camera.y * speed) + y * scale;
+	}
+
+	else
+	{
+		rect.x = x;
+		rect.y = y;
+	}
 
 	if(section != NULL)
 	{

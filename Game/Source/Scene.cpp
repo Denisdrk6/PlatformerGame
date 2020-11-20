@@ -50,11 +50,27 @@ bool Scene::PreUpdate()
 bool Scene::Update(float dt)
 {
     // L02: DONE 3: Request Load / Save when pressing L/S
-	if(app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+	{
 		app->LoadGameRequest();
 
-	if(app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+		// Load texture parameters
+		loadTex.rect = { 234, 0, 224, 83 };
+		if (loadTex.loaded == false) loadTex.texture = app->tex->Load("Assets/textures/saveLoad.png");
+		loadTex.alpha = 255;
+		loadTex.loaded = true;
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	{
 		app->SaveGameRequest();
+
+		// Save texture parameters
+		saveTex.rect = { 0, 0, 224, 83 };
+		if (saveTex.loaded == false) saveTex.texture = app->tex->Load("Assets/textures/saveLoad.png");
+		saveTex.alpha = 255;
+		saveTex.loaded = true;
+	}
 
 	if (app->player->collider->type == COLLIDER_GODMODE)
 	{
@@ -103,6 +119,41 @@ bool Scene::Update(float dt)
 	app->render->DrawTexture(img, 0, 1470, NULL);
 
 	app->map->Draw();
+
+	//Draw save or load textures
+	if (saveTex.loaded == true)
+	{
+		saveTex.alpha--;
+		if (saveTex.alpha <= 0)
+		{
+			//Unload texture if its completely transparent
+			app->tex->UnLoad(saveTex.texture);
+			saveTex.loaded = false;
+		}
+
+		else
+		{
+			//Set alpha value to texture and render it
+			SDL_SetTextureAlphaMod(saveTex.texture, saveTex.alpha);
+			app->render->DrawTexture(saveTex.texture, 1050, 620, &saveTex.rect);
+		}
+	}
+
+	if (loadTex.loaded == true)
+	{
+		loadTex.alpha--;
+		if (loadTex.alpha <= 0)
+		{
+			app->tex->UnLoad(loadTex.texture);
+			loadTex.loaded = false;
+		}
+
+		else
+		{
+			SDL_SetTextureAlphaMod(loadTex.texture, loadTex.alpha);
+			app->render->DrawTexture(loadTex.texture, 1050, 620, &loadTex.rect);
+		}
+	}
 
 	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d", app->map->data.width, app->map->data.height, app->map->data.tileWidth, app->map->data.tileHeight, app->map->data.tilesets.count());
 	app->win->SetTitle(title.GetString());

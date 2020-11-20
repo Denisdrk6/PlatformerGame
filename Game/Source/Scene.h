@@ -5,6 +5,15 @@
 
 struct SDL_Texture;
 
+class BlendedTexture
+{
+public:
+	SDL_Texture* texture;
+	int alpha;
+	bool loaded = false;
+	SDL_Rect rect;
+};
+
 class Scene : public Module
 {
 public:
@@ -32,9 +41,14 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	BlendedTexture saveTex;
+	BlendedTexture loadTex;
+
 private:
 	SDL_Texture* img;
 	bool playerCol = true;
+
+protected:
 };
 
 #endif // __SCENE_H__
