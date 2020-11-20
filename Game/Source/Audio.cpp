@@ -181,23 +181,34 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 
 void Audio::VolumeControl(int volume)
 {
-	
-		if (musicVolume < 0)
+	if (volume < 0)
+	{
+		if (musicVolume <= 0)
 		{
 			musicVolume = 0;
 			LOG("Min music volume reached");
 		}
-
-		else if (musicVolume > 125)
-		{
-			musicVolume = 125;
-			LOG("Max music volume reached");
-		}
-
 		else
 		{
 			musicVolume += volume;
 			Mix_VolumeMusic(musicVolume);
 			LOG("Music volume: %i", musicVolume);
 		}
+
+	}
+
+	if (volume > 0)
+	{
+		if (musicVolume >= 125)
+		{
+			musicVolume = 128;
+			LOG("Max music volume reached");
+		}
+		else
+		{
+			musicVolume += volume;
+			Mix_VolumeMusic(musicVolume);
+			LOG("Music volume: %i", musicVolume);
+		}
+	}
 }
