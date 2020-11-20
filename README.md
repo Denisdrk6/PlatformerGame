@@ -23,9 +23,9 @@
 
 ## Developers
 
- - Denis Deconinck Soriano - Programmer
- - Marc Ramos Gomez - Programmer
- - Pol Pallares Mur - Designer
+ - [Denis Deconinck Soriano](https://github.com/Denisdrk6) - Programmer
+ - [Marc Ramos Gomez](https://github.com/Ramsubito) - Programmer
+ - [Pol Pallares Mur](https://github.com/Zeta115) - Designer
  
  
 ## License
