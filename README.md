@@ -16,6 +16,7 @@
 
  - A & D for player movement, left and right.
  - Space for jumping/double jumping.
+ - '+' & '-' to control music volume.
  - F5 & F6 saves and loads the game state.
  - F9 Lets you see the coliders/logic in-game.
  - F10 enables God Mode.
