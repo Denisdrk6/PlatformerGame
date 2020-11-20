@@ -9,7 +9,7 @@
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ResourceCompile Include="icon.rc">
+    <ResourceCompile Include="platformerGame.rc">
     </ResourceCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -5,6 +5,7 @@
 #include "Log.h"
 
 #include "SDL/include/SDL.h"
+#include "SDL_image/include/SDL_image.h"
 
 
 Window::Window() : Module()
@@ -49,7 +50,11 @@ bool Window::Awake(pugi::xml_node& config)
 		if(resizable == true) flags |= SDL_WINDOW_RESIZABLE;
 		if(fullscreen_window == true) flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 
+		icon = IMG_Load("../Output/Assets/textures/icon.png");
+
 		window = SDL_CreateWindow(app->GetTitle(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+
+		SDL_SetWindowIcon(window, icon);
 
 		if(window == NULL)
 		{

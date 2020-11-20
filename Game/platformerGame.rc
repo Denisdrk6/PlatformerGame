@@ -1,0 +1,4 @@
+#ifndef _resources_rc
+#define _resources_rc
+MAINICON ICON "../Output/Assets/textures/icon.ico"
+#endif // !_resources_rc

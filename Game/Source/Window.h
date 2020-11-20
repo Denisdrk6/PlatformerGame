@@ -42,6 +42,8 @@ private:
 	uint width;
 	uint height;
 	uint scale;
+
+	SDL_Surface* icon;
 };
 
 #endif // __WINDOW_H__
