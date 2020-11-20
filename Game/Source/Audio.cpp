@@ -134,6 +134,8 @@ bool Audio::PlayMusic(const char* path, float fade_time)
 		}
 	}
 
+	Mix_VolumeMusic(musicVolume);
+
 	LOG("Successfully playing %s", path);
 	return ret;
 }
@@ -175,4 +177,27 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 	}
 
 	return ret;
+}
+
+void Audio::VolumeControl(int volume)
+{
+	
+		if (musicVolume < 0)
+		{
+			musicVolume = 0;
+			LOG("Min music volume reached");
+		}
+
+		else if (musicVolume > 125)
+		{
+			musicVolume = 125;
+			LOG("Max music volume reached");
+		}
+
+		else
+		{
+			musicVolume += volume;
+			Mix_VolumeMusic(musicVolume);
+			LOG("Music volume: %i", musicVolume);
+		}
 }

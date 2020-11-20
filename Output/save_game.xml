@@ -9,7 +9,7 @@
 	<player />
 	<map />
 	<renderer>
-		<camera x="-130" y="-2480" />
-		<player x="237" y="2848" />
+		<camera x="0" y="-2480" />
+		<player x="64" y="2848" />
 	</renderer>
 </game_state>

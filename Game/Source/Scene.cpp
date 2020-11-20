@@ -72,6 +72,10 @@ bool Scene::Update(float dt)
 		saveTex.loaded = true;
 	}
 
+	if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN) app->audio->VolumeControl(4);
+
+	if (app->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN) app->audio->VolumeControl(-4);
+
 	if (app->player->collider->type == COLLIDER_GODMODE)
 	{
 		if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)

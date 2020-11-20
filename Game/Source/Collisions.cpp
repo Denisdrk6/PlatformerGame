@@ -142,11 +142,6 @@ bool Collisions::PreUpdate() {
 
 			c2 = colliders[k];
 
-			if ((c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_WALL) || (c2->type == COLLIDER_TYPE::COLLIDER_PLAYER && c1->type == COLLIDER_TYPE::COLLIDER_WALL))
-			{
-				LOG("Player collides with wall");
-			}
-
 			if (c1->CheckCollision(c2->rect) == true)
 			{
 
@@ -163,11 +158,15 @@ bool Collisions::PreUpdate() {
 					playerFloorCol++;
 
 				if ((c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_WALL) || (c2->type == COLLIDER_TYPE::COLLIDER_PLAYER && c1->type == COLLIDER_TYPE::COLLIDER_WALL))
+				{
 					playerWallCol++;
+					LOG("Player collides with wall");
+				}
 			}
 		}
 	}
 
+	//Checks if player is no longer touching a platform (walks to the edge and falls)
 	if (playerFloorCol == 0 && app->player->jump == false) app->player->fall = true;
 
 	if (playerWallCol == 0) app->player->wallCol = false;
