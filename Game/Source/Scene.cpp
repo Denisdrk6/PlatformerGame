@@ -33,7 +33,7 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	app->map->Load("map.tmx");
+	app->map->Load("Devmap.tmx");
 	img = app->tex->Load("Assets/textures/BG.png");
 	app->audio->PlayMusic("Assets/audio/music/Friends.ogg");
 	app->render->camera.y = -77.5 * app->map->data.tileHeight;
