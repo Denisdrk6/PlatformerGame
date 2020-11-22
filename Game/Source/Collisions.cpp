@@ -19,34 +19,29 @@ Collisions::Collisions()
 	matrix[COLLIDER_PLAYER][COLLIDER_WALL] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_DEAD] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_END] = true;
-	matrix[COLLIDER_PLAYER][COLLIDER_SPIKE] = true;
 
 	matrix[COLLIDER_FLOOR][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_FLOOR][COLLIDER_FLOOR] = false;
 	matrix[COLLIDER_FLOOR][COLLIDER_WALL] = false;
 	matrix[COLLIDER_FLOOR][COLLIDER_DEAD] = false;
-	matrix[COLLIDER_FLOOR][COLLIDER_SPIKE] = false;
 
 	matrix[COLLIDER_WALL][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_WALL][COLLIDER_FLOOR] = false;
 	matrix[COLLIDER_WALL][COLLIDER_WALL] = false;
 	matrix[COLLIDER_WALL][COLLIDER_DEAD] = false;
 	matrix[COLLIDER_WALL][COLLIDER_END] = false;
-	matrix[COLLIDER_WALL][COLLIDER_SPIKE] = false;
 
 	matrix[COLLIDER_DEAD][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_DEAD][COLLIDER_FLOOR] = false;
 	matrix[COLLIDER_DEAD][COLLIDER_WALL] = false;
 	matrix[COLLIDER_DEAD][COLLIDER_DEAD] = false;
 	matrix[COLLIDER_DEAD][COLLIDER_END] = false;
-	matrix[COLLIDER_DEAD][COLLIDER_SPIKE] = false;
 
 	matrix[COLLIDER_END][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_END][COLLIDER_FLOOR] = false;
 	matrix[COLLIDER_END][COLLIDER_WALL] = false;
 	matrix[COLLIDER_END][COLLIDER_DEAD] = false;
 	matrix[COLLIDER_END][COLLIDER_END] = false;
-	matrix[COLLIDER_END][COLLIDER_SPIKE] = false;
 
 	/*  matrix destructora
 	matrix[COLLIDER_SPIKE][COLLIDER_PLAYER] = true;
@@ -63,11 +58,13 @@ Collisions::Collisions()
 Collisions::~Collisions()
 {}
 
-bool Collisions::Awake(pugi::xml_node& config) {
+bool Collisions::Awake(pugi::xml_node& config)
+{
 	return true;
 }
 
-bool Collisions::LoadColliders(pugi::xml_node& node) {
+bool Collisions::LoadColliders(pugi::xml_node& node)
+{
 	bool ret = true;
 	COLLIDER_TYPE coltype;
 	SString type;
@@ -77,7 +74,8 @@ bool Collisions::LoadColliders(pugi::xml_node& node) {
 	for (objectgroup = node.child("objectgroup"); objectgroup && ret; objectgroup = objectgroup.next_sibling("objectgroup"))
 	{
 		pugi::xml_node object;
-		for (object = objectgroup.child("object"); object && ret; object = object.next_sibling("object")) {
+		for (object = objectgroup.child("object"); object && ret; object = object.next_sibling("object"))
+		{
 
 			SDL_Rect rect;
 			type = object.attribute("name").as_string();
@@ -86,25 +84,27 @@ bool Collisions::LoadColliders(pugi::xml_node& node) {
 				coltype = COLLIDER_FLOOR;
 				LOG("Collider floor");
 				call = app->map;
-
 			}
-			else if (type == "wall") {
+
+			else if (type == "wall")
+			{
 				coltype = COLLIDER_WALL;
 				LOG("Collider wall");
 				call = app->map;
 			}
-			else if (type == "Dead") {
+
+			else if (type == "dead" || type == "spike")
+			{
 				coltype = COLLIDER_DEAD;
 				LOG("Collider dead");
 			}
-			else if (type == "win") {
+
+			else if (type == "win")
+			{
 				coltype = COLLIDER_END;
 				LOG("Collider win");
 			}
-			else if (type == "spike") {
-				coltype = COLLIDER_SPIKE;
-				LOG("Collider spike");
-			}
+
 			else
 			{
 				LOG("Collider type undefined");
@@ -123,7 +123,8 @@ bool Collisions::LoadColliders(pugi::xml_node& node) {
 	return true;
 }
 
-bool Collisions::PreUpdate() {
+bool Collisions::PreUpdate()
+{
 
 	//Checks if player stops colliding with floor/wall
 	playerFloorCol = 0;
@@ -185,7 +186,7 @@ bool Collisions::PreUpdate() {
 	}
 
 	//Checks if player is no longer touching a platform (walks to the edge and falls)
-	if (playerFloorCol == 0 && app->player->jump == false) app->player->fall = true;
+	if (playerFloorCol == 0 /*&& app->player->jump == false*/) /*app->player->fall = true*/ app->player->groundCol = false;
 
 	if (playerWallCol == 0) app->player->wallCol = false;
 
@@ -199,12 +200,15 @@ bool Collisions::Update(float dt)
 	return true;
 }
 
-void Collisions::DebugDraw() {
-	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) {
+void Collisions::DebugDraw()
+{
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	{
 		debug = !debug;
 	}
 
-	if (debug == false) {
+	if (debug == false)
+	{
 		return;
 	}
 
@@ -227,10 +231,6 @@ void Collisions::DebugDraw() {
 		case COLLIDER_WALL:
 			app->render->DrawRectangle(colliders[i]->rect, 0, 0, 255, alpha);
 			break;
-		case COLLIDER_SPIKE:
-			app->render->DrawRectangle(colliders[i]->rect, 255, 69, 0, alpha);
-			break;
-
 		case COLLIDER_END:
 			app->render->DrawRectangle(colliders[i]->rect, 0, 255, 255, alpha);
 			break;
@@ -286,12 +286,15 @@ bool Collider::CheckCollision(const SDL_Rect& r) const
 }
 
 //-----------------------------------------------------
-void Collider::SetPos(int x, int y) {
+void Collider::SetPos(int x, int y)
+{
 	rect.x = x;
 	rect.y = y;
 }
-void Collisions::DeleteCollider(Collider* collider) {
-	if (collider != nullptr) {
+void Collisions::DeleteCollider(Collider* collider)
+{
+	if (collider != nullptr)
+	{
 		collider->toDelete = true;
 	}
 }

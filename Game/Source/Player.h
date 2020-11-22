@@ -41,10 +41,12 @@ public:
 
 public:
 	// Position of the player in the map
-	iPoint position;
+	fPoint position;
 
 	// The speed in which we move the player (pixels per frame)
-	int speed = 1;
+	float speedX = 1;
+	float speedY = 1.45f;
+	float gravity = 0.01f;
 
 	// The player spritesheet loaded into an SDL_Texture
 	SDL_Texture* texture = nullptr;
@@ -63,10 +65,9 @@ public:
 	Animation rFallAnim;
 	Animation lFallAnim;
 
-	bool jump = false;
-	bool fall;
-	bool doubleJump;
 	bool wallCol = false;
+	bool groundCol = true;
+	bool spacePressed = false;
 
 	// The player's collider
 	Collider* collider = nullptr;

@@ -22,8 +22,7 @@ enum COLLIDER_TYPE
 	COLLIDER_END,
 	COLLIDER_WIN,
 	COLLIDER_MAX,
-	COLLIDER_GODMODE,
-	COLLIDER_SPIKE
+	COLLIDER_GODMODE
 };
 //------------------------------------------------------------------------
 struct Collider

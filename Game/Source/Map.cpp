@@ -43,6 +43,13 @@ void Map::Draw()
 		{
 			for (int x = 0; x < data.width; ++x)
 			{
+
+				if (layer->data->tilesetNum != i)
+				{
+					tileset = tileset->next;
+					i++;
+				}
+
 				int tileId = layer->data->Get(x, y);
 				if (tileId > 0)
 				{
@@ -50,7 +57,6 @@ void Map::Draw()
 				}
 			}
 		}
-		i++;
 		layer = layer->next;
 		
 	}
@@ -146,6 +152,7 @@ bool Map::Load(const char* filename)
 		ret = LoadMapData(mapFile.child("map"));
 	}
 
+	int i = 0  ;
 	// L03: DONE 4: Create and call a private function to load a tileset
 	// remember to support more any number of tilesets!
 	for (pugi::xml_node tileset = mapFile.child("map").child("tileset"); tileset; tileset = tileset.next_sibling("tileset"))
@@ -162,12 +169,14 @@ bool Map::Load(const char* filename)
 		pugi::xml_node layer;
 		for (layer = mapFile.child("map").child("layer"); layer && ret; layer = layer.next_sibling("layer"))
 		{
-			MapLayer* set2 = new MapLayer();
+			if (layer.child("properties").child("property").attribute("value").as_int() == i)
+			{
+				MapLayer* set2 = new MapLayer();
 
-			if (ret == true) ret = LoadLayer(layer, set2);
+				if (ret == true) ret = LoadLayer(layer, set2);
 
-			data.layers.add(set2);
-
+				data.layers.add(set2);
+			}
 		}
 
 		if (ret == true)
@@ -220,15 +229,10 @@ bool Map::Load(const char* filename)
 				item_layer = item_layer->next;
 			}
 		}
-
-
-
-		
-
-		mapLoaded = ret;
-
-		return ret;
+		i++;
 	}
+	mapLoaded = ret;
+	return ret;
 }
 
 bool Map::LoadMapData(pugi::xml_node mapData)
@@ -282,6 +286,7 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	layer->width = node.attribute("width").as_int();
 	layer->height = node.attribute("height").as_int();
 	layer->name = node.attribute("name").as_string();
+	layer->tilesetNum = node.child("properties").child("property").attribute("value").as_int();
 	layer->data = new unsigned int[layer->width * layer->height * sizeof(unsigned int)];
 	memset(layer->data, 0, layer->width * layer->height * sizeof(unsigned int));
 	int i = 0;

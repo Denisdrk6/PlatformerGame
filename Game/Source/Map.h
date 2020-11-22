@@ -45,6 +45,7 @@ struct MapLayer
 	int width;
 	int height;
 	uint* data;
+    int tilesetNum;
 
 	MapLayer() : data(NULL)
 	{}

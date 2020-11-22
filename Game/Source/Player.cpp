@@ -101,7 +101,7 @@ bool Player::Start()
 
 	destroyed = false;
 
-	collider = app->col->AddCollider({ position.x, position.y, 50, 64 }, COLLIDER_TYPE::COLLIDER_PLAYER, this);
+	collider = app->col->AddCollider({ (int)position.x, (int)position.y, 50, 64 }, COLLIDER_TYPE::COLLIDER_PLAYER, this);
 
 	return ret;
 }
@@ -110,14 +110,12 @@ bool Player::Update(float dt)
 {
 	bool ret = true;
 
-
 	if (app->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_REPEAT)
 	{
 		
 		if ((currentAnimation != &lJumpAnim && currentAnimation != &rJumpAnim && currentAnimation != &rFallAnim && currentAnimation != &lFallAnim) || (currentAnimation == &lJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), lJumpAnim.frames[lJumpAnim.last_frame - 1])))
 		{
 			currentAnimation = &lWalkAnim;
-			jump = false;
 		}
 
 		else if (currentAnimation == &rJumpAnim)
@@ -134,21 +132,21 @@ bool Player::Update(float dt)
 			currentAnimation->current_frame = frame;
 		}
 
-		if (position.x > app->win->screenSurface->w / 12 && position.x < 14* app->win->screenSurface->w / 11 && wallCol == false)
+		// Camera can only move to the left if player is between tile width * 3 and the screen surface minus tile width * 11
+		if ((position.x + app->render->camera.x) > app->map->data.tileWidth * 3 && (position.x + app->render->camera.x) < app->win->screenSurface->w - app->map->data.tileWidth * 11 && wallCol == false)
 		{
-			app->render->camera.x += speed;
+			app->render->camera.x += speedX;
 		}
 
-		position.x -= speed;
+		position.x -= speedX;
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_D) == KeyState::KEY_REPEAT)
 	{
-		
+		// We change the animation to the right walking one if we are not jumping or falling or if we are on the las jumping frame
 		if ((currentAnimation != &rJumpAnim && currentAnimation != &lJumpAnim && currentAnimation != &rFallAnim && currentAnimation != &lFallAnim) || (currentAnimation == &rJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), rJumpAnim.frames[rJumpAnim.last_frame - 1])))
 		{
 			currentAnimation = &rWalkAnim;
-			jump = false;
 		}
 
 		else if (currentAnimation == &lJumpAnim)
@@ -165,53 +163,26 @@ bool Player::Update(float dt)
 			currentAnimation->current_frame = frame;
 		}
 
-
-		if (position.x > app->win->screenSurface->w / 12 && wallCol == false)
+		// Camera can only move to the right if player is between tile width * 4 and the screen surface minus tile width * 11
+		if ((position.x + app->render->camera.x) > app->map->data.tileWidth * 4 && (position.x + app->render->camera.x) < app->win->screenSurface->w - app->map->data.tileWidth * 4 && wallCol == false)
 		{
-			app->render->camera.x -= speed;
+			app->render->camera.x -= speedX;
 		}
 
-		position.x += speed;
+		position.x += speedX;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_REPEAT && jump == false && doubleJump == false && collider->type != COLLIDER_GODMODE)
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_REPEAT && collider->type != COLLIDER_GODMODE)
 	{
-			if (currentAnimation == &rFallAnim || currentAnimation == &lFallAnim) doubleJump = true;
-			jump = true;
-			fall = false;
+			groundCol = false;
+			spacePressed = true;
 	}
 
-	else if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_REPEAT && collider->type == COLLIDER_GODMODE) position.y -= speed * 2;
-
-	if (jump == true && fall == false)
-	{
-		if (currentAnimation != &rJumpAnim && currentAnimation != &lJumpAnim)
-		{
-
-			if (currentAnimation == &rWalkAnim || currentAnimation == &rIdleAnim || currentAnimation == &rFallAnim)
-			{
-				currentAnimation = &rJumpAnim; 
-				currentAnimation->Reset();
-			}
-
-			else
-			{
-				currentAnimation = &lJumpAnim;
-				currentAnimation->Reset();
-			}
-		}
-
-		position.y -= speed * 2;
-
-		if ((position.y + app->render->camera.y) < app->win->screenSurface->h / 4)
-		{
-			app->render->camera.y += speed * 2;
-		}
-	}
+	else if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_REPEAT && collider->type == COLLIDER_GODMODE) position.y -= speedX;
 
 	if (app->input->GetKey(SDL_SCANCODE_S) == KeyState::KEY_REPEAT && collider->type == COLLIDER_GODMODE)
 	{
-		position.y += speed * 2;
+		position.y += speedX;
 	}
 
 	 //If no right/left/up movement detected, set the current animation back to idle
@@ -220,35 +191,70 @@ bool Player::Update(float dt)
 		&& app->input->GetKey(SDL_SCANCODE_W) == KeyState::KEY_IDLE
 		&& (currentAnimation != &rIdleAnim && currentAnimation != &lIdleAnim))
 	{
-		if (currentAnimation == &rWalkAnim || (currentAnimation == &rJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), rJumpAnim.frames[rJumpAnim.last_frame - 1])) || (currentAnimation == &rFallAnim && fall == false))
+		if (currentAnimation == &rWalkAnim || (currentAnimation == &rJumpAnim && groundCol == true) || (currentAnimation == &rFallAnim && groundCol == true))
 		{
-			currentAnimation = &rIdleAnim;
-			jump = false;
+ 			currentAnimation = &rIdleAnim;
 		}
-		else if (currentAnimation == &lWalkAnim || (currentAnimation == &lJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), lJumpAnim.frames[lJumpAnim.last_frame - 1])) || (currentAnimation == &lFallAnim && fall == false))
+		else if (currentAnimation == &lWalkAnim || (currentAnimation == &lJumpAnim && groundCol == true) || (currentAnimation == &lFallAnim && groundCol == true))
 		{
 			currentAnimation = &lIdleAnim;
-			jump = false;
 		}
 	}
 
-	//Gravity
-	if (((currentAnimation == &rJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), rJumpAnim.frames[4]) || (currentAnimation == &lJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), lJumpAnim.frames[4]))) || fall == true) && collider->type == COLLIDER_PLAYER)
+	// Camera can only go down if player is below the screen height minus 9 tiles
+	if ((position.y + app->render->camera.y) >= app->win->screenSurface->h - (app->map->data.tileHeight * 9))
 	{
-		if (fall == true)
+		app->render->camera.y -= 1.3f;
+	}
+
+	if ((position.y + app->render->camera.y) < app->win->screenSurface->h / 4)
+	{
+		app->render->camera.y += 1.3f;
+	}
+
+	// Gravity
+	if (groundCol == false && collider->type != COLLIDER_GODMODE)
+	{
+		// Cheks if player is falling from a platform instead of jumping
+		if (spacePressed == false && speedY > 0) speedY = 0;
+
+		// Reduces player speed each frame to make it smoother
+		if (speedY >= -1.4f) speedY -= gravity;
+
+		position.y -= speedY;
+
+		// Activates jump animation
+		if (speedY > 0 && currentAnimation != &rJumpAnim && currentAnimation != &lJumpAnim)
 		{
-			position.y += speed;
-			if (currentAnimation == &rJumpAnim || currentAnimation == &rWalkAnim) currentAnimation = &rFallAnim;
-			else if (currentAnimation == &lJumpAnim || currentAnimation == &lWalkAnim) currentAnimation = &lFallAnim;
-			jump = false;
+
+			if (currentAnimation == &rWalkAnim || currentAnimation == &rIdleAnim || currentAnimation == &rFallAnim)
+			{
+				currentAnimation = &rJumpAnim;
+				currentAnimation->Reset();
+			}
+
+			else if (currentAnimation == &lWalkAnim || currentAnimation == &lIdleAnim || currentAnimation == &lFallAnim)
+			{
+				currentAnimation = &lJumpAnim;
+				currentAnimation->Reset();
+			}
 		}
 
-		fall = true;
-	}
+		// Activates fall animation
+		else if (speedY < 0)
+		{
+			if (currentAnimation == &rWalkAnim || currentAnimation == &rIdleAnim || currentAnimation == &rJumpAnim)
+			{
+				currentAnimation = &rFallAnim;
+				currentAnimation->Reset();
+			}
 
-	if ((position.y + app->render->camera.y) > 3 * app->win->screenSurface->h / 5)
-	{
-		app->render->camera.y -= speed * 2;
+			else if (currentAnimation == &lWalkAnim || currentAnimation == &lIdleAnim || currentAnimation == &lJumpAnim)
+			{
+				currentAnimation = &lFallAnim;
+				currentAnimation->Reset();
+			}
+		}
 	}
 
 	collider->SetPos(position.x, position.y);
@@ -289,13 +295,15 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 {
 	if (collider->type != COLLIDER_GODMODE)
 	{
-		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_SPIKE)
+		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_DEAD)
 		{
-			jump = false;
-			fall = false;
 			currentAnimation = &rIdleAnim;
 			position.x = 2 * app->map->data.tileWidth;
 			position.y = 95 * app->map->data.tileHeight;
+			app->render->camera.x = 0;
+			app->render->camera.y = -77.5 * app->map->data.tileHeight;
+			groundCol = true;
+			speedY = 1.4f;
 		}
 		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_WALL)
 		{
@@ -310,12 +318,13 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 
 		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_FLOOR)
 		{
-			if (c2->rect.y - (c1->rect.h + c1->rect.y) >= -1)
+			if (c2->rect.y - (c1->rect.h + c1->rect.y) >= -2) // -2 works as a way to try and have less tunneling
 			{
-				fall = false;
-				if (doubleJump == true && currentAnimation != &rFallAnim && currentAnimation != &lFallAnim && currentAnimation != &rJumpAnim && currentAnimation != &lJumpAnim) doubleJump = false;
 				if (currentAnimation == &rFallAnim) currentAnimation = &rJumpAnim;
 				else if (currentAnimation == &lFallAnim) currentAnimation = &lJumpAnim;
+				groundCol = true;
+				spacePressed = false;
+				speedY = 1.4f;
 			}
 		}
 	}

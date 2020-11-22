@@ -110,12 +110,12 @@ bool Scene::Update(float dt)
 			app->render->camera.y = -2480;
 		}
 
-		if (app->render->camera.x < -800) {
-			app->render->camera.x = -800;
+		if (app->render->camera.x < (app->map->MapToWorld(app->map->data.width, app->map->data.height).x * -1) + app->win->screenSurface->w) {
+			app->render->camera.x = (app->map->MapToWorld(app->map->data.width, app->map->data.height).x * -1) + app->win->screenSurface->w;
 		}
 
-		if (app->render->camera.y > -1610) {
-			app->render->camera.y = -1610;
+		if (app->render->camera.y > 0) {
+			app->render->camera.y = 0;
 		}
 	}
 
