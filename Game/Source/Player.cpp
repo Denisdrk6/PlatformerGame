@@ -97,7 +97,7 @@ bool Player::Start()
 	explosionFx = app->audio->LoadFx("Assets/Fx/explosion.wav");
 
 	position.x = 2 * app->map->data.tileWidth;
-	position.y = 89 * app->map->data.tileHeight;
+	position.y = 95 * app->map->data.tileHeight;
 
 	destroyed = false;
 
@@ -289,6 +289,14 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 {
 	if (collider->type != COLLIDER_GODMODE)
 	{
+		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_SPIKE)
+		{
+			jump = false;
+			fall = false;
+			currentAnimation = &rIdleAnim;
+			position.x = 2 * app->map->data.tileWidth;
+			position.y = 95 * app->map->data.tileHeight;
+		}
 		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_WALL)
 		{
 			if (((c1->rect.x + c1->rect.w) > c2->rect.x) && (currentAnimation == &rWalkAnim || currentAnimation == &rJumpAnim || currentAnimation == &rFallAnim))

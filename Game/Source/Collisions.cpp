@@ -19,29 +19,43 @@ Collisions::Collisions()
 	matrix[COLLIDER_PLAYER][COLLIDER_WALL] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_DEAD] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_END] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_SPIKE] = true;
 
 	matrix[COLLIDER_FLOOR][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_FLOOR][COLLIDER_FLOOR] = false;
 	matrix[COLLIDER_FLOOR][COLLIDER_WALL] = false;
 	matrix[COLLIDER_FLOOR][COLLIDER_DEAD] = false;
+	matrix[COLLIDER_FLOOR][COLLIDER_SPIKE] = false;
 
 	matrix[COLLIDER_WALL][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_WALL][COLLIDER_FLOOR] = false;
 	matrix[COLLIDER_WALL][COLLIDER_WALL] = false;
 	matrix[COLLIDER_WALL][COLLIDER_DEAD] = false;
 	matrix[COLLIDER_WALL][COLLIDER_END] = false;
+	matrix[COLLIDER_WALL][COLLIDER_SPIKE] = false;
 
 	matrix[COLLIDER_DEAD][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_DEAD][COLLIDER_FLOOR] = false;
 	matrix[COLLIDER_DEAD][COLLIDER_WALL] = false;
 	matrix[COLLIDER_DEAD][COLLIDER_DEAD] = false;
 	matrix[COLLIDER_DEAD][COLLIDER_END] = false;
+	matrix[COLLIDER_DEAD][COLLIDER_SPIKE] = false;
 
 	matrix[COLLIDER_END][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_END][COLLIDER_FLOOR] = false;
 	matrix[COLLIDER_END][COLLIDER_WALL] = false;
 	matrix[COLLIDER_END][COLLIDER_DEAD] = false;
 	matrix[COLLIDER_END][COLLIDER_END] = false;
+	matrix[COLLIDER_END][COLLIDER_SPIKE] = false;
+
+	/*  matrix destructora
+	matrix[COLLIDER_SPIKE][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_SPIKE][COLLIDER_FLOOR] = false;
+	matrix[COLLIDER_SPIKE][COLLIDER_WALL] = false;
+	matrix[COLLIDER_SPIKE][COLLIDER_DEAD] = false;
+	matrix[COLLIDER_SPIKE][COLLIDER_END] = false;
+	matrix[COLLIDER_SPIKE][COLLIDER_SPIKE] = false;
+	*/
 
 	name.Create("map");
 }
@@ -86,6 +100,10 @@ bool Collisions::LoadColliders(pugi::xml_node& node) {
 			else if (type == "win") {
 				coltype = COLLIDER_END;
 				LOG("Collider win");
+			}
+			else if (type == "spike") {
+				coltype = COLLIDER_SPIKE;
+				LOG("Collider spike");
 			}
 			else
 			{
@@ -209,6 +227,10 @@ void Collisions::DebugDraw() {
 		case COLLIDER_WALL:
 			app->render->DrawRectangle(colliders[i]->rect, 0, 0, 255, alpha);
 			break;
+		case COLLIDER_SPIKE:
+			app->render->DrawRectangle(colliders[i]->rect, 255, 69, 0, alpha);
+			break;
+
 		case COLLIDER_END:
 			app->render->DrawRectangle(colliders[i]->rect, 0, 255, 255, alpha);
 			break;
