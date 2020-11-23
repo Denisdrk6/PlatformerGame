@@ -178,6 +178,16 @@ bool Player::Update(float dt)
 			spacePressed = true;
 	}
 
+	else if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_DOWN && collider->type != COLLIDER_GODMODE)
+	{
+		// Double jump mechanic: if player has already jumped once and not double jumped or if player has fallen from platform and has not jumped on air, double jump turns true
+		if ((spacePressed == true && doubleJump == false) || (spacePressed == false && doubleJump == false && speedY < 0))
+		{
+			doubleJump = true;
+			speedY = 1.45f;
+		}
+	}
+
 	else if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_REPEAT && collider->type == COLLIDER_GODMODE) position.y -= speedX;
 
 	if (app->input->GetKey(SDL_SCANCODE_S) == KeyState::KEY_REPEAT && collider->type == COLLIDER_GODMODE)
@@ -216,7 +226,7 @@ bool Player::Update(float dt)
 	if (groundCol == false && collider->type != COLLIDER_GODMODE)
 	{
 		// Cheks if player is falling from a platform instead of jumping
-		if (spacePressed == false && speedY > 0) speedY = 0;
+		if (spacePressed == false && doubleJump == false && speedY > 0) speedY = 0;
 
 		// Reduces player speed each frame to make it smoother
 		if (speedY >= -1.4f) speedY -= gravity;
@@ -324,7 +334,8 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				else if (currentAnimation == &lFallAnim) currentAnimation = &lJumpAnim;
 				groundCol = true;
 				spacePressed = false;
-				speedY = 1.4f;
+				doubleJump = false;
+				speedY = 1.45f;
 			}
 		}
 	}

@@ -68,6 +68,7 @@ public:
 	bool wallCol = false;
 	bool groundCol = true;
 	bool spacePressed = false;
+	bool doubleJump = false;
 
 	// The player's collider
 	Collider* collider = nullptr;
