@@ -192,7 +192,11 @@ bool Collisions::PreUpdate()
 	if (app->player->firstFrame == true) 
 		app->player->firstFrame = false;
 
-	if (playerWallCol == 0) app->player->wallCol = false;
+	if (playerWallCol == 0)
+	{
+		app->player->wallCol = false;
+		app->player->downCol = false;
+	}
 
 	return true;
 }
