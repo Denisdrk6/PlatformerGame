@@ -69,6 +69,7 @@ public:
 	bool groundCol = true;
 	bool spacePressed = false;
 	bool doubleJump = false;
+	bool firstFrame = true;
 
 	// The player's collider
 	Collider* collider = nullptr;

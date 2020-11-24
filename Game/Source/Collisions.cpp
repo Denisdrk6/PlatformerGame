@@ -143,7 +143,6 @@ bool Collisions::PreUpdate()
 
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
-
 		//skip empty colliders
 		if (colliders[i] == nullptr) {
 			continue;
@@ -186,7 +185,12 @@ bool Collisions::PreUpdate()
 	}
 
 	//Checks if player is no longer touching a platform (walks to the edge and falls)
-	if (playerFloorCol == 0 /*&& app->player->jump == false*/) /*app->player->fall = true*/ app->player->groundCol = false;
+	if (playerFloorCol == 0 && app->player->firstFrame == false) 
+		app->player->groundCol = false;
+
+	// First frame bool variable checks if we are on first frame so player doesn't jump when respawning
+	if (app->player->firstFrame == true) 
+		app->player->firstFrame = false;
 
 	if (playerWallCol == 0) app->player->wallCol = false;
 
