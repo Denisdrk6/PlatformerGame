@@ -112,8 +112,8 @@ bool Player::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_REPEAT)
 	{
-		// We could delete the equal frame condition to make the animation more accuret, but it would be less smooth
-		if ((currentAnimation != &lJumpAnim && currentAnimation != &rJumpAnim && currentAnimation != &rFallAnim && currentAnimation != &lFallAnim) || (currentAnimation == &lJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), lJumpAnim.frames[lJumpAnim.last_frame - 1]) && groundCol == true))
+		
+		if ((currentAnimation != &lJumpAnim && currentAnimation != &rJumpAnim && currentAnimation != &rFallAnim && currentAnimation != &lFallAnim) || (currentAnimation == &lJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), lJumpAnim.frames[lJumpAnim.last_frame - 1])))
 		{
 			currentAnimation = &lWalkAnim;
 		}
@@ -143,8 +143,8 @@ bool Player::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_D) == KeyState::KEY_REPEAT)
 	{
-		// We change the animation to the right walking one if we are not jumping or falling or if we are on the las jumping frame and just touched a platform
-		if ((currentAnimation != &rJumpAnim && currentAnimation != &lJumpAnim && currentAnimation != &rFallAnim && currentAnimation != &lFallAnim) || (currentAnimation == &rJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), rJumpAnim.frames[rJumpAnim.last_frame - 1]) && groundCol == true))
+		// We change the animation to the right walking one if we are not jumping or falling or if we are on the las jumping frame
+		if ((currentAnimation != &rJumpAnim && currentAnimation != &lJumpAnim && currentAnimation != &rFallAnim && currentAnimation != &lFallAnim) || (currentAnimation == &rJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), rJumpAnim.frames[rJumpAnim.last_frame - 1])))
 		{
 			currentAnimation = &rWalkAnim;
 		}
@@ -174,9 +174,8 @@ bool Player::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_REPEAT && collider->type != COLLIDER_GODMODE)
 	{
-		// If sapce is pressed we trun of ground collision and turn on spacePressed var
-		groundCol = false;
-		spacePressed = true;
+			groundCol = false;
+			spacePressed = true;
 	}
 
 	else if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_DOWN && collider->type != COLLIDER_GODMODE)
@@ -185,7 +184,7 @@ bool Player::Update(float dt)
 		if ((spacePressed == true && doubleJump == false) || (spacePressed == false && doubleJump == false && speedY < 0))
 		{
 			doubleJump = true;
-			speedY = 1.25f;
+			speedY = 1.45f;
 		}
 	}
 
@@ -215,12 +214,12 @@ bool Player::Update(float dt)
 	// Camera can only go down if player is below the screen height minus 9 tiles
 	if ((position.y + app->render->camera.y) >= app->win->screenSurface->h - (app->map->data.tileHeight * 9))
 	{
-		app->render->camera.y -= 1.45f;
+		app->render->camera.y -= 1.3f;
 	}
 
 	if ((position.y + app->render->camera.y) < app->win->screenSurface->h / 4)
 	{
-		app->render->camera.y += 1.45f;
+		app->render->camera.y += 1.3f;
 	}
 
 	// Gravity
@@ -314,20 +313,15 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 			app->render->camera.x = 0;
 			app->render->camera.y = -77.5 * app->map->data.tileHeight;
 			groundCol = true;
-			firstFrame = true;
-			spacePressed = false;
-			doubleJump = false;
 			speedY = 1.4f;
 		}
 		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_WALL)
 		{
-			if (((c1->rect.x + c1->rect.w) >= c2->rect.x) && (currentAnimation == &rWalkAnim || currentAnimation == &rJumpAnim || currentAnimation == &rFallAnim || currentAnimation == &rIdleAnim))
+			if (((c1->rect.x + c1->rect.w) > c2->rect.x) && (currentAnimation == &rWalkAnim || currentAnimation == &rJumpAnim || currentAnimation == &rFallAnim))
 				position.x = c2->rect.x - c1->rect.w;
 
-			else if (c1->rect.x <= (c2->rect.x + c2->rect.w) && (currentAnimation == &lWalkAnim || currentAnimation == &lJumpAnim || currentAnimation == &lFallAnim || currentAnimation == &lIdleAnim))
-			{
+			else if (c1->rect.x < (c2->rect.x + c2->rect.w))
 				position.x = c2->rect.x + c2->rect.w;
-			}
 
 			wallCol = true;
 		}
@@ -336,14 +330,8 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		{
 			if (c2->rect.y - (c1->rect.h + c1->rect.y) >= -2) // -2 works as a way to try and have less tunneling
 			{
-				// Reset all jumping and falling variables
-				if (currentAnimation == &rFallAnim && firstFrame == false) currentAnimation = &rJumpAnim;
-				else if (currentAnimation == &lFallAnim && firstFrame == false) currentAnimation = &lJumpAnim;
-
-				// Avoids jumping animation when respawning
-				else if (firstFrame == false && groundCol == true && currentAnimation != &lWalkAnim && currentAnimation != &lIdleAnim && currentAnimation != &lFallAnim && currentAnimation != &lJumpAnim)
-					currentAnimation = &rIdleAnim;
-
+				if (currentAnimation == &rFallAnim) currentAnimation = &rJumpAnim;
+				else if (currentAnimation == &lFallAnim) currentAnimation = &lJumpAnim;
 				groundCol = true;
 				spacePressed = false;
 				doubleJump = false;
