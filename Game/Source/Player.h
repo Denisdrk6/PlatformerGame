@@ -66,7 +66,6 @@ public:
 	Animation lFallAnim;
 
 	bool wallCol = false;
-	bool downCol = false;
 	bool groundCol = true;
 	bool spacePressed = false;
 	bool doubleJump = false;
