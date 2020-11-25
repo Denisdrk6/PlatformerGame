@@ -9,7 +9,7 @@
 #include "SDL/include/SDL.h"
 #include "SDL_image/include/SDL_image.h"
 
-#define MAX_COLLIDERS 200
+#define MAX_COLLIDERS 400
 
 //------------------------------------------------------------------------
 enum COLLIDER_TYPE
@@ -83,6 +83,7 @@ private:
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX];
 	int playerFloorCol;
 	int playerWallCol;
+	//int playerDeadCol;
 };
 
 #endif // __j1COLLISIONS_H__

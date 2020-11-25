@@ -181,14 +181,33 @@ bool Collisions::PreUpdate()
 					playerWallCol++;
 					LOG("Player collides with wall");
 				}
+
+				/*if ((c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_DEAD) || (c2->type == COLLIDER_TYPE::COLLIDER_PLAYER && c1->type == COLLIDER_TYPE::COLLIDER_DEAD))
+					playerDeadCol++;*/
+
 			}
 		}
 	}
 
 	//Checks if player is no longer touching a platform (walks to the edge and falls)
-	if (playerFloorCol == 0 /*&& app->player->jump == false*/) /*app->player->fall = true*/ app->player->groundCol = false;
+	if (playerFloorCol == 0 && app->player->firstFrame == false)
+		app->player->groundCol = false;
 
-	if (playerWallCol == 0) app->player->wallCol = false;
+	// First frame bool variable checks if we are on first frame so player doesn't jump when respawning
+	if (app->player->firstFrame == true)
+	{
+		app->player->firstFrame = false;
+		app->player->lifes = 3;
+	}
+
+	if (playerWallCol == 0)
+	{
+		app->player->wallCol = false;
+		app->player->downCol = false;
+	}
+
+	/*if (playerDeadCol == 0 && app->player->firstFrame == false)
+		app->player->lifeWait = 0;*/
 
 	return true;
 }

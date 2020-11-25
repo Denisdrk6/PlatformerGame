@@ -66,19 +66,20 @@ public:
 	Animation lFallAnim;
 
 	bool wallCol = false;
+	bool downCol = false;
 	bool groundCol = true;
 	bool spacePressed = false;
 	bool doubleJump = false;
+	bool firstFrame = true;
+	bool waiting = false;
 
+	int lifes = 3;
+	int lifeWait = 0;
 	// The player's collider
 	Collider* collider = nullptr;
 
 	// A flag to detect when the player has been destroyed
 	bool destroyed = false;
-
-	// Sound effects indices
-	uint laserFx = 0;
-	uint explosionFx = 0;
 
 	// Font score index
 	uint score = 000;
