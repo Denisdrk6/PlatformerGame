@@ -1,4 +1,4 @@
-# Platformer Game
+# Iton's trip home
 
 ## Description
 
@@ -6,7 +6,7 @@
 
 ## Key Features
 
- - This game features player movement and jumping.
+ - This game features player movement, jumping and double jumping.
  
    There's also a selection of debugging keys enabling God mode, seeing the colisions/logic of the game,
    
