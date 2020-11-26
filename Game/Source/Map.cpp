@@ -39,21 +39,24 @@ void Map::Draw()
 	int i = 0;
 	while (layer != NULL && tileset != NULL)
 	{
-		for (int y = 0; y < data.height; ++y)
+		if(layer->data->name != "Colisions")
 		{
-			for (int x = 0; x < data.width; ++x)
+			for (int y = 0; y < data.height; ++y)
 			{
-
-				if (layer->data->tilesetNum != i)
+				for (int x = 0; x < data.width; ++x)
 				{
-					tileset = tileset->next;
-					i++;
-				}
 
-				int tileId = layer->data->Get(x, y);
-				if (tileId > 0)
-				{
-					app->render->DrawTexture(tileset->data->texture, MapToWorld(x, y).x, MapToWorld(x, y).y, &tileset->data->GetTileRect(tileId));
+					if (layer->data->tilesetNum != i)
+					{
+						tileset = tileset->next;
+						i++;
+					}
+
+					int tileId = layer->data->Get(x, y);
+					if (tileId > 0)
+					{
+						app->render->DrawTexture(tileset->data->texture, MapToWorld(x, y).x, MapToWorld(x, y).y, &tileset->data->GetTileRect(tileId));
+					}
 				}
 			}
 		}
