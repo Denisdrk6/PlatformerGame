@@ -41,12 +41,12 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	BlendedTexture saveTex;
-	BlendedTexture loadTex;
+	BlendedTexture		saveTex;
+	BlendedTexture		loadTex;
 
 private:
-	SDL_Texture* img;
-	bool playerCol = true;
+	SDL_Texture*		img;
+	bool				playerCol = true;
 
 protected:
 };

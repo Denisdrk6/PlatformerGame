@@ -12,20 +12,20 @@
 struct TileSetInfo
 {
 
-    int firstGid;
-    SString name;
-    int tileWidth;
-    int tileHeight;
-    int spacing;
-    int margin;
-	int	numTilesWidth;
-	int	numTilesHeight;
+    int         firstGid;
+    SString     name;
+    int         tileWidth;
+    int         tileHeight;
+    int         spacing;
+    int         margin;
+	int	        numTilesWidth;
+	int	        numTilesHeight;
 
-    SString source;
-    int imageWidth;
-    int imageHeight;
+    SString     source;
+    int         imageWidth;
+    int         imageHeight;
 
-    SDL_Texture* texture;
+    SDL_Texture*texture;
 	
 	SDL_Rect GetTileRect(int id) const;
 };
@@ -41,11 +41,11 @@ enum MapTypes
 // L04: DONE 1: Create a struct for the map layer
 struct MapLayer
 {
-	SString	name;
-	int width;
-	int height;
-	uint* data;
-    int tilesetNum;
+	SString	    name;
+	int         width;
+	int         height;
+	uint*       data;
+    int         tilesetNum;
 
 	MapLayer() : data(NULL)
 	{}
@@ -64,17 +64,17 @@ struct MapLayer
 
 struct MapInfo
 {
-    SString orientation;
-    SString renderOrder;
-    int width;
-    int height;
-    int tileWidth;
-    int tileHeight;
-    int nextObjectId;
-    MapTypes type;
-    List<TileSetInfo*> tilesets;
-	List<MapLayer*> layers;
-    List<Collider*>colliders;
+    SString             orientation;
+    SString             renderOrder;
+    int                 width;
+    int                 height;
+    int                 tileWidth;
+    int                 tileHeight;
+    int                 nextObjectId;
+    MapTypes            type;
+    List<TileSetInfo*>  tilesets;
+	List<MapLayer*>     layers;
+    List<Collider*>     colliders;
 };
 
 
@@ -106,9 +106,9 @@ public:
 
 private:
 
-    pugi::xml_document mapFile;
-    SString folder;
-    bool mapLoaded;
+    pugi::xml_document      mapFile;
+    SString                 folder;
+    bool                    mapLoaded;
 
     bool LoadMapData(pugi::xml_node);
     bool LoadTileset(pugi::xml_node, TileSetInfo*);

@@ -41,50 +41,50 @@ public:
 
 public:
 	// Position of the player in the map
-	fPoint position;
+	fPoint			position;
 
 	// The speed in which we move the player (pixels per frame)
-	float speedX = 1;
-	float speedY = 1.45f;
-	float gravity = 0.01f;
+	float			speedX = 1;
+	float			speedY = 1.45f;
+	float			gravity = 0.01f;
 
 	// The player spritesheet loaded into an SDL_Texture
-	SDL_Texture* texture = nullptr;
+	SDL_Texture*	texture = nullptr;
 
 	// The pointer to the current player animation
 	// It will be switched depending on the player's movement direction
-	Animation* currentAnimation = nullptr;
+	Animation*		currentAnimation = nullptr;
 
 	// A set of animations
-	Animation rIdleAnim;
-	Animation lIdleAnim;
-	Animation rWalkAnim;
-	Animation lWalkAnim;
-	Animation rJumpAnim;
-	Animation lJumpAnim;
-	Animation rFallAnim;
-	Animation lFallAnim;
+	Animation		rIdleAnim;
+	Animation		lIdleAnim;
+	Animation		rWalkAnim;
+	Animation		lWalkAnim;
+	Animation		rJumpAnim;
+	Animation		lJumpAnim;
+	Animation		rFallAnim;
+	Animation		lFallAnim;
 
-	bool wallCol = false;
-	bool downCol = false;
-	bool groundCol = true;
-	bool spacePressed = false;
-	bool doubleJump = false;
-	bool firstFrame = true;
-	bool waiting = false;
+	bool			wallCol = false;
+	bool			downCol = false;
+	bool			groundCol = true;
+	bool			spacePressed = false;
+	bool			doubleJump = false;
+	bool			firstFrame = true;
+	bool			waiting = false;
 
-	int lifes = 3;
-	int lifeWait = 0;
+	int				lifes = 3;
+	int				lifeWait = 0;
 	// The player's collider
-	Collider* collider = nullptr;
+	Collider*		collider = nullptr;
 
 	// A flag to detect when the player has been destroyed
-	bool destroyed = false;
+	bool			destroyed = false;
 
 	// Font score index
-	uint score = 000;
-	int scoreFont = -1;
-	char scoreText[10] = { "\0" };
+	uint			score = 000;
+	int				scoreFont = -1;
+	char			scoreText[10] = { "\0" };
 };
 
 #endif //!__MODULE_PLAYER_H__

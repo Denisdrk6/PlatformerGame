@@ -87,16 +87,16 @@ private:
 public:
 
 	// Modules
-	Window* win;
-	Input* input;
-	Render* render;
-	Textures* tex;
-	Audio* audio;
-	Scene* scene;
-	Map* map;
-	Animation* animation;
-	Player* player;
-	Collisions* col;
+	Window*				win;
+	Input*				input;
+	Render*				render;
+	Textures*			tex;
+	Audio*				audio;
+	Scene*				scene;
+	Map*				map;
+	Animation*			animation;
+	Player*				player;
+	Collisions*			col;
 
 	float				dt;
 	int					max_framerate = 0;
@@ -105,13 +105,13 @@ public:
 
 private:
 
-	int argc;
-	char** args;
-	SString title;
-	SString organization;
+	int					argc;
+	char**				args;
+	SString				title;
+	SString				organization;
 
 
-	List<Module *> modules;
+	List<Module *>		modules;
 
 	// L01: DONE 2: Create new variables from pugui namespace
 	// NOTE: Redesigned LoadConfig() to avoid storing this variables

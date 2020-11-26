@@ -15,8 +15,8 @@ public:
 	uint ReadTicks() const;
 
 private:
-	uint	started_at;
-	static uint frequency;
+	uint			started_at;
+	static uint		frequency;
 };
 
 #endif //__PERFTIMER_H__

@@ -36,10 +36,10 @@
 #define MAX( a, b ) ( ((a) > (b)) ? (a) : (b) )
 #define TO_BOOL( a )  ( (a != 0) ? true : false )
 
-typedef unsigned int uint;
-typedef unsigned char uchar;
-typedef unsigned __int32 uint32;
-typedef unsigned __int64 uint64;
+typedef unsigned int		uint;
+typedef unsigned char		uchar;
+typedef unsigned __int32	uint32;
+typedef unsigned __int64	uint64;
 
 template <class VALUE_TYPE> void SWAP(VALUE_TYPE& a, VALUE_TYPE& b)
 {
@@ -49,9 +49,9 @@ template <class VALUE_TYPE> void SWAP(VALUE_TYPE& a, VALUE_TYPE& b)
 }
 
 // Standard string size
-#define SHORT_STR	 32
-#define MID_STR	  255
-#define HUGE_STR	8192
+#define SHORT_STR		32
+#define MID_STR			255
+#define HUGE_STR		8192
 
 // Joins a path and file
 inline const char* const PATH(const char* folder, const char* file)

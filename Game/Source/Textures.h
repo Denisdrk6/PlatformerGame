@@ -34,7 +34,7 @@ public:
 
 public:
 
-	List<SDL_Texture*> textures;
+	List<SDL_Texture*>	textures;
 };
 
 
