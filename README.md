@@ -28,7 +28,10 @@
  - [Marc Ramos Gomez](https://github.com/Ramsubito) - Programmer
  - [Pol Pallares Mur](https://github.com/Zeta115) - Designer
  
- 
+## Screenshots
+![In-game Screenshot1](https://github.com/Denisdrk6/PlatformerGame/blob/master/Screenshots/Captura%20InGame1.PNG)
+![In-game Screenshot2](https://github.com/Denisdrk6/PlatformerGame/blob/master/Screenshots/Captura%20InGame2.PNG)
+![In-game Screenshot3](https://github.com/Denisdrk6/PlatformerGame/blob/master/Screenshots/Captura%20InGame3.PNG)
 ## License
 
 This project is licensed under an unmodified MIT license, which is an OSI-certified license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
