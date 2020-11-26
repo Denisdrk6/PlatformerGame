@@ -73,6 +73,8 @@ void App::AddModule(Module* module)
 // Called before render is available
 bool App::Awake()
 {
+	PERF_START(ptimer);
+
 	pugi::xml_document configFile;
 	pugi::xml_node config;
 	pugi::xml_node configApp;
@@ -90,6 +92,14 @@ bool App::Awake()
 		// L01: DONE 4: Read the title from the config file
 		title.Create(configApp.child("title").child_value());
 		organization.Create(configApp.child("organization").child_value());
+
+		// 1: Read from config file your framerate cap
+		max_framerate = configApp.attribute("framerate_cap").as_int();
+
+		if (max_framerate != 0) {
+			max_frame_ms = 1000.0f * (1 / (float)max_framerate);
+			fps_capped = true;
+		}
 	}
 
 	if (ret == true)
@@ -109,6 +119,7 @@ bool App::Awake()
 			item = item->next;
 		}
 	}
+	PERF_PEEK(ptimer);
 
 	return ret;
 }
@@ -116,6 +127,7 @@ bool App::Awake()
 // Called before the first frame
 bool App::Start()
 {
+	PERF_START(ptimer);
 	bool ret = true;
 	ListItem<Module*>* item;
 	item = modules.start;
@@ -125,8 +137,24 @@ bool App::Start()
 		ret = item->data->Start();
 		item = item->next;
 	}
+	startup_time.Start();
+
+	PERF_PEEK(ptimer);
 
 	return ret;
+}
+void App::ChangeFrameCap(int cap) {
+	max_framerate = cap;
+	fps_capped = true;
+
+	if (max_framerate != 0) {
+		max_frame_ms = 1000.0f * (1 / (float)max_framerate);
+
+	}
+	else if (max_framerate == 0) {
+		max_frame_ms = NULL;
+		fps_capped = false;
+	}
 }
 
 // Called each loop iteration
@@ -169,13 +197,59 @@ pugi::xml_node App::LoadConfig(pugi::xml_document& configFile) const
 // ---------------------------------------------
 void App::PrepareUpdate()
 {
+	frame_count++;
+	last_sec_frame_count++;
+
+	// 4: Calculate the dt: differential time since last frame
+	dt = frame_time.ReadSec();
+	frame_time.Start();
 }
+
 
 // ---------------------------------------------
 void App::FinishUpdate()
 {
 	if (saveGameRequested == true)SaveGame();
 	if (loadGameRequested == true) LoadGame();
+
+
+	// Framerate calculations --
+
+	if (last_sec_frame_time.Read() > 1000)
+	{
+		last_sec_frame_time.Start();
+		prev_last_sec_frame_count = last_sec_frame_count;
+		last_sec_frame_count = 0;
+	}
+
+	float avg_fps = float(frame_count) / startup_time.ReadSec();
+	float seconds_since_startup = startup_time.ReadSec();
+	uint last_frame_ms = frame_time.Read();
+	uint frames_on_last_update = prev_last_sec_frame_count;
+
+	SString frame_cap_title;
+	if (fps_capped == true) {
+		frame_cap_title = "ON";
+	}
+	else if (fps_capped == false) {
+		frame_cap_title = "OFF";
+	}
+
+
+	/*static char title[256];
+	sprintf_s(title, 256, "FPS: %i / Av.FPS: %.2f / Last Frame Ms: %02u (Frame Cap: %s) ",
+		frames_on_last_update, avg_fps, last_frame_ms, frame_cap_title.GetString());
+	app->win->SetTitle(title);*/
+
+	// 2: Use SDL_Delay to make sure you get your capped framerate
+	if (last_frame_ms < max_frame_ms) {
+		PerfTimer Delay_ms;
+		Delay_ms.Start();
+		SDL_Delay(max_frame_ms - last_frame_ms);
+		//LOG("We waited for %i miliseconds and got back in %f", (int)max_frame_ms, Delay_ms.ReadMs());
+	}
+	// 3: Measure accurately the amount of time it SDL_Delay actually waits compared to what was expected
+	FPS_n = frames_on_last_update;
 }
 
 // Call modules before each loop iteration
@@ -246,6 +320,7 @@ bool App::PostUpdate()
 // Called before quitting
 bool App::CleanUp()
 {
+	PERF_START(ptimer);
 	bool ret = true;
 	ListItem<Module*>* item;
 	item = modules.end;
@@ -255,7 +330,7 @@ bool App::CleanUp()
 		ret = item->data->CleanUp();
 		item = item->prev;
 	}
-
+	PERF_PEEK(ptimer);
 	return ret;
 }
 

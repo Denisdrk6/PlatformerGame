@@ -3,7 +3,8 @@
 
 #include "Module.h"
 #include "List.h"
-
+#include "PerfTimer.h"
+#include "Timer.h"
 #include "PugiXml/src/pugixml.hpp"
 
 #define CONFIG_FILENAME		"config.xml"
@@ -52,6 +53,8 @@ public:
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
 
+	void ChangeFrameCap(int cap);
+
     // L02: DONE 1: Create methods to request Load / Save
 	void LoadGameRequest();
 	void SaveGameRequest() const;
@@ -95,6 +98,11 @@ public:
 	Player* player;
 	Collisions* col;
 
+	float				dt;
+	int					max_framerate = 0;
+	bool				fps_capped;
+	int					FPS_n;
+
 private:
 
 	int argc;
@@ -113,12 +121,22 @@ private:
 
 	
 	// the filename for save / load
-	uint frames;
-	float dt;
-	mutable bool saveGameRequested;
-	bool loadGameRequested;
+	uint				frames;
+	mutable bool		saveGameRequested;
+	bool				loadGameRequested;
 	/*SString loadedGame;
 	mutable SString savedGame;*/
+
+	PerfTimer			ptimer;
+	uint				frame_count = 0;
+	Timer				startup_time;
+	Timer				frame_time;
+	Timer				last_sec_frame_time;
+	uint				last_sec_frame_count = 0;
+	uint				prev_last_sec_frame_count = 0;
+
+	
+	float				max_frame_ms;
 };
 
 extern App* app;

@@ -159,7 +159,7 @@ bool Scene::Update(float dt)
 		}
 	}
 
-	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d", app->map->data.width, app->map->data.height, app->map->data.tileWidth, app->map->data.tileHeight, app->map->data.tilesets.count());
+	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d, FPS: %i", app->map->data.width, app->map->data.height, app->map->data.tileWidth, app->map->data.tileHeight, app->map->data.tilesets.count(), app->FPS_n);
 	app->win->SetTitle(title.GetString());
 
 	return true;
