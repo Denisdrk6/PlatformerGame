@@ -90,9 +90,12 @@ bool Player::Start()
 	bool ret = true;
 
 	texture = app->tex->Load("Assets/player/player.png");
+	heart = app->tex->Load("Assets/textures/heart.png");
+	textureHurt.texture = app->tex->Load("Assets/player/playerHurt.png");
+	textureHurt.loaded = false;
 	currentAnimation = &rIdleAnim;
 
-	position.x = 2 * app->map->data.tileWidth;
+	position.x = 3 * app->map->data.tileWidth;
 	position.y = 95 * app->map->data.tileHeight;
 
 	destroyed = false;
@@ -281,6 +284,29 @@ bool Player::PostUpdate()
 	{
 		SDL_Rect rect = currentAnimation->GetCurrentFrame();
 		app->render->DrawTexture(texture, position.x, position.y, &rect);
+
+		if(textureHurt.loaded == true)
+		{
+			textureHurt.alpha -= 1;
+			textureHurt.rect = currentAnimation->GetCurrentFrame();
+
+			if (textureHurt.alpha <= 0)
+				textureHurt.loaded = false;
+
+			else
+			{
+				//Set alpha value to texture and render it
+				SDL_SetTextureAlphaMod(textureHurt.texture, textureHurt.alpha);
+				app->render->DrawTexture(textureHurt.texture, position.x, position.y, &textureHurt.rect);
+			}
+		}
+
+		// Lifes texture rendering
+		for (int i = 0, j = 0; i < lifes; ++i, j += 30)
+		{
+			app->render->DrawTexture(heart, (app->render->camera.x * -1) + 1180 - (30 * lifes) + j, app->render->camera.y * -1 + 25);
+		}
+
 		ret = true;
 	}
 
@@ -303,15 +329,27 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 	{
 		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_DEAD)
 		{
-			if (waiting == false)
+			if (waiting == false && lifeTaken == false)
 			{
-				if (lifeWait == 0) lifes--;
+				if (lifeWait == 0)
+				{
+					lifes--;
+					lifeTaken = true;
+					app->audio->PlayFx(1);
+				}
 				lifeWait = SDL_GetTicks();
 				waiting = true;
+
+				if (lifes != 0)
+				{
+					textureHurt.alpha = 255;
+					textureHurt.loaded = true;
+				}
+
 				LOG("lifes: %d", lifes);
 			}
 
-			else
+			else if(lifeWait != 0)
 			{
 				int currentTime = SDL_GetTicks();
 
@@ -320,6 +358,14 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 					lifes--;
 					waiting = false;
 					LOG("lifes: %d", lifes);
+					lifeWait = SDL_GetTicks();
+					app->audio->PlayFx(1);
+
+					if (lifes != 0)
+					{
+						textureHurt.alpha = 255;
+						textureHurt.loaded = true;
+					}
 				}
 			}
 

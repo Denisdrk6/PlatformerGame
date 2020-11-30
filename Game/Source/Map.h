@@ -104,6 +104,8 @@ public:
 	iPoint MapToWorld(int x, int y) const;
     MapInfo data;
 
+    bool    collisionDraw = false;
+
 private:
 
     pugi::xml_document      mapFile;

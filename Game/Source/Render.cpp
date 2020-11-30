@@ -140,7 +140,7 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 	bool ret = true;
 	uint scale = app->win->GetScale();
 
-	bool texturePlayer = texture == app->player->texture;
+	bool texturePlayer = (texture == app->player->texture || texture == app->player->textureHurt.texture);
 
 	SDL_Rect rect;
 

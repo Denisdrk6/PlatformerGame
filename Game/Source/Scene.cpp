@@ -98,20 +98,23 @@ bool Scene::Update(float dt)
 		else  app->player->collider->type = COLLIDER_PLAYER;
 	}
 
+	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+		app->map->collisionDraw = !app->map->collisionDraw;
+
 	//Camera limits
 
 	if (app->player->collider->type == COLLIDER_PLAYER)
 	{
-		if (app->render->camera.x > 0) {
-			app->render->camera.x = 0;
+		if (app->render->camera.x > -36) {
+			app->render->camera.x = -36;
 		}
 
 		if (app->render->camera.y < -2480) {
 			app->render->camera.y = -2480;
 		}
 
-		if (app->render->camera.x < (app->map->MapToWorld(app->map->data.width, app->map->data.height).x * -1) + app->win->screenSurface->w) {
-			app->render->camera.x = (app->map->MapToWorld(app->map->data.width, app->map->data.height).x * -1) + app->win->screenSurface->w;
+		if (app->render->camera.x < (app->map->MapToWorld(app->map->data.width, app->map->data.height).x * -1 + 32) + app->win->screenSurface->w) {
+			app->render->camera.x = (app->map->MapToWorld(app->map->data.width, app->map->data.height).x * -1 + 32) + app->win->screenSurface->w;
 		}
 
 		if (app->render->camera.y > 0) {

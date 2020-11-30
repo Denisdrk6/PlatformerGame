@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Animation.h"
 #include "Point.h"
+#include "Scene.h"
 
 struct SDL_Texture;
 struct Collider;
@@ -50,6 +51,8 @@ public:
 
 	// The player spritesheet loaded into an SDL_Texture
 	SDL_Texture*	texture = nullptr;
+	SDL_Texture*	heart = nullptr;
+	BlendedTexture	textureHurt;
 
 	// The pointer to the current player animation
 	// It will be switched depending on the player's movement direction
@@ -75,6 +78,8 @@ public:
 
 	int				lifes = 3;
 	int				lifeWait = 0;
+	bool			lifeTaken = false;
+
 	// The player's collider
 	Collider*		collider = nullptr;
 

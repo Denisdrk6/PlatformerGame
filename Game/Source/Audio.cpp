@@ -55,6 +55,8 @@ bool Audio::Awake(pugi::xml_node& config)
 		ret = true;
 	}
 
+	LoadFx("Assets/audio/fx/hurt_sound.wav");
+
 	return ret;
 }
 
@@ -156,6 +158,7 @@ unsigned int Audio::LoadFx(const char* path)
 	}
 	else
 	{
+		Mix_VolumeChunk(chunk, musicVolume);
 		fx.add(chunk);
 		ret = fx.count();
 	}
@@ -192,6 +195,13 @@ void Audio::VolumeControl(int volume)
 		{
 			musicVolume += volume;
 			Mix_VolumeMusic(musicVolume);
+			ListItem<Mix_Chunk*>* effects = fx.start;
+			while (effects != NULL)
+			{
+				Mix_VolumeChunk(effects->data, musicVolume);
+				effects = effects->next;
+			}
+
 			LOG("Music volume: %i", musicVolume);
 		}
 
@@ -208,6 +218,13 @@ void Audio::VolumeControl(int volume)
 		{
 			musicVolume += volume;
 			Mix_VolumeMusic(musicVolume);
+			ListItem<Mix_Chunk*>* effects = fx.start;
+			while (effects != NULL)
+			{
+				Mix_VolumeChunk(effects->data, musicVolume);
+				effects = effects->next;
+			}
+
 			LOG("Music volume: %i", musicVolume);
 		}
 	}

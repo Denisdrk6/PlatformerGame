@@ -39,7 +39,32 @@ void Map::Draw()
 	int i = 0;
 	while (layer != NULL && tileset != NULL)
 	{
-		if(layer->data->name != "Colisions")
+		if (collisionDraw == false)
+		{
+			if (layer->data->name != "Colisions")
+			{
+				for (int y = 0; y < data.height; ++y)
+				{
+					for (int x = 0; x < data.width; ++x)
+					{
+
+						if (layer->data->tilesetNum != i)
+						{
+							tileset = tileset->next;
+							i++;
+						}
+
+						int tileId = layer->data->Get(x, y);
+						if (tileId > 0)
+						{
+							app->render->DrawTexture(tileset->data->texture, MapToWorld(x, y).x, MapToWorld(x, y).y, &tileset->data->GetTileRect(tileId));
+						}
+					}
+				}
+			}
+		}
+
+		else
 		{
 			for (int y = 0; y < data.height; ++y)
 			{
@@ -61,7 +86,6 @@ void Map::Draw()
 			}
 		}
 		layer = layer->next;
-		
 	}
 }
 

@@ -129,6 +129,7 @@ bool Collisions::PreUpdate()
 	//Checks if player stops colliding with floor/wall
 	playerFloorCol = 0;
 	playerWallCol = 0;
+	playerDeadCol = 0;
 
 	for (uint i = 0; i < MAX_COLLIDERS; ++i) {
 		if (colliders[i] != nullptr && colliders[i]->toDelete == true) {
@@ -182,8 +183,8 @@ bool Collisions::PreUpdate()
 					LOG("Player collides with wall");
 				}
 
-				/*if ((c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_DEAD) || (c2->type == COLLIDER_TYPE::COLLIDER_PLAYER && c1->type == COLLIDER_TYPE::COLLIDER_DEAD))
-					playerDeadCol++;*/
+				if ((c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_DEAD) || (c2->type == COLLIDER_TYPE::COLLIDER_PLAYER && c1->type == COLLIDER_TYPE::COLLIDER_DEAD))
+					playerDeadCol++;
 
 			}
 		}
@@ -206,8 +207,14 @@ bool Collisions::PreUpdate()
 		app->player->downCol = false;
 	}
 
-	/*if (playerDeadCol == 0 && app->player->firstFrame == false)
-		app->player->lifeWait = 0;*/
+	if (playerDeadCol == 0 && app->player->firstFrame == false)
+	{
+		app->player->lifeWait = 0;
+		app->player->lifeTaken = false;
+		app->player->waiting = false;
+		app->player->textureHurt.loaded = false;
+		app->player->textureHurt.alpha = 0;
+	}
 
 	return true;
 }

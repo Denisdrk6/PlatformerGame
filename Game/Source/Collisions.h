@@ -83,7 +83,7 @@ private:
 	bool					matrix[COLLIDER_MAX][COLLIDER_MAX];
 	int						playerFloorCol;
 	int						playerWallCol;
-	//int playerDeadCol;
+	int playerDeadCol;
 };
 
 #endif // __j1COLLISIONS_H__
