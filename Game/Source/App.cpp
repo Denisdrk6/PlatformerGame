@@ -250,6 +250,9 @@ void App::FinishUpdate()
 	}
 	// 3: Measure accurately the amount of time it SDL_Delay actually waits compared to what was expected
 	FPS_n = frames_on_last_update;
+	FPS_a = avg_fps;
+	Last_ms = last_frame_ms;
+
 }
 
 // Call modules before each loop iteration

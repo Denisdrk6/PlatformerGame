@@ -159,9 +159,10 @@ bool Scene::Update(float dt)
 		}
 	}
 
-	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d, FPS: %i", app->map->data.width, app->map->data.height, app->map->data.tileWidth, app->map->data.tileHeight, app->map->data.tilesets.count(), app->FPS_n);
+	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d, FPS: %i , Av.FPS:%2i  Last Frame Ms:%02i", app->map->data.width, app->map->data.height, app->map->data.tileWidth, app->map->data.tileHeight, app->map->data.tilesets.count(), app->FPS_n, app->FPS_a, app->Last_ms);
 	app->win->SetTitle(title.GetString());
-
+	/*sprintf_s(title, 256, "FPS: %i / Av.FPS: %.2f / Last Frame Ms: %02u (Frame Cap: %s) ",
+		frames_on_last_update, avg_fps, last_frame_ms, frame_cap_title.GetString());*/
 	return true;
 }
 

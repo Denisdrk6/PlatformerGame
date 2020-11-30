@@ -102,6 +102,11 @@ public:
 	int					max_framerate = 0;
 	bool				fps_capped;
 	int					FPS_n;
+	int					FPS_a;
+	int					Last_ms;
+	
+
+	
 
 private:
 
