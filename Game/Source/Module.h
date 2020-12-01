@@ -15,9 +15,9 @@ public:
 	Module() : active(false)
 	{}
 
-	void Init()
+	void Init(bool initialState)
 	{
-		active = true;
+		active = initialState;
 	}
 
 	// Called before render is available
@@ -67,6 +67,24 @@ public:
 	}
 
 	virtual void OnCollision(Collider*, Collider*) {}
+
+	void Module::Enable()
+	{
+		if (!active)
+		{
+			active = true;
+			Start();
+		}
+	}
+
+	void Module::Disable()
+	{
+		if (active)
+		{
+			active = false;
+			CleanUp();
+		}
+	}
 
 public:
 

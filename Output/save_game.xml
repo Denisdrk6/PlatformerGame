@@ -4,12 +4,14 @@
 	<input />
 	<textures />
 	<audio />
+	<:anonymous />
 	<scene />
 	<map />
 	<player />
 	<map />
+	<:anonymous />
 	<renderer>
-		<camera x="-1677" y="-2387" />
-		<player x="1806" y="2626.93384" />
+		<camera x="-1888" y="-2480" />
+		<player x="2434" y="2818.28247" />
 	</renderer>
 </game_state>

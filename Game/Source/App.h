@@ -21,6 +21,8 @@ class Map;
 class Animation;
 class Player;
 class Collisions;
+class FadeToBlack;
+class SceneIntro;
 
 class App
 {
@@ -97,6 +99,8 @@ public:
 	Animation*			animation;
 	Player*				player;
 	Collisions*			col;
+	FadeToBlack*		fade;
+	SceneIntro*			intro;
 
 	float				dt;
 	int					max_framerate = 0;
