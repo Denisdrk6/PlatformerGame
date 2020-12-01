@@ -4,9 +4,11 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Audio.h"
+#include "SceneIntro.h"
 #include "Scene.h"
 #include "Map.h"
 #include "Player.h"
+#include "FadeToBlack.h"
 //#include "Animation.h"
 #include "Collisions.h"
 #include "Defs.h"
@@ -30,6 +32,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	map = new Map();
 	player = new Player();
 	col = new Collisions();
+	fade = new FadeToBlack();
+	intro = new SceneIntro();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -38,10 +42,12 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(input);
 	AddModule(tex);
 	AddModule(audio);
+	AddModule(intro);
 	AddModule(scene);
 	AddModule(map);
 	AddModule(player);
 	AddModule(col);
+	AddModule(fade);
 
 	// Render last to swap buffer
 	AddModule(render);
@@ -66,7 +72,9 @@ App::~App()
 
 void App::AddModule(Module* module)
 {
-	module->Init();
+	bool initialState = true;
+	if (module == map || module == scene || module == audio || module == col || module == player) initialState = false;
+	module->Init(initialState);
 	modules.add(module);
 }
 

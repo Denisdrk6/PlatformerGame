@@ -20114,7 +20114,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="22" name="Colisions" width="100" height="100">
+ <layer id="22" name="Colisions" width="100" height="100" visible="0">
   <data>
    <tile/>
    <tile/>
@@ -27801,6 +27801,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="169"/>
    <tile/>
    <tile/>
    <tile/>
@@ -27900,6 +27901,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="169"/>
    <tile/>
    <tile/>
    <tile/>
@@ -27999,9 +28001,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="169"/>
    <tile/>
    <tile/>
    <tile/>
@@ -28101,7 +28101,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="169"/>
    <tile/>
    <tile/>
    <tile gid="171"/>
@@ -28201,10 +28201,10 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="169"/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="169"/>
    <tile/>
    <tile/>
    <tile/>
@@ -28301,10 +28301,10 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="169"/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="169"/>
    <tile/>
    <tile/>
    <tile/>
@@ -28401,10 +28401,10 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="169"/>
    <tile gid="167"/>
    <tile gid="167"/>
-   <tile/>
+   <tile gid="169"/>
    <tile gid="167"/>
    <tile/>
    <tile/>

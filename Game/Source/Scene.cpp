@@ -15,6 +15,7 @@
 Scene::Scene() : Module()
 {
 	name.Create("scene");
+	active = false;
 }
 
 // Destructor
@@ -36,13 +37,19 @@ bool Scene::Start()
 	app->map->Load("Devmap.tmx");
 	img = app->tex->Load("Assets/textures/BG.png");
 	app->audio->PlayMusic("Assets/audio/music/Friends.ogg");
-	app->render->camera.y = -77.5 * app->map->data.tileHeight;
 	return true;
 }
 
 // Called each loop iteration
 bool Scene::PreUpdate()
 {
+	/*if (active == true)
+	{
+		if(app->player->active == false) app->player->active = true;
+		if (app->audio->active == false) app->audio->active = true;
+		if (app->map->active == false) app->map->active = true;
+		if (app->col->active == false) app->col->active = true;
+	}*/
 	return true;
 }
 

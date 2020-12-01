@@ -212,8 +212,8 @@ bool Collisions::PreUpdate()
 		app->player->lifeWait = 0;
 		app->player->lifeTaken = false;
 		app->player->waiting = false;
-		app->player->textureHurt.loaded = false;
-		app->player->textureHurt.alpha = 0;
+		/*app->player->textureHurt.loaded = false;
+		app->player->textureHurt.alpha = 0;*/
 	}
 
 	return true;
