@@ -4,7 +4,7 @@
 #include "Render.h"
 #include "Log.h"
 #include "Window.h"
-
+#include "SDL/include/SDL_timer.h"
 #include "SDL/include/SDL_render.h"
 
 FadeToBlack::FadeToBlack()
@@ -32,10 +32,14 @@ bool FadeToBlack::Update(float dt)
 	// Exit this function if we are not performing a fade
 	if (currentStep == Fade_Step::NONE) return true;
 
+	Uint32 now = SDL_GetTicks() - start_time;
+
+	float fadeRatio = MIN(1.0f, (float)now / (float)total_time);;
+
 	if (currentStep == Fade_Step::TO_BLACK)
 	{
-		++frameCount;
-		if (frameCount >= maxFadeFrames)
+		++start_time;
+		if (start_time >= total_time)
 		{
 			moduleToDisable->Disable();  
 			moduleToEnable->Enable();
@@ -45,29 +49,28 @@ bool FadeToBlack::Update(float dt)
 	}
 	else
 	{
-		--frameCount;
-		if (frameCount <= 0)
+		--start_time;
+		if (start_time <= 0)
 		{
 			currentStep = Fade_Step::NONE;
 		}
 	}
+	if (currentStep == Fade_Step::FROM_BLACK)
+	{
+		fadeRatio = 1.0f - fadeRatio;
+		if (now >= total_time)
+			currentStep = Fade_Step::NONE;
+	}
 
-	return true;
-}
-
-bool FadeToBlack::PostUpdate()
-{
-	// Exit this function if we are not performing a fade
-	if (currentStep == Fade_Step::NONE) return true;
-
-	float fadeRatio = (float)frameCount / (float)maxFadeFrames;
+	
 
 	// Render the black square with alpha on the screen
 	SDL_SetRenderDrawColor(app->render->renderer, 0, 0, 0, (Uint8)(fadeRatio * 255.0f));
 	SDL_RenderFillRect(app->render->renderer, &screenRect);
-
 	return true;
 }
+
+
 
 bool FadeToBlack::Fade(Module* moduleToDisable, Module* moduleToEnable, float frames)
 {
@@ -77,8 +80,8 @@ bool FadeToBlack::Fade(Module* moduleToDisable, Module* moduleToEnable, float fr
 	if (currentStep == Fade_Step::NONE)
 	{
 		currentStep = Fade_Step::TO_BLACK;
-		frameCount = 0;
-		maxFadeFrames = frames;
+		start_time = SDL_GetTicks() + 0.1f;
+		total_time = (Uint32)(frames + 0.1f);
 
 		this->moduleToDisable = moduleToDisable;
 		this->moduleToEnable = moduleToEnable;

@@ -23,7 +23,7 @@ public:
 
 	// Called at the end of the application loop
 	// Performs the render call of a black rectangle with transparency
-	bool PostUpdate() override;
+
 
 	// Called from another module
 	// Starts the fade process which has two steps, fade_out and fade_in
@@ -40,8 +40,8 @@ private:
 	} currentStep = Fade_Step::NONE;
 
 	// A frame count system to handle the fade time and ratio
-	Uint32 frameCount = 0;
-	Uint32 maxFadeFrames = 0;
+	Uint32 total_time = 0;
+	Uint32 start_time = 0;
 
 	// The rectangle of the screen, used to render the black rectangle
 	SDL_Rect screenRect;
