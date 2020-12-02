@@ -70,54 +70,77 @@ bool Collisions::LoadColliders(pugi::xml_node& node)
 	SString type;
 	Module* call = nullptr;
 
-	pugi::xml_node objectgroup;
-	for (objectgroup = node.child("objectgroup"); objectgroup && ret; objectgroup = objectgroup.next_sibling("objectgroup"))
+	pugi::xml_node tileset = node.child("tileset");
+	pugi::xml_node layer;
+	pugi::xml_node typeNode;
+
+	for (layer = node.child("layer"); layer && ret; layer = layer.next_sibling("layer"))
 	{
-		pugi::xml_node object;
-		for (object = objectgroup.child("object"); object && ret; object = object.next_sibling("object"))
+		if ((SString)layer.attribute("name").as_string() == "Colisions")
 		{
-
-			SDL_Rect rect;
-			type = object.attribute("name").as_string();
-			if (type == "floor")
+			int x = 0;
+			int y = 0;
+			pugi::xml_node tile;
+			for (tile = layer.child("data").child("tile"); tile && ret; tile = tile.next_sibling("tile"))
 			{
-				coltype = COLLIDER_FLOOR;
-				LOG("Collider floor");
-				call = app->map;
+				SDL_Rect rect;
+				int id = tile.attribute("gid").as_int() - 1;
+				if (y <= layer.attribute("height").as_int())
+				{
+					if (id != -1)
+					{
+						for (typeNode = tileset.child("tile"); typeNode; typeNode = typeNode.next_sibling("tile"))
+						{
+							if (id == typeNode.attribute("id").as_int())
+							{
+								type = typeNode.child("properties").child("property").attribute("value").as_string();
+
+								if (type == "floor")
+								{
+									coltype = COLLIDER_FLOOR;
+									LOG("Collider floor");
+									call = app->map;
+								}
+
+								else if (type == "wall")
+								{
+									coltype = COLLIDER_WALL;
+									LOG("Collider wall");
+									call = app->map;
+								}
+
+								else if (type == "dead")
+								{
+									coltype = COLLIDER_DEAD;
+									LOG("Collider dead");
+								}
+
+								else if (type == "win")
+								{
+									coltype = COLLIDER_END;
+									LOG("Collider win");
+								}
+
+								rect.x = app->map->MapToWorld(x, y).x;
+								rect.y = app->map->MapToWorld(x, y).y;
+								rect.w = tileset.attribute("tilewidth").as_int();
+								rect.h = tileset.attribute("tileheight").as_int();
+
+								app->map->data.colliders.add(AddCollider(rect, coltype, call));
+								LOG("%i x %i", rect.x, rect.y);
+							}
+						}
+					}
+
+				}
+				else break;
+				x++;
+				if (x >= layer.attribute("width").as_int())
+				{
+					y++;
+					x = 0;
+				}
 			}
-
-			else if (type == "wall")
-			{
-				coltype = COLLIDER_WALL;
-				LOG("Collider wall");
-				call = app->map;
-			}
-
-			else if (type == "dead" || type == "spike")
-			{
-				coltype = COLLIDER_DEAD;
-				LOG("Collider dead");
-			}
-
-			else if (type == "win")
-			{
-				coltype = COLLIDER_END;
-				LOG("Collider win");
-			}
-
-			else
-			{
-				LOG("Collider type undefined");
-				continue;
-			}
-
-			rect.x = object.attribute("x").as_int();
-			rect.y = object.attribute("y").as_int();
-			rect.w = object.attribute("width").as_int();
-			rect.h = object.attribute("height").as_int();
-
-			app->map->data.colliders.add(AddCollider(rect, coltype, call));
-			LOG("%i x %i", rect.x, rect.y);
 		}
 	}
 	return true;

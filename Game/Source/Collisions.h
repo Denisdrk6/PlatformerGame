@@ -9,7 +9,7 @@
 #include "SDL/include/SDL.h"
 #include "SDL_image/include/SDL_image.h"
 
-#define MAX_COLLIDERS 400
+#define MAX_COLLIDERS 4000
 
 //------------------------------------------------------------------------
 enum COLLIDER_TYPE

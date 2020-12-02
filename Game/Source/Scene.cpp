@@ -34,9 +34,13 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	app->map->Load("Devmap.tmx");
-	img = app->tex->Load("Assets/textures/BG.png");
-	app->audio->PlayMusic("Assets/audio/music/Friends.ogg");
+	if (active == true)
+	{
+		app->map->Load("Devmap.tmx");
+		img = app->tex->Load("Assets/textures/BG.png");
+		app->audio->PlayMusic("Assets/audio/music/Friends.ogg");
+		app->audio->LoadFx("Assets/audio/fx/hurt_sound.wav");
+	}
 	return true;
 }
 

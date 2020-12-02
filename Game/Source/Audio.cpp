@@ -55,8 +55,6 @@ bool Audio::Awake(pugi::xml_node& config)
 		ret = true;
 	}
 
-	LoadFx("Assets/audio/fx/hurt_sound.wav");
-
 	return ret;
 }
 

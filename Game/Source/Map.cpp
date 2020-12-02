@@ -148,7 +148,8 @@ bool Map::CleanUp()
 
 	while (item3 != NULL)
 	{
-		app->col->DeleteCollider(item3->data);
+		app->col->CleanUp();
+		//app->col->DeleteCollider(item3->data);
 		item3 = item3->next;
 	}
 	data.colliders.clear();

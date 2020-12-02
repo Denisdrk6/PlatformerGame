@@ -95,8 +95,8 @@ bool Player::Start()
 	textureHurt.loaded = false;
 	currentAnimation = &rIdleAnim;
 
-	position.x = 3 * app->map->data.tileWidth;
-	position.y = 95 * app->map->data.tileHeight;
+	position.x = 3 * 32; //app->map->data.tileWidth;
+	position.y = 95 * 32; //app->map->data.tileHeight;
 
 	destroyed = false;
 
@@ -385,8 +385,9 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		}
 		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_WALL)
 		{
+			fPoint relativePosition = position;
 			// Checks if we are colliding a wall from below
-			if (c1->rect.y <= c2->rect.y + c2->rect.h && c1->rect.y >= c2->rect.y + c2->rect.h - 10 && groundCol == false && speedY > 0)
+			if (c1->rect.y <= c2->rect.y + c2->rect.h && c1->rect.y >= c2->rect.y + c2->rect.h - 10 && groundCol == false && speedY > 0 && wallCol == false)
 			{
 				speedY = -0.2f;
 				position.y = c2->rect.y + c2->rect.h;
