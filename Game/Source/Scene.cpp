@@ -16,6 +16,17 @@ Scene::Scene() : Module()
 {
 	name.Create("scene");
 	active = false;
+
+	rotateCoin.PushBack({ 0,0,15,32 });
+	rotateCoin.PushBack({ 18,0,24,32 });
+	rotateCoin.PushBack({ 45,0,29,32 });
+	rotateCoin.PushBack({ 76,0,31,32 });
+	rotateCoin.PushBack({ 108,0,33,32 });
+	rotateCoin.PushBack({ 144,0,32,32 });
+	rotateCoin.PushBack({ 180,0,28,32 });
+	rotateCoin.PushBack({ 212,0,24,32 });
+	rotateCoin.PushBack({ 241,0,16,32 });
+	rotateCoin.speed = 0.05f;
 }
 
 // Destructor
@@ -38,9 +49,18 @@ bool Scene::Start()
 	{
 		app->map->Load("Devmap.tmx");
 		img = app->tex->Load("Assets/textures/BG.png");
+		heart = app->tex->Load("Assets/textures/heart.png");
+		coins = app->tex->Load("Assets/textures/coins.png");
+		iglu = app->tex->Load("Assets/textures/iglu.png");
+
 		app->audio->PlayMusic("Assets/audio/music/Friends.ogg");
 		app->audio->LoadFx("Assets/audio/fx/hurt_sound.wav");
+
+
+		
+	
 	}
+
 	return true;
 }
 
@@ -110,7 +130,6 @@ bool Scene::Update(float dt)
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
-		app->map->collisionDraw = !app->map->collisionDraw;
 
 	//Camera limits
 
@@ -135,6 +154,19 @@ bool Scene::Update(float dt)
 
 	// Draw map
 	app->render->DrawTexture(img, 0, 1470, NULL);
+
+
+	
+
+	app->render->DrawTexture(heart, 85 * app->map->data.tileWidth, 74 * app->map->data.tileHeight, NULL);
+	app->render->DrawTexture(heart, 5 * app->map->data.tileWidth, 26 * app->map->data.tileHeight, NULL);
+
+
+	app->render-> DrawTexture(coins,20* app->map->data.tileWidth, 78*app->map->data.tileHeight, &rotateCoin.GetCurrentFrame());
+	app->render->DrawTexture(coins, 21 * app->map->data.tileWidth, 78 * app->map->data.tileHeight, &rotateCoin.GetCurrentFrame());
+	app->render->DrawTexture(coins, 22 * app->map->data.tileWidth, 78 * app->map->data.tileHeight, &rotateCoin.GetCurrentFrame());
+	app->render->DrawTexture(coins, 23 * app->map->data.tileWidth, 78 * app->map->data.tileHeight, &rotateCoin.GetCurrentFrame());
+
 
 	app->map->Draw();
 

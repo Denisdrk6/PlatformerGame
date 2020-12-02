@@ -266,6 +266,8 @@ void Collisions::DebugDraw()
 	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 	{
 		debug = !debug;
+		app->map->collisionDraw = !app->map->collisionDraw;
+
 	}
 
 	if (debug == false)

@@ -2,6 +2,7 @@
 #define __SCENE_H__
 
 #include "Module.h"
+#include "Animation.h"
 
 struct SDL_Texture;
 
@@ -46,6 +47,13 @@ public:
 
 private:
 	SDL_Texture*		img;
+	SDL_Texture*		heart;
+	SDL_Texture*		iglu;
+	SDL_Texture*		coins;
+	Animation			rotateCoin;
+	Animation*			coinState = nullptr;
+
+
 	bool				playerCol = true;
 
 protected:
