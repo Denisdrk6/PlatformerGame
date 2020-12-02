@@ -97,6 +97,8 @@ bool Player::Start()
 
 	position.x = 3 * 32; //app->map->data.tileWidth;
 	position.y = 95 * 32; //app->map->data.tileHeight;
+	app->render->camera.x = 0;
+	app->render->camera.y = -77.5 * app->map->data.tileHeight;
 
 	destroyed = false;
 
@@ -323,6 +325,47 @@ bool Player::CleanUp()
 	return true;
 }
 
+void Player::ChangeMap(int mapNum)
+{
+	map = mapNum;
+	app->map->Disable();
+	app->map->Enable();
+	/*app->map->Load("Devmap2.tmx");
+	spawnX = 96;
+	position.x = 3 * 32;
+	position.y = spawnX * 32;
+	app->render->camera.x = 0;
+	app->render->camera.y = -77.5 * app->map->data.tileHeight;
+	currentAnimation = &rIdleAnim;
+	groundCol = true;
+	firstFrame = true;
+	spacePressed = false;
+	doubleJump = false;
+	speedY = 1.4f;*/
+
+	switch (map)
+	{
+	case 1:
+		break;
+	case 2:
+		app->map->Load("Devmap2.tmx");
+		spawnX = 96;
+		position.x = 3 * 32;
+		position.y = spawnX * 32;
+		app->render->camera.x = 0;
+		app->render->camera.y = -77.5 * app->map->data.tileHeight;
+		currentAnimation = &rIdleAnim;
+		groundCol = true;
+		firstFrame = true;
+		spacePressed = false;
+		doubleJump = false;
+		speedY = 1.4f;
+		break;
+	default:
+		break;
+	}
+}
+
 void Player::OnCollision(Collider* c1, Collider* c2)
 {
 	if (collider->type != COLLIDER_GODMODE)
@@ -373,7 +416,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 			{
 				currentAnimation = &rIdleAnim;
 				position.x = 2 * app->map->data.tileWidth;
-				position.y = 95 * app->map->data.tileHeight;
+				position.y = spawnX * app->map->data.tileHeight;
 				app->render->camera.x = 0;
 				app->render->camera.y = -77.5 * app->map->data.tileHeight;
 				groundCol = true;
@@ -420,6 +463,11 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				doubleJump = false;
 				speedY = 1.45f;
 			}
+		}
+
+		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_WIN)
+		{
+			ChangeMap(map + 1);
 		}
 	}
 }

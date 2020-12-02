@@ -40,6 +40,8 @@ public:
 	//Check if two animation frames are equal
 	bool EqualFrames(SDL_Rect, SDL_Rect);
 
+	void ChangeMap(int map);
+
 public:
 	// Position of the player in the map
 	fPoint			position;
@@ -79,6 +81,9 @@ public:
 	int				lifes = 3;
 	int				lifeWait = 0;
 	bool			lifeTaken = false;
+	
+	int				spawnX = 95;
+	int				map = 1;
 
 	// The player's collider
 	Collider*		collider = nullptr;

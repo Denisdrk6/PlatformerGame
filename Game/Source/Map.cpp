@@ -29,6 +29,11 @@ bool Map::Awake(pugi::xml_node& config)
     return ret;
 }
 
+//bool Map::Start()
+//{
+//	data.tilesets.start->data->texture = 
+//}
+
 // Draw the map (all requried layers)
 void Map::Draw()
 {
@@ -126,6 +131,7 @@ bool Map::CleanUp()
 
 	while (item != NULL)
 	{
+		app->tex->UnLoad(item->data->texture);
 		RELEASE(item->data);
 		item = item->next;
 	}

@@ -11,7 +11,7 @@
 	<map />
 	<:anonymous />
 	<renderer>
-		<camera x="-931" y="-2103" />
-		<player x="1060" y="2465.9231" />
+		<camera x="-1888" y="-301" />
+		<player x="2872" y="545.409973" />
 	</renderer>
 </game_state>

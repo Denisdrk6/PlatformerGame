@@ -1,7 +1,7 @@
 <!-- Config file for the game -->
 <!-- L01: DONE 1: Create configuration file-->
 <config>
-  <app framerate_cap = "120">
+  <app>
     <title>Game Development Testbed</title>
     <organization>UPC</organization>
   </app>
