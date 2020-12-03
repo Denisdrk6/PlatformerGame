@@ -5,6 +5,7 @@
 #include "Animation.h"
 
 struct SDL_Texture;
+class Collider;
 
 class BlendedTexture
 {
@@ -20,6 +21,7 @@ class CheckPoint
 public:
 	bool activated = false;
 	iPoint position = {0, 0};
+	Collider* collider;
 };
 
 class Scene : public Module

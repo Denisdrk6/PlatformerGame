@@ -71,7 +71,7 @@ bool Scene::Start()
 		for (int i = 0; i < 2; i++)
 		{
 			if (checkPoints[i].position.x != 0 || checkPoints[i].position.y != 0)
-				app->col->AddCollider({ checkPoints[i].position.x * app->map->data.tileWidth, checkPoints[i].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight +16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
+				checkPoints[i].collider = app->col->AddCollider({ checkPoints[i].position.x * app->map->data.tileWidth, checkPoints[i].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
 		}
 	}
 

@@ -350,8 +350,11 @@ void Player::ChangeMap(int mapNum)
 		speedY = 1.4f;
 		app->scene->checkPoints[0].position = {92, 46};
 		app->scene->checkPoints[0].activated = false;
+		app->col->DeleteCollider(app->scene->checkPoints[0].collider);
+		app->scene->checkPoints[0].collider = app->col->AddCollider({ app->scene->checkPoints[0].position.x * app->map->data.tileWidth, app->scene->checkPoints[0].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
 		app->scene->checkPoints[1].position = { 0, 0 };
 		app->scene->checkPoints[1].activated = false;
+		app->col->DeleteCollider(app->scene->checkPoints[1].collider);
 		break;
 	default:
 		break;
