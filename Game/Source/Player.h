@@ -92,9 +92,10 @@ public:
 	bool			destroyed = false;
 
 	// Font score index
-	uint			score = 000;
-	int				scoreFont = -1;
+	uint			score = 0;
+	int				scoreFont;
 	char			scoreText[10] = { "\0" };
+	int				maxScore = 7;
 };
 
 #endif //!__MODULE_PLAYER_H__

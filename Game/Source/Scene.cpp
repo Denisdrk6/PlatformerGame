@@ -26,7 +26,7 @@ Scene::Scene() : Module()
 	rotateCoin.PushBack({ 180,0,28,32 });
 	rotateCoin.PushBack({ 212,0,24,32 });
 	rotateCoin.PushBack({ 241,0,16,32 });
-	rotateCoin.speed = 0.05f;
+	rotateCoin.speed = 0.02f;
 
 	redCheckPoint.PushBack({ 0, 0, 23, 26 });
 	redCheckPoint.PushBack({ 0, 26, 23, 26 });
@@ -57,8 +57,8 @@ bool Scene::Start()
 	{
 		app->map->Load("Devmap.tmx");
 		img = app->tex->Load("Assets/textures/BG.png");
-		heart = app->tex->Load("Assets/textures/heart.png");
-		coins = app->tex->Load("Assets/textures/coins.png");
+		heartsTex = app->tex->Load("Assets/textures/heart.png");
+		coinsTex = app->tex->Load("Assets/textures/coins.png");
 		iglu = app->tex->Load("Assets/textures/iglu.png");
 		flags = app->tex->Load("Assets/textures/Check_points.png");
 
@@ -73,6 +73,24 @@ bool Scene::Start()
 			if (checkPoints[i].position.x != 0 || checkPoints[i].position.y != 0)
 				checkPoints[i].collider = app->col->AddCollider({ checkPoints[i].position.x * app->map->data.tileWidth, checkPoints[i].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
 		}
+
+		coins[0].position = { 3, 84};
+		coins[1].position = { 43, 88 };
+		coins[2].position = { 85, 95 };
+		coins[3].position = { 86, 81 };
+		coins[4].position = { 97, 62 };
+		coins[5].position = { 68, 50 };
+		coins[6].position = { 16, 39 };
+
+		for (int i = 0; i < 7; i++)
+		{
+			if (coins[i].position.x != 0 || coins[i].position.y != 0)
+				coins[i].collider = app->col->AddCollider({ coins[i].position.x * app->map->data.tileWidth, coins[i].position.y * app->map->data.tileHeight,app->map->data.tileWidth,app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_COIN, this);
+		}
+
+		hearts.position = { 85,74 };
+		if (hearts.position.x != 0 || hearts.position.y != 0)
+			hearts.collider = app->col->AddCollider({ hearts.position.x * app->map->data.tileWidth, hearts.position.y * app->map->data.tileHeight,app->map->data.tileWidth,app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_HEART, this);
 	}
 
 	return true;
@@ -162,32 +180,47 @@ bool Scene::Update(float dt)
 	if (app->map->active == true) app->map->Draw();
 
 	// Draw extras (coins, hearts, flags, iglu)
-	if (app->player->map == 1)
-	{
-		app->render->DrawTexture(heart, 85 * app->map->data.tileWidth, 74 * app->map->data.tileHeight, NULL);
-		app->render->DrawTexture(heart, 5 * app->map->data.tileWidth, 26 * app->map->data.tileHeight, NULL);
+	
 
-		app->render->DrawTexture(coins, 20 * app->map->data.tileWidth, 78 * app->map->data.tileHeight, &rotateCoin.GetCurrentFrame());
-		app->render->DrawTexture(coins, 21 * app->map->data.tileWidth, 78 * app->map->data.tileHeight, &rotateCoin.GetCurrentFrame());
-		app->render->DrawTexture(coins, 22 * app->map->data.tileWidth, 78 * app->map->data.tileHeight, &rotateCoin.GetCurrentFrame());
-		app->render->DrawTexture(coins, 23 * app->map->data.tileWidth, 78 * app->map->data.tileHeight, &rotateCoin.GetCurrentFrame());
-	}
-		for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 7; i++) 
+	{
+		switch (coins[i].activated)
 		{
-			switch (checkPoints[i].activated)
-			{
-			case false:
-				app->render->DrawTexture(flags, checkPoints[i].position.x * app->map->data.tileWidth, checkPoints[i].position.y * app->map->data.tileHeight + 14, &redCheckPoint.GetCurrentFrame());
-				break;
-			case true:
-				app->render->DrawTexture(flags, checkPoints[i].position.x * app->map->data.tileWidth, checkPoints[i].position.y * app->map->data.tileHeight + 14, &greenCheckPoint.GetCurrentFrame());
-				break;
-			}
+		case false:
+			app->render->DrawTexture(coinsTex, coins[i].position.x* app->map->data.tileWidth, coins[i].position.y * app->map->data.tileHeight, &rotateCoin.GetCurrentFrame());
+
+			break;
+		case true:
+			break;
 		}
+	}
+
+	switch (hearts.activated)
+	{
+	case false:
+		app->render->DrawTexture(heartsTex, hearts.position.x * app->map->data.tileWidth, hearts.position.y * app->map->data.tileHeight);
+
+		break;
+	case true:
+		break;
+	}
+
+	for (int i = 0; i < 2; i++)
+	{
+		switch (checkPoints[i].activated)
+		{
+		case false:
+			app->render->DrawTexture(flags, checkPoints[i].position.x * app->map->data.tileWidth, checkPoints[i].position.y * app->map->data.tileHeight + 14, &redCheckPoint.GetCurrentFrame());
+			break;
+		case true:
+			app->render->DrawTexture(flags, checkPoints[i].position.x * app->map->data.tileWidth, checkPoints[i].position.y * app->map->data.tileHeight + 14, &greenCheckPoint.GetCurrentFrame());
+			break;
+		}
+	}
 	
 
 
-	app->map->Draw();
+	app->render->DrawTexture(coinsTex, app->render->camera.x*-1 + 135, app->render->camera.y*-1 + 15, &rotateCoin.GetCurrentFrame());
 
 	//Draw save or load textures
 	if (saveTex.loaded == true)

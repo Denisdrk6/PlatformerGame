@@ -23,6 +23,7 @@ class Player;
 class Collisions;
 class FadeToBlack;
 class SceneIntro;
+class Fonts;
 
 class App
 {
@@ -101,6 +102,7 @@ public:
 	Collisions*			col;
 	FadeToBlack*		fade;
 	SceneIntro*			intro;
+	Fonts*				fonts;
 
 	float				dt;
 	int					max_framerate = 0;

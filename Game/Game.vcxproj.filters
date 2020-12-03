@@ -26,6 +26,7 @@
     </ClCompile>
     <ClCompile Include="Source\FadeToBlack.cpp" />
     <ClCompile Include="Source\SceneIntro.cpp" />
+    <ClCompile Include="Source\Fonts.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -72,6 +73,7 @@
     </ClInclude>
     <ClInclude Include="Source\FadeToBlack.h" />
     <ClInclude Include="Source\SceneIntro.h" />
+    <ClInclude Include="Source\Fonts.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

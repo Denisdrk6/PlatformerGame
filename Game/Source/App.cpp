@@ -11,6 +11,7 @@
 #include "FadeToBlack.h"
 //#include "Animation.h"
 #include "Collisions.h"
+#include "Fonts.h"
 #include "Defs.h"
 #include "Log.h"
 
@@ -34,6 +35,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	col = new Collisions();
 	fade = new FadeToBlack();
 	intro = new SceneIntro();
+	fonts = new Fonts();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -44,6 +46,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(intro);
 	AddModule(scene);
+	AddModule(fonts);
 	AddModule(map);
 	AddModule(player);
 	AddModule(col);

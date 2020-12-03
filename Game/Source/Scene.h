@@ -24,6 +24,23 @@ public:
 	Collider* collider;
 };
 
+class Heart
+{
+public:
+	bool activated = false;
+	iPoint position = { 0, 0 };
+	Collider* collider;
+};
+
+
+class Coin
+{
+public:
+	bool activated = false;
+	iPoint position = { 0, 0 };
+	Collider* collider;
+};
+
 class Scene : public Module
 {
 public:
@@ -56,13 +73,17 @@ public:
 
 	CheckPoint			checkPoints[2];
 
+	Coin				coins[7];
+	Heart				hearts;
+
+
 	SDL_Texture* flags;
 
 private:
 	SDL_Texture*		img;
-	SDL_Texture*		heart;
+	SDL_Texture*		heartsTex;
 	SDL_Texture*		iglu;
-	SDL_Texture*		coins;
+	SDL_Texture*		coinsTex;
 	
 	Animation			rotateCoin;
 	Animation			redCheckPoint;

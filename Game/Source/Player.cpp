@@ -6,6 +6,7 @@
 #include "Render.h"
 #include "Audio.h"
 #include "Collisions.h"
+#include "Fonts.h"
 #include "Log.h"
 #include "Map.h"
 #include "Window.h"
@@ -103,7 +104,8 @@ bool Player::Start()
 	destroyed = false;
 
 	collider = app->col->AddCollider({ (int)position.x, (int)position.y, 50, 64 }, COLLIDER_TYPE::COLLIDER_PLAYER, this);
-
+	char lookupTable[] = { "01234567/ " };
+	scoreFont = app->fonts->Load("Assets/Fonts/score_font.png", lookupTable, 1);
 	return ret;
 }
 
@@ -269,6 +271,7 @@ bool Player::Update(float dt)
 	}
 
 	collider->SetPos(position.x, position.y);
+	sprintf_s(scoreText, 10, "%i/%i",score, maxScore);
 
 	return ret;
 }
@@ -286,6 +289,7 @@ bool Player::PostUpdate()
 	{
 		SDL_Rect rect = currentAnimation->GetCurrentFrame();
 		app->render->DrawTexture(texture, position.x, position.y, &rect);
+		app->fonts->BlitText(10, 10, scoreFont, scoreText);
 
 		if(textureHurt.loaded == true)
 		{
@@ -498,5 +502,32 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				}
 			}
 		}
+		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_COIN)
+		{
+
+			for (int i = 0; i < 7; i++)
+			{
+				// last && condition prevents saving if there's a further checkpoint already activated
+				if (c2->rect.x == app->scene->coins[i].position.x * app->map->data.tileWidth && c2->rect.y == app->scene->coins[i].position.y * app->map->data.tileHeight && app->scene->coins[i].activated == false)
+				{
+					score++;
+					app->scene->coins[i].activated = true;
+					app->col->DeleteCollider(app->scene->coins[i].collider);
+				}
+			}
+		}
+		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_HEART)
+		{
+
+				// last && condition prevents saving if there's a further checkpoint already activated
+			if (app->scene->hearts.activated == false)
+			{
+				lifes++;
+				app->scene->hearts.activated = true;
+				app->col->DeleteCollider(app->scene->hearts.collider);
+			}
+
+		}
+			
 	}
 }

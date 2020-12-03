@@ -22,8 +22,11 @@ enum COLLIDER_TYPE
 	COLLIDER_END,
 	COLLIDER_WIN,
 	COLLIDER_CHECKPOINT,
+	COLLIDER_COIN,
+	COLLIDER_HEART,
 	COLLIDER_MAX,
 	COLLIDER_GODMODE
+	
 };
 //------------------------------------------------------------------------
 struct Collider
