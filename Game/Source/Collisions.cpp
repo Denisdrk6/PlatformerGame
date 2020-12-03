@@ -251,11 +251,11 @@ bool Collisions::PreUpdate()
 			if (c1->CheckCollision(c2->rect) == true)
 			{
 
-				if (matrix[c1->type][c2->type] && c1->callback) {
+				if (matrix[c1->type][c2->type] && c1->toDelete == false && c1->callback) {
 					c1->callback->OnCollision(c1, c2);
 				}
 
-				if (matrix[c2->type][c1->type] && c2->callback) {
+				if (matrix[c2->type][c1->type] && c2->toDelete == false && c2->callback) {
 					c2->callback->OnCollision(c2, c1);
 				}
 
@@ -284,7 +284,6 @@ bool Collisions::PreUpdate()
 	if (app->player->firstFrame == true)
 	{
 		app->player->firstFrame = false;
-		app->player->lifes = 3;
 	}
 
 	if (playerWallCol == 0)

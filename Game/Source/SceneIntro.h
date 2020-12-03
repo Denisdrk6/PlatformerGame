@@ -41,9 +41,9 @@ public:
 public:
 	// The scene sprite sheet loaded into an SDL_Texture
 	BlendTexture bgTexture;
-	int waitTime = 1500;
+	int waitTime = 500;
 	int initTime = 0;
-	int alphaModifier = 1;
+	int alphaModifier = 4;
 };
 
 #endif

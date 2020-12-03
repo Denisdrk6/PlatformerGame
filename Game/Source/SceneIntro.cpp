@@ -65,10 +65,13 @@ bool SceneIntro::Update(float dt)
 {
 	bool ret = true;
 
+	// Alpha speed is the same for all fps
+	if(alphaModifier >= 0) alphaModifier = (int)(120 / (1/dt));
+
 	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && bgTexture.loaded == false)
 	{
 		app->fade->Fade(this, (Module*)app->scene, 90);
-		app->render->camera.y = -77.5 * app->map->data.tileHeight;
+		app->render->camera.y = -77.5 * 32;
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
@@ -92,7 +95,7 @@ bool SceneIntro::PostUpdate()
 			bgTexture.alpha = 255;
 			if (initTime == 0) initTime = SDL_GetTicks();
 			int currentTime = SDL_GetTicks();
-			if (currentTime - initTime >= waitTime) alphaModifier = -1;
+			if (currentTime - initTime >= waitTime) alphaModifier = alphaModifier * -1;
 		}
 
 		if (bgTexture.alpha <= 0)

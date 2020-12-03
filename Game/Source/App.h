@@ -112,10 +112,10 @@ public:
 	
 	uint16_t			framerate = 1000 / 45;
 	
+	float				dt;
 
 private:
 
-	float				dt;
 	float				DeltaTime;
 
 	int					argc;

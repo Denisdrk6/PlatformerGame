@@ -113,6 +113,20 @@ bool Player::Update(float dt)
 {
 	bool ret = true;
 
+	delta = dt;
+
+	// Change speeds with dt
+	speedX = dt * speedMultiplier;
+	if (speedX - (int)speedX >= 0.5f) speedX = (int)speedX + 1;
+	else speedX = (int)speedX;
+
+	if (speedY == 1.45f)
+	{
+		speedY = 1.45f * dt * speedMultiplier;
+		maxNegativeSpeedY = (speedY * -1) + (0.05f * dt * speedMultiplier);
+		gravity = (speedY / 145) * dt * speedMultiplier;
+	}
+
 	if (app->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_REPEAT)
 	{
 		// We could delete the equal frame condition to make the animation more accuret, but it would be less smooth
@@ -187,7 +201,7 @@ bool Player::Update(float dt)
 		if ((spacePressed == true && doubleJump == false) || (spacePressed == false && doubleJump == false && speedY < 0))
 		{
 			doubleJump = true;
-			speedY = 1.25f;
+			speedY = 1.25f * dt * speedMultiplier;
 		}
 	}
 
@@ -217,12 +231,17 @@ bool Player::Update(float dt)
 	// Camera can only go down if player is below the screen height minus 9 tiles
 	if ((position.y + app->render->camera.y) >= app->win->screenSurface->h - (app->map->data.tileHeight * 9))
 	{
-		app->render->camera.y -= 1.45f;
+		// mov reduces shaking when moving camera upwards
+		int mov = 0;
+		if (speedY - (int)speedY >= 0.5f) mov = (int)speedX + 1;
+		else mov = (int)speedY;
+
+		if (speedY < 0 || collider->type == COLLIDER_GODMODE)app->render->camera.y += mov;
 	}
 
 	if ((position.y + app->render->camera.y) < app->win->screenSurface->h / 4)
 	{
-		app->render->camera.y += 1.45f;
+		if (speedY > 0 || collider->type == COLLIDER_GODMODE)app->render->camera.y += speedY;
 	}
 
 	// Gravity
@@ -232,7 +251,7 @@ bool Player::Update(float dt)
 		if (spacePressed == false && doubleJump == false && speedY > 0) speedY = 0;
 
 		// Reduces player speed each frame to make it smoother
-		if (speedY >= -1.4f) speedY -= gravity;
+		if (speedY >= maxNegativeSpeedY) speedY -= gravity;
 
 		position.y -= speedY;
 
@@ -466,6 +485,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 					doubleJump = false;
 					speedY = 1.4f;
 				}
+				lifes = 3;
 			}
 		}
 		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_WALL)
@@ -505,7 +525,10 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 
 		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_FLOOR)
 		{
-			if (c2->rect.y - (c1->rect.h + c1->rect.y) >= -2) // -2 works as a way to try and have less tunneling
+			int offset = -2 - (120 / (1 / delta));
+			if (offset < -7) offset = -7;
+
+			if (c2->rect.y - (c1->rect.h + c1->rect.y) >= offset) // offset works as a way to try and have less tunneling, it is bigger with lower fps and can be as low as 7
 			{
 				// Reset all jumping and falling variables
 				if (currentAnimation == &rFallAnim && firstFrame == false) currentAnimation = &rJumpAnim;

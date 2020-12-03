@@ -34,7 +34,7 @@ bool FadeToBlack::Update(float dt)
 
 	Uint32 now = SDL_GetTicks() - start_time;
 
-	float fadeRatio = MIN(1.0f, (float)now / (float)total_time);;
+	float fadeRatio = MIN(1.0f, (float)now / (float)total_time);
 
 	if (currentStep == Fade_Step::TO_BLACK)
 	{
