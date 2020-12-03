@@ -330,18 +330,6 @@ void Player::ChangeMap(int mapNum)
 	map = mapNum;
 	app->map->Disable();
 	app->map->Enable();
-	/*app->map->Load("Devmap2.tmx");
-	spawnX = 96;
-	position.x = 3 * 32;
-	position.y = spawnX * 32;
-	app->render->camera.x = 0;
-	app->render->camera.y = -77.5 * app->map->data.tileHeight;
-	currentAnimation = &rIdleAnim;
-	groundCol = true;
-	firstFrame = true;
-	spacePressed = false;
-	doubleJump = false;
-	speedY = 1.4f;*/
 
 	switch (map)
 	{
@@ -360,6 +348,10 @@ void Player::ChangeMap(int mapNum)
 		spacePressed = false;
 		doubleJump = false;
 		speedY = 1.4f;
+		app->scene->checkPoints[0].position = {92, 46};
+		app->scene->checkPoints[0].activated = false;
+		app->scene->checkPoints[1].position = { 0, 0 };
+		app->scene->checkPoints[1].activated = false;
 		break;
 	default:
 		break;
@@ -414,16 +406,34 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 
 			if (lifes == 0)
 			{
-				currentAnimation = &rIdleAnim;
-				position.x = 2 * app->map->data.tileWidth;
-				position.y = spawnX * app->map->data.tileHeight;
-				app->render->camera.x = 0;
-				app->render->camera.y = -77.5 * app->map->data.tileHeight;
-				groundCol = true;
-				firstFrame = true;
-				spacePressed = false;
-				doubleJump = false;
-				speedY = 1.4f;
+				bool loaded = false;
+				for (int i = 1; i >= 0; i--)
+				{
+					if (app->scene->checkPoints[i].activated == true)
+					{
+						app->LoadGameRequest();
+						loaded = true;
+						groundCol = true;
+						firstFrame = true;
+						spacePressed = false;
+						doubleJump = false;
+						speedY = 1.4f;
+						currentAnimation = &rIdleAnim;
+					}
+				}
+				if (loaded == false)
+				{
+					currentAnimation = &rIdleAnim;
+					position.x = 2 * app->map->data.tileWidth;
+					position.y = spawnX * app->map->data.tileHeight;
+					app->render->camera.x = 0;
+					app->render->camera.y = -77.5 * app->map->data.tileHeight;
+					groundCol = true;
+					firstFrame = true;
+					spacePressed = false;
+					doubleJump = false;
+					speedY = 1.4f;
+				}
 			}
 		}
 		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_WALL)
@@ -466,8 +476,24 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		}
 
 		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_WIN)
-		{
 			ChangeMap(map + 1);
+
+		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_CHECKPOINT)
+		{
+			for (int i = 0; i < 2; i++)
+			{
+				// last && condition prevents saving if there's a further checkpoint already activated
+				if (c2->rect.x == app->scene->checkPoints[i].position.x * app->map->data.tileWidth && c2->rect.y == app->scene->checkPoints[i].position.y * app->map->data.tileHeight + 16 && app->scene->checkPoints[i].activated == false && ((i == 0 && app->scene->checkPoints[i + 1].activated == false) || i == 1))
+				{
+					app->scene->checkPoints[i].activated = true;
+					app->SaveGameRequest();
+
+					app->scene->saveTex.rect = { 0, 0, 224, 83 };
+					if (app->scene->saveTex.loaded == false) app->scene->saveTex.texture = app->tex->Load("Assets/textures/saveLoad.png");
+					app->scene->saveTex.alpha = 255;
+					app->scene->saveTex.loaded = true;
+				}
+			}
 		}
 	}
 }

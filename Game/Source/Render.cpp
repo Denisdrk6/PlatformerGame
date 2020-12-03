@@ -49,7 +49,8 @@ bool Render::Awake(pugi::xml_node& config)
 		camera.w = app->win->screenSurface->w;
 		camera.h = app->win->screenSurface->h;
 		camera.x = 0;
-		camera.y = 0;
+		camera.y = -77.5 * app->map->data.tileHeight;
+		//camera.y = 0;
 	}
 
 	return ret;
@@ -140,7 +141,7 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 	bool ret = true;
 	uint scale = app->win->GetScale();
 
-	bool texturePlayer = (texture == app->player->texture || texture == app->player->textureHurt.texture);
+	bool texturePlayer = (texture == app->player->texture || texture == app->player->textureHurt.texture || texture == app->scene->flags);
 
 	SDL_Rect rect;
 

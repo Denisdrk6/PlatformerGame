@@ -15,6 +15,13 @@ public:
 	SDL_Rect rect;
 };
 
+class CheckPoint
+{
+public:
+	bool activated = false;
+	iPoint position = {0, 0};
+};
+
 class Scene : public Module
 {
 public:
@@ -45,13 +52,19 @@ public:
 	BlendedTexture		saveTex;
 	BlendedTexture		loadTex;
 
+	CheckPoint			checkPoints[2];
+
+	SDL_Texture* flags;
+
 private:
 	SDL_Texture*		img;
 	SDL_Texture*		heart;
 	SDL_Texture*		iglu;
 	SDL_Texture*		coins;
+	
 	Animation			rotateCoin;
-	Animation*			coinState = nullptr;
+	Animation			redCheckPoint;
+	Animation			greenCheckPoint;
 
 
 	bool				playerCol = true;
