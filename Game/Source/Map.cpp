@@ -75,7 +75,6 @@ void Map::Draw()
 			{
 				for (int x = 0; x < data.width; ++x)
 				{
-
 					if (layer->data->tilesetNum != i)
 					{
 						tileset = tileset->next;
@@ -131,7 +130,7 @@ bool Map::CleanUp()
 
 	while (item != NULL)
 	{
-		app->tex->UnLoad(item->data->texture);
+		//app->tex->UnLoad(item->data->texture);
 		RELEASE(item->data);
 		item = item->next;
 	}

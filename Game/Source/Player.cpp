@@ -334,6 +334,7 @@ void Player::ChangeMap(int mapNum)
 	map = mapNum;
 	app->map->Disable();
 	app->map->Enable();
+	//app->map->data.tilesets.start->data->texture = app->tex->Load("");
 
 	switch (map)
 	{
@@ -359,6 +360,30 @@ void Player::ChangeMap(int mapNum)
 		app->scene->checkPoints[1].position = { 0, 0 };
 		app->scene->checkPoints[1].activated = false;
 		app->col->DeleteCollider(app->scene->checkPoints[1].collider);
+
+		app->scene->coins[0].position = {34, 93};
+		app->scene->coins[0].activated = false;
+		app->scene->coins[1].position = {91, 72};
+		app->scene->coins[1].activated = false;
+		app->scene->coins[2].position = {81, 56};
+		app->scene->coins[2].activated = false;
+		app->scene->coins[3].position = {82, 24};
+		app->scene->coins[3].activated = false;
+		app->scene->coins[4].position = {70, 13};
+		app->scene->coins[4].activated = false;
+		app->scene->coins[5].position = {51, 2};
+		app->scene->coins[5].activated = false;
+		app->scene->coins[6].position = {36, 9};
+		app->scene->coins[6].activated = false;
+
+		for (int i = 0; i < maxScore; i++)
+			app->scene->coins[i].collider = app->col->AddCollider({ app->scene->coins[i].position.x * app->map->data.tileWidth, app->scene->coins[i].position.y * app->map->data.tileHeight, app->map->data.tileWidth, app->map->data.tileHeight}, COLLIDER_TYPE::COLLIDER_COIN, this);
+
+		app->scene->hearts.position = {78, 42};
+		app->scene->hearts.activated = false;
+		app->scene->hearts.collider = app->col->AddCollider({ app->scene->hearts.position.x * app->map->data.tileWidth, app->scene->hearts.position.y * app->map->data.tileHeight, app->map->data.tileWidth, app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_HEART, this);
+		
+		score = 0;
 		break;
 	default:
 		break;
@@ -449,16 +474,31 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 			// Checks if we are colliding a wall from below
 			if (c1->rect.y <= c2->rect.y + c2->rect.h && c1->rect.y >= c2->rect.y + c2->rect.h - 10 && groundCol == false && speedY > 0 && wallCol == false)
 			{
+				savedSpeed = speedY;
 				speedY = -0.2f;
 				position.y = c2->rect.y + c2->rect.h;
 				downCol = true;
 			}
 
-			else if (((c1->rect.x + c1->rect.w) >= c2->rect.x) && (currentAnimation == &rWalkAnim || currentAnimation == &rJumpAnim || currentAnimation == &rFallAnim || currentAnimation == &rIdleAnim) && downCol == false)
+			else if (((c1->rect.x + c1->rect.w) >= c2->rect.x) && (currentAnimation == &rWalkAnim || currentAnimation == &rJumpAnim || currentAnimation == &rFallAnim || currentAnimation == &rIdleAnim))
+			{
 				position.x = c2->rect.x - c1->rect.w;
+				if (downCol == true)
+				{
+					downCol = false;
+					if(speedY < 0) speedY = savedSpeed;
+				}
+			}
 
-			else if (c1->rect.x <= (c2->rect.x + c2->rect.w) && (currentAnimation == &lWalkAnim || currentAnimation == &lJumpAnim || currentAnimation == &lFallAnim || currentAnimation == &lIdleAnim) && downCol == false)
+			else if (c1->rect.x <= (c2->rect.x + c2->rect.w) && (currentAnimation == &lWalkAnim || currentAnimation == &lJumpAnim || currentAnimation == &lFallAnim || currentAnimation == &lIdleAnim))
+			{
 				position.x = c2->rect.x + c2->rect.w;
+				if (downCol == true)
+				{
+					downCol = false;
+					speedY *= -1;
+				}
+			}
 
 			wallCol = true;
 		}

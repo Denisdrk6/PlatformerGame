@@ -210,10 +210,14 @@ bool Scene::Update(float dt)
 		switch (checkPoints[i].activated)
 		{
 		case false:
-			app->render->DrawTexture(flags, checkPoints[i].position.x * app->map->data.tileWidth, checkPoints[i].position.y * app->map->data.tileHeight + 14, &redCheckPoint.GetCurrentFrame());
+			if (checkPoints[i].position.x == 0 && checkPoints[i].position.y == 0)
+				break;
+			else app->render->DrawTexture(flags, checkPoints[i].position.x * app->map->data.tileWidth, checkPoints[i].position.y * app->map->data.tileHeight + 14, &redCheckPoint.GetCurrentFrame());
 			break;
 		case true:
-			app->render->DrawTexture(flags, checkPoints[i].position.x * app->map->data.tileWidth, checkPoints[i].position.y * app->map->data.tileHeight + 14, &greenCheckPoint.GetCurrentFrame());
+			if (checkPoints[i].position.x == 0 && checkPoints[i].position.y == 0)
+				break;
+			else app->render->DrawTexture(flags, checkPoints[i].position.x * app->map->data.tileWidth, checkPoints[i].position.y * app->map->data.tileHeight + 14, &greenCheckPoint.GetCurrentFrame());
 			break;
 		}
 	}
@@ -230,6 +234,7 @@ bool Scene::Update(float dt)
 		{
 			//Unload texture if its completely transparent
 			app->tex->UnLoad(saveTex.texture);
+			saveTex.texture = nullptr;
 			saveTex.loaded = false;
 		}
 
@@ -247,6 +252,7 @@ bool Scene::Update(float dt)
 		if (loadTex.alpha <= 0)
 		{
 			app->tex->UnLoad(loadTex.texture);
+			loadTex.texture = nullptr;
 			loadTex.loaded = false;
 		}
 

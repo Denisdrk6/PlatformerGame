@@ -49,6 +49,7 @@ public:
 	// The speed in which we move the player (pixels per frame)
 	float			speedX = 1;
 	float			speedY = 1.45f;
+	float			savedSpeed;
 	float			gravity = 0.01f;
 
 	// The player spritesheet loaded into an SDL_Texture

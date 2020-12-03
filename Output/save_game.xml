@@ -6,12 +6,13 @@
 	<audio />
 	<:anonymous />
 	<scene />
+	<:anonymous />
 	<map />
 	<player />
 	<map />
 	<:anonymous />
 	<renderer>
-		<camera x="-2754" y="-2033" />
-		<player x="2883" y="2234.81079" />
+		<camera x="-270" y="1" />
+		<player x="1197" y="161.545319" />
 	</renderer>
 </game_state>

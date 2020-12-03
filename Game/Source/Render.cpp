@@ -142,7 +142,7 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 	uint scale = app->win->GetScale();
 
 	bool texturePlayer = (texture == app->player->texture || texture == app->player->textureHurt.texture || texture == app->scene->flags);
-
+	
 	SDL_Rect rect;
 
 	if (texture != app->scene->saveTex.texture && texture != app->scene->loadTex.texture)
