@@ -104,17 +104,19 @@ public:
 	SceneIntro*			intro;
 	Fonts*				fonts;
 
-	float				dt;
 	int					max_framerate = 0;
 	bool				fps_capped;
 	int					FPS_n;
 	int					FPS_a;
 	int					Last_ms;
 	
-
+	uint16_t			framerate = 1000 / 45;
 	
 
 private:
+
+	float				dt;
+	float				DeltaTime;
 
 	int					argc;
 	char**				args;

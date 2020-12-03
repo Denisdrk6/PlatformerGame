@@ -14,13 +14,14 @@
 #include "Fonts.h"
 #include "Defs.h"
 #include "Log.h"
-
+#include "Player.h"
 #include <iostream>
 #include <sstream>
 
 // Constructor
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
+	PERF_START(ptimer);
 	frames = 0;
 
 	
@@ -54,6 +55,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 
 	// Render last to swap buffer
 	AddModule(render);
+
+	PERF_PEEK(ptimer);
 }
 
 // Destructor
@@ -212,8 +215,9 @@ void App::PrepareUpdate()
 	last_sec_frame_count++;
 
 	// 4: Calculate the dt: differential time since last frame
-	dt = frame_time.ReadSec();
+	DeltaTime = frame_time.ReadSec();
 	frame_time.Start();
+	ptimer.Start();
 }
 
 
@@ -253,7 +257,7 @@ void App::FinishUpdate()
 	app->win->SetTitle(title);*/
 
 	// 2: Use SDL_Delay to make sure you get your capped framerate
-	if (last_frame_ms < max_frame_ms) {
+	if (last_frame_ms < max_frame_ms && framerate > 0) {
 		PerfTimer Delay_ms;
 		Delay_ms.Start();
 		SDL_Delay(max_frame_ms - last_frame_ms);
@@ -304,7 +308,7 @@ bool App::DoUpdate()
 			continue;
 		}
 
-		ret = item->data->Update(dt);
+		ret = item->data->Update(DeltaTime);
 	}
 
 	return ret;
