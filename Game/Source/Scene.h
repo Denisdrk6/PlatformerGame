@@ -78,9 +78,9 @@ public:
 
 
 	SDL_Texture* flags;
+	SDL_Texture* img;
 
 private:
-	SDL_Texture*		img;
 	SDL_Texture*		heartsTex;
 	SDL_Texture*		iglu;
 	SDL_Texture*		coinsTex;

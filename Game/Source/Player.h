@@ -37,6 +37,9 @@ public:
 	// Collision callback, called when the player intersects with another collider
 	void OnCollision(Collider* c1, Collider* c2) override;
 
+	bool Save(pugi::xml_node&)const;
+	bool Load(pugi::xml_node&);
+
 	//Check if two animation frames are equal
 	bool EqualFrames(SDL_Rect, SDL_Rect);
 
@@ -86,12 +89,13 @@ public:
 	bool			doubleJump = false;
 	bool			firstFrame = true;
 	bool			waiting = false;
+	bool			changingSavedMap = false;
 
 	int				lifes = 3;
 	int				lifeWait = 0;
 	bool			lifeTaken = false;
 	
-	int				spawnX = 95;
+	int				spawnY = 95;
 	int				map = 1;
 
 	// The player's collider

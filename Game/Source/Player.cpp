@@ -145,7 +145,7 @@ void Player::Death() {
 	{
 		currentAnimation = &rIdleAnim;
 		position.x = 2 * app->map->data.tileWidth;
-		position.y = spawnX * app->map->data.tileHeight;
+		position.y = spawnY * app->map->data.tileHeight;
 		app->render->camera.x = 0;
 		app->render->camera.y = -77.5 * app->map->data.tileHeight;
 		groundCol = true;
@@ -311,12 +311,12 @@ bool Player::Update(float dt)
 		if (speedY - (int)speedY >= 0.5f) mov = (int)speedX + 1;
 		else mov = (int)speedY;
 
-		if (speedY < 0)app->render->camera.y += mov;
+		if (speedY < 0)app->render->camera.y += mov - 1;
 	}
 
 	if ((position.y + app->render->camera.y) < app->win->screenSurface->h / 4 && collider->type != COLLIDER_GODMODE)
 	{
-		if (speedY > 0)app->render->camera.y += speedY;
+		if (speedY > 0)app->render->camera.y += speedY + 1;
 	}
 
 	// Gravity
@@ -433,21 +433,78 @@ void Player::ChangeMap(int mapNum)
 	switch (map)
 	{
 	case 1:
-		break;
-	case 2:
-		app->map->Load("Devmap2.tmx");
-		spawnX = 96;
-		position.x = 3 * 32;
-		position.y = spawnX * 32;
-		app->render->camera.x = 0;
-		app->render->camera.y = -77.5 * app->map->data.tileHeight;
+		app->map->Load("Devmap.tmx");
+		app->tex->UnLoad(app->scene->img);
+		app->scene->img = app->tex->Load("Assets/textures/background.png");
+		spawnY = 95;
+		if (changingSavedMap == false)
+		{
+			position.x = 3 * 32;
+			position.y = spawnY * 32;
+			app->render->camera.x = 0;
+			app->render->camera.y = -77.5 * app->map->data.tileHeight;
+		}
 		currentAnimation = &rIdleAnim;
 		groundCol = true;
 		firstFrame = true;
 		spacePressed = false;
 		doubleJump = false;
 		speedY = 1.4f;
-		app->scene->checkPoints[0].position = {92, 46};
+
+		app->scene->checkPoints[0].position = { 76, 88 };
+		app->scene->checkPoints[0].activated = false;
+		app->col->DeleteCollider(app->scene->checkPoints[0].collider);
+		app->scene->checkPoints[0].collider = app->col->AddCollider({ app->scene->checkPoints[0].position.x * app->map->data.tileWidth, app->scene->checkPoints[0].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
+		app->scene->checkPoints[1].position = { 33, 44 };
+		app->scene->checkPoints[1].activated = false;
+		app->col->DeleteCollider(app->scene->checkPoints[1].collider);
+		app->scene->checkPoints[0].collider = app->col->AddCollider({ app->scene->checkPoints[1].position.x * app->map->data.tileWidth, app->scene->checkPoints[1].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
+
+		app->scene->coins[0].position = { 3, 84 };
+		app->scene->coins[0].activated = false;
+		app->scene->coins[1].position = { 43, 88 };
+		app->scene->coins[1].activated = false;
+		app->scene->coins[2].position = { 85, 95 };
+		app->scene->coins[2].activated = false;
+		app->scene->coins[3].position = { 86, 81 };
+		app->scene->coins[3].activated = false;
+		app->scene->coins[4].position = { 97, 62 };
+		app->scene->coins[4].activated = false;
+		app->scene->coins[5].position = { 68, 50 };
+		app->scene->coins[5].activated = false;
+		app->scene->coins[6].position = { 16, 39 };
+		app->scene->coins[6].activated = false;
+
+		for (int i = 0; i < maxScore; i++)
+			app->scene->coins[i].collider = app->col->AddCollider({ app->scene->coins[i].position.x * app->map->data.tileWidth, app->scene->coins[i].position.y * app->map->data.tileHeight, app->map->data.tileWidth, app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_COIN, this);
+
+		app->scene->hearts.position = { 85, 74 };
+		app->scene->hearts.activated = false;
+		app->col->DeleteCollider(app->scene->hearts.collider);
+		app->scene->hearts.collider = app->col->AddCollider({ app->scene->hearts.position.x * app->map->data.tileWidth, app->scene->hearts.position.y * app->map->data.tileHeight, app->map->data.tileWidth, app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_HEART, this);
+
+		score = 0;
+		break;
+	case 2:
+		app->map->Load("Devmap2.tmx");
+		app->tex->UnLoad(app->scene->img);
+		app->scene->img = app->tex->Load("Assets/textures/background2.png");
+		spawnY = 96;
+		if (changingSavedMap == false)
+		{
+			position.x = 3 * 32;
+			position.y = spawnY * 32;
+			app->render->camera.x = 0;
+			app->render->camera.y = -77.5 * app->map->data.tileHeight;
+		}
+		currentAnimation = &rIdleAnim;
+		groundCol = true;
+		firstFrame = true;
+		spacePressed = false;
+		doubleJump = false;
+		speedY = 1.4f;
+
+		app->scene->checkPoints[0].position = {81, 44};
 		app->scene->checkPoints[0].activated = false;
 		app->col->DeleteCollider(app->scene->checkPoints[0].collider);
 		app->scene->checkPoints[0].collider = app->col->AddCollider({ app->scene->checkPoints[0].position.x * app->map->data.tileWidth, app->scene->checkPoints[0].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
@@ -475,6 +532,7 @@ void Player::ChangeMap(int mapNum)
 
 		app->scene->hearts.position = {78, 42};
 		app->scene->hearts.activated = false;
+		app->col->DeleteCollider(app->scene->hearts.collider);
 		app->scene->hearts.collider = app->col->AddCollider({ app->scene->hearts.position.x * app->map->data.tileWidth, app->scene->hearts.position.y * app->map->data.tileHeight, app->map->data.tileWidth, app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_HEART, this);
 		
 		score = 0;
@@ -484,7 +542,37 @@ void Player::ChangeMap(int mapNum)
 	}
 }
 
+bool Player::Save(pugi::xml_node& data)const
+{
+	pugi::xml_node player = data.append_child("player");
+	pugi::xml_node mapNum = data.append_child("map");
 
+	player.append_attribute("x") = position.x;
+	player.append_attribute("y") = position.y;
+
+	mapNum.append_attribute("num") = map;
+
+	return true;
+}
+
+bool Player::Load(pugi::xml_node& data)
+{
+	position.x = data.child("player").attribute("x").as_int();
+	position.y = data.child("player").attribute("y").as_float();
+
+	int current = map;
+
+	map = data.child("map").attribute("num").as_int();
+
+	if (current != map)
+	{
+		changingSavedMap = true;
+		ChangeMap(map);
+		changingSavedMap = false;
+	}
+
+	return true;
+}
 
 bool Player::CheckTunneling(SDL_Rect r1, SDL_Rect r2)
 {

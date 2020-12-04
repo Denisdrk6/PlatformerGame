@@ -56,7 +56,7 @@ bool Scene::Start()
 	if (active == true)
 	{
 		app->map->Load("Devmap.tmx");
-		img = app->tex->Load("Assets/textures/background2.png");
+		img = app->tex->Load("Assets/textures/background.png");
 		heartsTex = app->tex->Load("Assets/textures/heart.png");
 		coinsTex = app->tex->Load("Assets/textures/coins.png");
 		iglu = app->tex->Load("Assets/textures/iglu.png");

@@ -8,12 +8,14 @@
 	<scene />
 	<:anonymous />
 	<map />
-	<player />
+	<player>
+		<player x="122" y="3073.03223" />
+		<map num="2" />
+	</player>
 	<map />
 	<:anonymous />
 	<pathfinding />
 	<renderer>
-		<camera x="-1890" y="-2373" />
-		<player x="2386" y="2818.80444" />
+		<camera x="-36" y="-2480" />
 	</renderer>
 </game_state>
