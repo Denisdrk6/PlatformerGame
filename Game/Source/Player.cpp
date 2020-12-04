@@ -262,11 +262,16 @@ bool Player::Update(float dt)
 		}
 	}
 
-	else if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_REPEAT && collider->type == COLLIDER_GODMODE) position.y -= speedX;
+	else if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_REPEAT && collider->type == COLLIDER_GODMODE)
+	{
+		position.y -= speedX;
+		if ((position.y + app->render->camera.y) < app->win->screenSurface->h / 4)app->render->camera.y += 1.45 * dt * speedMultiplier;
+	}
 
 	if (app->input->GetKey(SDL_SCANCODE_S) == KeyState::KEY_REPEAT && collider->type == COLLIDER_GODMODE)
 	{
 		position.y += speedX;
+		if ((position.y + app->render->camera.y) >= app->win->screenSurface->h - (app->map->data.tileHeight * 9)) app->render->camera.y -= 1.45 * dt * speedMultiplier;
 	}
 	
 	if (app->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_DOWN)
@@ -299,19 +304,19 @@ bool Player::Update(float dt)
 	}
 
 	// Camera can only go down if player is below the screen height minus 9 tiles
-	if ((position.y + app->render->camera.y) >= app->win->screenSurface->h - (app->map->data.tileHeight * 9))
+	if ((position.y + app->render->camera.y) >= app->win->screenSurface->h - (app->map->data.tileHeight * 9) && collider->type != COLLIDER_GODMODE)
 	{
 		// mov reduces shaking when moving camera upwards
 		int mov = 0;
 		if (speedY - (int)speedY >= 0.5f) mov = (int)speedX + 1;
 		else mov = (int)speedY;
 
-		if (speedY < 0 || collider->type == COLLIDER_GODMODE)app->render->camera.y += mov;
+		if (speedY < 0)app->render->camera.y += mov;
 	}
 
-	if ((position.y + app->render->camera.y) < app->win->screenSurface->h / 4)
+	if ((position.y + app->render->camera.y) < app->win->screenSurface->h / 4 && collider->type != COLLIDER_GODMODE)
 	{
-		if (speedY > 0 || collider->type == COLLIDER_GODMODE)app->render->camera.y += speedY;
+		if (speedY > 0)app->render->camera.y += speedY;
 	}
 
 	// Gravity

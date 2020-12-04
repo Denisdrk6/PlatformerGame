@@ -56,7 +56,7 @@ bool Scene::Start()
 	if (active == true)
 	{
 		app->map->Load("Devmap.tmx");
-		img = app->tex->Load("Assets/textures/BG.png");
+		img = app->tex->Load("Assets/textures/background2.png");
 		heartsTex = app->tex->Load("Assets/textures/heart.png");
 		coinsTex = app->tex->Load("Assets/textures/coins.png");
 		iglu = app->tex->Load("Assets/textures/iglu.png");
@@ -180,7 +180,7 @@ bool Scene::Update(float dt)
 	}
 
 	// Draw map
-	app->render->DrawTexture(img, 0, 1470, NULL);
+	app->render->DrawTexture(img, 0, 0, NULL);
 	if (app->map->active == true) app->map->Draw();
 
 	// Draw extras (coins, hearts, flags, iglu)
@@ -267,7 +267,7 @@ bool Scene::Update(float dt)
 		}
 	}
 
-	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d, FPS: %i , Av.FPS:%2i  Last Frame Ms:%02i", app->map->data.width, app->map->data.height, app->map->data.tileWidth, app->map->data.tileHeight, app->map->data.tilesets.count(), app->FPS_n, app->FPS_a, app->Last_ms);
+	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d, FPS: %i , Av.FPS:%2i  Last Frame Ms:%02i", app->map->data.width, app->map->data.height, app->map->data.tileWidth, app->map->data.tileHeight, app->map->data.tilesets.Count(), app->FPS_n, app->FPS_a, app->Last_ms);
 	app->win->SetTitle(title.GetString());
 	/*sprintf_s(title, 256, "FPS: %i / Av.FPS: %.2f / Last Frame Ms: %02u (Frame Cap: %s) ",
 		frames_on_last_update, avg_fps, last_frame_ms, frame_cap_title.GetString());*/

@@ -189,7 +189,7 @@ bool Collisions::LoadColliders(pugi::xml_node& node)
 								rect.w = tileset.attribute("tilewidth").as_int();
 								rect.h = tileset.attribute("tileheight").as_int();
 
-								app->map->data.colliders.add(AddCollider(rect, coltype, call));
+								app->map->data.colliders.Add(AddCollider(rect, coltype, call));
 								LOG("%i x %i", rect.x, rect.y);
 							}
 						}

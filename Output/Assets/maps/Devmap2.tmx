@@ -20032,6 +20032,9 @@
   </data>
  </layer>
  <layer id="2" name="Colisions" width="100" height="100">
+  <properties>
+   <property name="Navigation" type="int" value="1"/>
+  </properties>
   <data>
    <tile/>
    <tile/>

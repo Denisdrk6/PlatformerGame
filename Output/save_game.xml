@@ -13,7 +13,7 @@
 	<:anonymous />
 	<pathfinding />
 	<renderer>
-		<camera x="-36" y="-2480" />
-		<player x="10" y="3041.16504" />
+		<camera x="-1890" y="-2373" />
+		<player x="2386" y="2818.80444" />
 	</renderer>
 </game_state>

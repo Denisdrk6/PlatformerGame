@@ -29,9 +29,6 @@
   </tile>
  </tileset>
  <layer id="17" name="Bg" width="100" height="100">
-  <properties>
-   <property name="tileset" type="int" value="0"/>
-  </properties>
   <data>
    <tile/>
    <tile/>
@@ -10133,9 +10130,6 @@
   <object id="228" name="spike" x="2752.25" y="2640.75" width="65.25" height="13.75"/>
  </objectgroup>
  <layer id="18" name="Floor" width="100" height="100">
-  <properties>
-   <property name="tileset" type="int" value="0"/>
-  </properties>
   <data>
    <tile/>
    <tile/>
@@ -20140,6 +20134,9 @@
   </data>
  </layer>
  <layer id="22" name="Colisions" width="100" height="100">
+  <properties>
+   <property name="Navigation" type="int" value="1"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -22710,18 +22707,18 @@
    <tile gid="171"/>
    <tile gid="171"/>
    <tile gid="169"/>
-   <tile gid="169"/>
-   <tile gid="169"/>
-   <tile gid="169"/>
-   <tile gid="169"/>
-   <tile gid="169"/>
-   <tile gid="169"/>
-   <tile gid="169"/>
-   <tile gid="169"/>
-   <tile gid="169"/>
-   <tile gid="169"/>
-   <tile gid="169"/>
-   <tile gid="169"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile gid="169"/>
    <tile/>
    <tile/>
@@ -29239,7 +29236,7 @@
    <tile gid="171"/>
    <tile gid="171"/>
    <tile gid="171"/>
-   <tile gid="171"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>

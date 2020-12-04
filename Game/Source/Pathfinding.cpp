@@ -129,29 +129,29 @@ PathNode::PathNode(const PathNode& node) : g(node.g), h(node.h), pos(node.pos), 
 uint PathNode::FindWalkableAdjacents(PathList& listToFill) const
 {
 	iPoint cell;
-	uint before = listToFill.list.count();
+	uint before = listToFill.list.Count();
 
 	// north
 	cell.create(pos.x, pos.y + 1);
 	if (app->pathfinding->IsWalkable(cell, app->pathfinding->fly_path))
-		listToFill.list.add(PathNode(-1, -1, cell, this, DIR_UP));
+		listToFill.list.Add(PathNode(-1, -1, cell, this, DIR_UP));
 
 	// south
 	cell.create(pos.x, pos.y - 1);
 	if (app->pathfinding->IsWalkable(cell, app->pathfinding->fly_path))
-		listToFill.list.add(PathNode(-1, -1, cell, this, DIR_DOWN));
+		listToFill.list.Add(PathNode(-1, -1, cell, this, DIR_DOWN));
 
 	// east
 	cell.create(pos.x + 1, pos.y);
 	if (app->pathfinding->IsWalkable(cell, app->pathfinding->fly_path))
-		listToFill.list.add(PathNode(-1, -1, cell, this, DIR_RIGHT));
+		listToFill.list.Add(PathNode(-1, -1, cell, this, DIR_RIGHT));
 
 	// west
 	cell.create(pos.x - 1, pos.y);
 	if (app->pathfinding->IsWalkable(cell, app->pathfinding->fly_path))
-		listToFill.list.add(PathNode(-1, -1, cell, this, DIR_LEFT));
+		listToFill.list.Add(PathNode(-1, -1, cell, this, DIR_LEFT));
 
-	return listToFill.list.count();
+	return listToFill.list.Count();
 }
 
 // PathNode -------------------------------------------------------------------------
@@ -194,13 +194,13 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, boo
 	PathList close;
 
 	PathNode originNode(0, origin.DistanceManhattan(destination), origin, NULL, DIR_NONE);
-	open.list.add(originNode);
+	open.list.Add(originNode);
 
-	while (open.list.count() > 0) {
+	while (open.list.Count() > 0) {
 		// L12b: TODO 3: Move the lowest score cell from open list to the closed list
 		ListItem<PathNode>* NodeVisited = open.GetNodeLowestScore();
-		close.list.add(NodeVisited->data);
-		open.list.del(NodeVisited);
+		close.list.Add(NodeVisited->data);
+		open.list.Del(NodeVisited);
 		// L12b: TODO 4: If we just added the destination, we are done!
 		// Backtrack to create the final path
 		// Use the Pathnode::parent and Flip() the path when you are finish
@@ -272,7 +272,7 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, boo
 			}
 			else {
 				PathNode NextNode(AdjacentNode->data.g, AdjacentNode->data.h, AdjacentNode->data.pos, AdjacentNode->data.parent, AdjacentNode->data.nextNodeDir);
-				open.list.add(NextNode);
+				open.list.Add(NextNode);
 
 				AdjacentNode = AdjacentNode->next;
 				continue;

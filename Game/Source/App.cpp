@@ -74,7 +74,7 @@ App::~App()
 		item = item->prev;
 	}
 
-	modules.clear();
+	modules.Clear();
 
 	//configFile.reset();
 }
@@ -84,7 +84,7 @@ void App::AddModule(Module* module)
 	bool initialState = true;
 	if (module == map || module == scene || module == audio || module == col || module == player) initialState = false;
 	module->Init(initialState);
-	modules.add(module);
+	modules.Add(module);
 }
 
 // Called before render is available

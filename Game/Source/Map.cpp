@@ -18,6 +18,20 @@ Map::Map() : Module(), mapLoaded(false)
 Map::~Map()
 {}
 
+int Properties::GetProperty(const char* value, int defaultValue) const
+{
+	ListItem<Property*>* item = list.start;
+
+	while (item)
+	{
+		if (item->data->name == value)
+			return item->data->value;
+		item = item->next;
+	}
+
+	return defaultValue;
+}
+
 // Called before render is available
 bool Map::Awake(pugi::xml_node& config)
 {
@@ -41,7 +55,7 @@ void Map::Draw()
 
 	ListItem<MapLayer*>* layer = data.layers.start;
 	ListItem<TileSetInfo*>* tileset = data.tilesets.start;
-	int i = 0;
+	//int i = 0;
 	while (layer != NULL && tileset != NULL)
 	{
 		if (collisionDraw == false)
@@ -53,11 +67,11 @@ void Map::Draw()
 					for (int x = 0; x < data.width; ++x)
 					{
 
-						if (layer->data->tilesetNum != i)
+						/*if (layer->data->tilesetNum != i)
 						{
 							tileset = tileset->next;
 							i++;
-						}
+						}*/
 
 						int tileId = layer->data->Get(x, y);
 						if (tileId > 0)
@@ -75,11 +89,11 @@ void Map::Draw()
 			{
 				for (int x = 0; x < data.width; ++x)
 				{
-					if (layer->data->tilesetNum != i)
+					/*if (layer->data->tilesetNum != i)
 					{
 						tileset = tileset->next;
 						i++;
-					}
+					}*/
 
 					int tileId = layer->data->Get(x, y);
 					if (tileId > 0)
@@ -102,6 +116,25 @@ iPoint Map::MapToWorld(int x, int y) const
 	ret.y = y * data.tileHeight;
 
 	return ret;
+}
+
+TileSetInfo* Map::GetTilesetFromTileId(int id) const
+{
+	ListItem<TileSetInfo*>* item = data.tilesets.start;
+	TileSetInfo* set = item->data;
+
+	while (item)
+	{
+		if (id < item->data->firstGid)
+		{
+			set = item->prev->data;
+			break;
+		}
+		set = item->data;
+		item = item->next;
+	}
+
+	return set;
 }
 
 // Get relative Tile rectangle
@@ -134,7 +167,7 @@ bool Map::CleanUp()
 		RELEASE(item->data);
 		item = item->next;
 	}
-	data.tilesets.clear();
+	data.tilesets.Clear();
 
 	// Remove all layers
 	ListItem<MapLayer*>* item2;
@@ -145,7 +178,7 @@ bool Map::CleanUp()
 		RELEASE(item2->data);
 		item2 = item2->next;
 	}
-	data.layers.clear();
+	data.layers.Clear();
 
 	// Remove colliders
 	ListItem<Collider*>* item3;
@@ -157,7 +190,7 @@ bool Map::CleanUp()
 		//app->col->DeleteCollider(item3->data);
 		item3 = item3->next;
 	}
-	data.colliders.clear();
+	data.colliders.Clear();
 
 	// Clean up the pugui tree
 	mapFile.reset();
@@ -197,7 +230,7 @@ bool Map::Load(const char* filename)
 			LOG("Loading tilesets data...");
 
 			ret = LoadTileset(tileset, info);
-			data.tilesets.add(info);
+			data.tilesets.Add(info);
 		}
 		pugi::xml_node layer;
 		for (layer = mapFile.child("map").child("layer"); layer && ret; layer = layer.next_sibling("layer"))
@@ -208,7 +241,7 @@ bool Map::Load(const char* filename)
 
 				if (ret == true) ret = LoadLayer(layer, set2);
 
-				data.layers.add(set2);
+				data.layers.Add(set2);
 			}
 		}
 
@@ -218,7 +251,7 @@ bool Map::Load(const char* filename)
 			LOG("width: %d height: %d", data.width, data.height);
 			LOG("tile_width: %d tile_height %d", data.tileWidth, data.tileHeight);
 
-			for (int i = 0; i < data.tilesets.count(); i++)
+			for (int i = 0; i < data.tilesets.Count(); i++)
 			{
 				LOG("Tileset %d ----", i + 1);
 				LOG("name: %s firstgid: %d", data.tilesets.At(i)->data->name.GetString(), data.tilesets.At(i)->data->firstGid);
@@ -319,7 +352,8 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	layer->width = node.attribute("width").as_int();
 	layer->height = node.attribute("height").as_int();
 	layer->name = node.attribute("name").as_string();
-	layer->tilesetNum = node.child("properties").child("property").attribute("value").as_int();
+	if(layer->name == "Colisions") LoadProperties(node, layer->properties);
+	//layer->tilesetNum = node.child("properties").child("property").attribute("value").as_int();
 	layer->data = new unsigned int[layer->width * layer->height * sizeof(unsigned int)];
 	memset(layer->data, 0, layer->width * layer->height * sizeof(unsigned int));
 	int i = 0;
@@ -354,3 +388,63 @@ void Map::OnCollision(Collider* c1, Collider* c2) {
 	}
 }
 
+// L06: TODO 6: Load a group of properties from a node and fill a list with it
+bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
+{
+	bool ret = false;
+
+	//..
+	
+	for (pugi::xml_node propNode = node.child("properties").child("property"); propNode; propNode = propNode.next_sibling("property"))
+	{
+		Properties::Property property;
+		property.name = propNode.attribute("name").as_string();
+		property.value = propNode.attribute("value").as_int();
+		
+		properties.list.Add(&property);
+	}
+	return ret;
+}
+
+bool Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
+{
+	bool ret = false;
+	ListItem<MapLayer*>* item;
+	item = data.layers.start;
+
+	for (item = data.layers.start; item != NULL; item = item->next)
+	{
+		MapLayer* layer = item->data;
+
+		if (layer->properties.GetProperty("Navigation", 0) == 0)
+			continue;
+
+		uchar* map = new uchar[layer->width * layer->height];
+		memset(map, 1, layer->width * layer->height);
+
+		for (int y = 0; y < data.height; ++y)
+		{
+			for (int x = 0; x < data.width; ++x)
+			{
+				int i = (y * layer->width) + x;
+
+				int tileId = layer->Get(x, y);
+				TileSetInfo* tileset = (tileId > 0) ? GetTilesetFromTileId(tileId) : NULL;
+
+				if (tileset != NULL)
+				{
+					map[i] = (tileId - tileset->firstGid) > 0 ? 0 : 1;
+				}
+			}
+		}
+
+		*buffer = map;
+		width = data.width;
+		height = data.height;
+		ret = true;
+
+		break;
+	}
+
+	return ret;
+}
