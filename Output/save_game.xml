@@ -11,8 +11,9 @@
 	<player />
 	<map />
 	<:anonymous />
+	<pathfinding />
 	<renderer>
-		<camera x="-1892" y="-2383" />
-		<player x="2388" y="2819.50635" />
+		<camera x="-36" y="-2480" />
+		<player x="10" y="3041.16504" />
 	</renderer>
 </game_state>

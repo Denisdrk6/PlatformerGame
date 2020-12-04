@@ -72,6 +72,21 @@ Player::Player() : Module()
 	lFallAnim.PushBack({ 96, 36, 32, 32 });
 	lFallAnim.PushBack({ 64, 36, 32, 32 });
 	lFallAnim.speed = 0.015f;
+
+
+	rShootAnim.PushBack({ 264,6,21,26});
+	rShootAnim.PushBack({ 296,7,22,25 });
+	rShootAnim.PushBack({ 330,5,20,27 });
+	rShootAnim.PushBack({ 360,5,21,27 });
+	rShootAnim.speed = 0.02f;
+
+
+	lShootAnim.PushBack({ 360,40,21,26 });
+	lShootAnim.PushBack({ 327,41,22,25 });
+	lShootAnim.PushBack({ 295,39,20,27 });
+	lShootAnim.PushBack({ 264,39,21,27 });
+	lShootAnim.speed = 0.02f;
+
 }
 
 Player::~Player()
@@ -108,10 +123,52 @@ bool Player::Start()
 	scoreFont = app->fonts->Load("Assets/Fonts/score_font.png", lookupTable, 1);
 	return ret;
 }
+void Player::Death() {
 
+	bool loaded = false;
+	for (int i = 1; i >= 0; i--)
+	{
+		if (app->scene->checkPoints[i].activated == true)
+		{
+			app->LoadGameRequest();
+			loaded = true;
+			groundCol = true;
+			firstFrame = true;
+			spacePressed = false;
+			doubleJump = false;
+			speedY = 1.4f;
+			currentAnimation = &rIdleAnim;
+		}
+	}
+
+	if (loaded == false)
+	{
+		currentAnimation = &rIdleAnim;
+		position.x = 2 * app->map->data.tileWidth;
+		position.y = spawnX * app->map->data.tileHeight;
+		app->render->camera.x = 0;
+		app->render->camera.y = -77.5 * app->map->data.tileHeight;
+		groundCol = true;
+		firstFrame = true;
+		spacePressed = false;
+		doubleJump = false;
+		speedY = 1.4f;
+	}
+	app->audio->PlayFx(1);
+	lifes = 3;
+}
 bool Player::Update(float dt)
 {
 	bool ret = true;
+	if (position.x > app->map->data.tileWidth * app->map->data.width || position.x < 0) {
+		lifes = 0;
+		Death();
+	}
+
+	if (position.y>app->map->data.height*app->map->data.tileHeight) {
+		lifes = 0;
+		Death();
+	}
 
 	delta = dt;
 
@@ -211,7 +268,20 @@ bool Player::Update(float dt)
 	{
 		position.y += speedX;
 	}
+	
+	if (app->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_DOWN)
+	{
+		if (currentAnimation == &rIdleAnim || currentAnimation == &rJumpAnim || currentAnimation == &rWalkAnim || currentAnimation == &rFallAnim)
 
+			currentAnimation == &rShootAnim;
+
+
+		else if (currentAnimation == &lIdleAnim || currentAnimation == &lJumpAnim || currentAnimation == &lWalkAnim || currentAnimation == &lFallAnim)
+
+			currentAnimation == &lShootAnim;
+	}
+
+	
 	 //If no right/left/up movement detected, set the current animation back to idle
 	if (app->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_IDLE
 		&& app->input->GetKey(SDL_SCANCODE_D) == KeyState::KEY_IDLE
@@ -409,6 +479,12 @@ void Player::ChangeMap(int mapNum)
 	}
 }
 
+
+
+bool Player::CheckTunneling(SDL_Rect r1, SDL_Rect r2)
+{
+	return (r1.y > r2.y&& r1.y + r1.h < r2.y + r2.h);
+}
 void Player::OnCollision(Collider* c1, Collider* c2)
 {
 	if (collider->type != COLLIDER_GODMODE)
@@ -432,10 +508,12 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 					textureHurt.loaded = true;
 				}
 
+
+
 				LOG("lifes: %d", lifes);
 			}
 
-			else if(lifeWait != 0)
+			else if (lifeWait != 0)
 			{
 				int currentTime = SDL_GetTicks();
 
@@ -456,37 +534,9 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 			}
 
 			if (lifes == 0)
-			{
-				bool loaded = false;
-				for (int i = 1; i >= 0; i--)
-				{
-					if (app->scene->checkPoints[i].activated == true)
-					{
-						app->LoadGameRequest();
-						loaded = true;
-						groundCol = true;
-						firstFrame = true;
-						spacePressed = false;
-						doubleJump = false;
-						speedY = 1.4f;
-						currentAnimation = &rIdleAnim;
-					}
-				}
-				if (loaded == false)
-				{
-					currentAnimation = &rIdleAnim;
-					position.x = 2 * app->map->data.tileWidth;
-					position.y = spawnX * app->map->data.tileHeight;
-					app->render->camera.x = 0;
-					app->render->camera.y = -77.5 * app->map->data.tileHeight;
-					groundCol = true;
-					firstFrame = true;
-					spacePressed = false;
-					doubleJump = false;
-					speedY = 1.4f;
-				}
-				lifes = 3;
-			}
+				Death();
+
+
 		}
 		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_WALL)
 		{
@@ -506,7 +556,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				if (downCol == true)
 				{
 					downCol = false;
-					if(speedY < 0) speedY = savedSpeed;
+					if (speedY < 0) speedY = savedSpeed;
 				}
 			}
 
@@ -527,8 +577,9 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		{
 			int offset = -2 - (120 / (1 / delta));
 			if (offset < -7) offset = -7;
+			SDL_Rect nextCollision = { c1->rect.x, c1->rect.y + speedY, c1->rect.w, c1->rect.h };
 
-			if (c2->rect.y - (c1->rect.h + c1->rect.y) >= offset) // offset works as a way to try and have less tunneling, it is bigger with lower fps and can be as low as 7
+			if (CheckTunneling(nextCollision, c2->rect) == true || c2->rect.y - (c1->rect.h + c1->rect.y) >= offset) // offset works as a way to try and have less tunneling, it is bigger with lower fps and can be as low as 7		
 			{
 				// Reset all jumping and falling variables
 				if (currentAnimation == &rFallAnim && firstFrame == false) currentAnimation = &rJumpAnim;
@@ -582,7 +633,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_HEART)
 		{
 
-				// last && condition prevents saving if there's a further checkpoint already activated
+			// last && condition prevents saving if there's a further checkpoint already activated
 			if (app->scene->hearts.activated == false)
 			{
 				lifes++;
@@ -591,6 +642,6 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 			}
 
 		}
-			
+
 	}
 }

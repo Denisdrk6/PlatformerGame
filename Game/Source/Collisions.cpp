@@ -248,6 +248,26 @@ bool Collisions::PreUpdate()
 
 			c2 = colliders[k];
 
+			if (c1->toDelete == false && c2->toDelete == false && c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_FLOOR)
+			{
+				SDL_Rect nextPos = c1->rect;
+				nextPos.y += app->player->speedY;
+				if (c2->CheckCollision(nextPos) == true)
+				{
+					c1->callback->OnCollision(c1, c2);
+				}
+			}
+
+			else if (c1->toDelete == false && c2->toDelete == false && c2->type == COLLIDER_TYPE::COLLIDER_PLAYER && c1->type == COLLIDER_TYPE::COLLIDER_FLOOR)
+			{
+				SDL_Rect nextPos = c2->rect;
+				nextPos.y += app->player->speedY;
+				if (c1->CheckCollision(nextPos) == true)
+				{
+					c2->callback->OnCollision(c2, c1);
+				}
+			}
+
 			if (c1->CheckCollision(c2->rect) == true)
 			{
 

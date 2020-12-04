@@ -41,6 +41,8 @@ public:
 	bool EqualFrames(SDL_Rect, SDL_Rect);
 
 	void ChangeMap(int map);
+	bool CheckTunneling(SDL_Rect r1, SDL_Rect r2);
+	void Death();
 
 public:
 	// Position of the player in the map
@@ -53,7 +55,7 @@ public:
 	float			gravity = 0.01f;
 	float			maxNegativeSpeedY;
 	float			delta = 0.0f;
-	int				speedMultiplier = 90;
+	int				speedMultiplier = 120;
 
 	// The player spritesheet loaded into an SDL_Texture
 	SDL_Texture*	texture = nullptr;
@@ -73,6 +75,9 @@ public:
 	Animation		lJumpAnim;
 	Animation		rFallAnim;
 	Animation		lFallAnim;
+	Animation		rShootAnim;
+	Animation		lShootAnim;
+
 
 	bool			wallCol = false;
 	bool			downCol = false;
