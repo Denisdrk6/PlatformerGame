@@ -53,7 +53,7 @@ public:
 	float			gravity = 0.01f;
 	float			maxNegativeSpeedY;
 	float			delta = 0.0f;
-	int				speedMultiplier = 110;
+	int				speedMultiplier = 90;
 
 	// The player spritesheet loaded into an SDL_Texture
 	SDL_Texture*	texture = nullptr;

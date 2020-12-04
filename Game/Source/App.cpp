@@ -15,6 +15,7 @@
 #include "Defs.h"
 #include "Log.h"
 #include "Player.h"
+#include "Pathfinding.h"
 #include <iostream>
 #include <sstream>
 
@@ -37,6 +38,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	fade = new FadeToBlack();
 	intro = new SceneIntro();
 	fonts = new Fonts();
+	pathfinding = new PathFinding();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -52,6 +54,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(player);
 	AddModule(col);
 	AddModule(fade);
+	AddModule(pathfinding);
 
 	// Render last to swap buffer
 	AddModule(render);

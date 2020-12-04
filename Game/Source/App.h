@@ -24,6 +24,7 @@ class Collisions;
 class FadeToBlack;
 class SceneIntro;
 class Fonts;
+class PathFinding;
 
 class App
 {
@@ -103,6 +104,7 @@ public:
 	FadeToBlack*		fade;
 	SceneIntro*			intro;
 	Fonts*				fonts;
+	PathFinding*		pathfinding;
 
 	int					max_framerate = 0;
 	bool				fps_capped;
