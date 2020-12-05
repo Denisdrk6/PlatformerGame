@@ -1,28 +1,28 @@
-#ifndef __SCENE_INTRO_H__
-#define __SCENE_INTRO_H__
+#ifndef __SCENE_WIN_H__
+#define __SCENE_WIN_H__
 
 #include "Module.h"
 #include "Animation.h"
 
 struct SDL_Texture;
 
-class BlendTexture
+/*class BlendTexture
 {
 public:
 	SDL_Texture* texture;
 	int alpha;
 	bool loaded = false;
 	SDL_Rect rect;
-};
+};*/
 
-class SceneIntro : public Module
+class SceneWin : public Module
 {
 public:
 	//Constructor
-	SceneIntro();
+	SceneWin();
 
 	//Destructor
-	~SceneIntro();
+	~SceneWin();
 
 	// Called when the module is activated
 	// Loads the necessary textures for the map background
@@ -40,11 +40,8 @@ public:
 
 public:
 	// The scene sprite sheet loaded into an SDL_Texture
-	BlendTexture bgTexture;
-	SDL_Texture* opening;
-	int waitTime = 500;
-	int initTime = 0;
-	int alphaModifier = 4;
+	//BlendTexture bgTexture;
+	SDL_Texture* bg;
 };
 
 #endif

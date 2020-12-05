@@ -82,8 +82,8 @@ public:
 
 private:
 	SDL_Texture*		heartsTex;
-	SDL_Texture*		iglu;
 	SDL_Texture*		coinsTex;
+	SDL_Texture*		iglu;
 	
 	Animation			rotateCoin;
 	Animation			redCheckPoint;

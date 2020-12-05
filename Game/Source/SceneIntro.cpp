@@ -38,10 +38,16 @@ bool SceneIntro::Start()
 	bgTexture.alpha = 1;
 	bgTexture.loaded = true;
 
+	opening = app->tex->Load("Assets/screens/opening.png");
+
 	/*if (app->enemies->IsEnabled() == true)
 	{
 		app->enemies->Disable();
 	}*/
+
+	app->player->score = 0;
+	if (app->player->lifes != 3) app->player->lifes = 3;
+
 	if (app->player->active == true)
 	{
 		app->player->Disable();
@@ -50,13 +56,6 @@ bool SceneIntro::Start()
 	{
 		app->col->Disable();
 	}
-	if (app->col->active == true)
-	{
-		app->col->Disable();
-	}
-
-	app->player->score = 0;
-	if(app->player->lifes != 3) app->player->lifes = 3;
 
 	return ret;
 }
@@ -69,10 +68,7 @@ bool SceneIntro::Update(float dt)
 	if(alphaModifier >= 0) alphaModifier = (int)(120 / (1/dt));
 
 	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && bgTexture.loaded == false)
-	{
-		app->fade->Fade(this, (Module*)app->scene, 90);
-		app->render->camera.y = -77.5 * 32;
-	}
+		app->fade->Fade(this, (Module*)app->scene, 60);
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
@@ -111,18 +107,14 @@ bool SceneIntro::PostUpdate()
 		}
 	}
 
+	else app->render->DrawTexture(opening, app->render->camera.x, app->render->camera.y, NULL);
+
 	return true;
 }
 
 
 bool SceneIntro::CleanUp()
 {
-
-	/*App->collisions->Disable();
-	App->particles->Disable();
-	App->player->Disable();
-	App->enemies->Disable();*/
-
 	app->player->active = true;
 	app->audio->active = true;
 	app->map->active = true;

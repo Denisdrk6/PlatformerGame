@@ -28,6 +28,7 @@
     <ClCompile Include="Source\SceneIntro.cpp" />
     <ClCompile Include="Source\Fonts.cpp" />
     <ClCompile Include="Source\Pathfinding.cpp" />
+    <ClCompile Include="Source\SceneWin.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -76,6 +77,7 @@
     <ClInclude Include="Source\SceneIntro.h" />
     <ClInclude Include="Source\Fonts.h" />
     <ClInclude Include="Source\Pathfinding.h" />
+    <ClInclude Include="Source\SceneWin.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

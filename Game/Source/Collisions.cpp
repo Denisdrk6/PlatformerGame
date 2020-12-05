@@ -20,17 +20,19 @@ Collisions::Collisions()
 	matrix[COLLIDER_PLAYER][COLLIDER_DEAD] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_END] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_WIN] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_FINISH] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_CHECKPOINT] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_COIN] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_HEART] = true;
 
-
+	
 	matrix[COLLIDER_FLOOR][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_FLOOR][COLLIDER_FLOOR] = false;
 	matrix[COLLIDER_FLOOR][COLLIDER_WALL] = false;
 	matrix[COLLIDER_FLOOR][COLLIDER_DEAD] = false;
 	matrix[COLLIDER_FLOOR][COLLIDER_END] = false;
 	matrix[COLLIDER_FLOOR][COLLIDER_WIN] = false;
+	matrix[COLLIDER_FLOOR][COLLIDER_FINISH] = true;
 	matrix[COLLIDER_FLOOR][COLLIDER_CHECKPOINT] = false;
 	matrix[COLLIDER_FLOOR][COLLIDER_COIN] = false;
 	matrix[COLLIDER_FLOOR][COLLIDER_HEART] = false;
@@ -42,6 +44,7 @@ Collisions::Collisions()
 	matrix[COLLIDER_WALL][COLLIDER_DEAD] = false;
 	matrix[COLLIDER_WALL][COLLIDER_END] = false;
 	matrix[COLLIDER_WALL][COLLIDER_WIN] = false;
+	matrix[COLLIDER_WALL][COLLIDER_FINISH] = false;
 	matrix[COLLIDER_WALL][COLLIDER_CHECKPOINT] = false;
 	matrix[COLLIDER_WALL][COLLIDER_COIN] = false;
 	matrix[COLLIDER_WALL][COLLIDER_HEART] = false;
@@ -53,6 +56,7 @@ Collisions::Collisions()
 	matrix[COLLIDER_DEAD][COLLIDER_DEAD] = false;
 	matrix[COLLIDER_DEAD][COLLIDER_END] = false;
 	matrix[COLLIDER_DEAD][COLLIDER_WIN] = false;
+	matrix[COLLIDER_DEAD][COLLIDER_FINISH] = false;
 	matrix[COLLIDER_DEAD][COLLIDER_CHECKPOINT] = false;
 	matrix[COLLIDER_DEAD][COLLIDER_COIN] = false;
 	matrix[COLLIDER_DEAD][COLLIDER_HEART] = false;
@@ -64,6 +68,7 @@ Collisions::Collisions()
 	matrix[COLLIDER_END][COLLIDER_DEAD] = false;
 	matrix[COLLIDER_END][COLLIDER_END] = false;
 	matrix[COLLIDER_END][COLLIDER_WIN] = false;
+	matrix[COLLIDER_END][COLLIDER_FINISH] = false;
 	matrix[COLLIDER_END][COLLIDER_CHECKPOINT] = false;
 	matrix[COLLIDER_END][COLLIDER_COIN] = false;
 	matrix[COLLIDER_END][COLLIDER_HEART] = false;
@@ -75,6 +80,7 @@ Collisions::Collisions()
 	matrix[COLLIDER_WIN][COLLIDER_DEAD] = false;
 	matrix[COLLIDER_WIN][COLLIDER_END] = false;
 	matrix[COLLIDER_WIN][COLLIDER_WIN] = false;
+	matrix[COLLIDER_WIN][COLLIDER_FINISH] = false;
 	matrix[COLLIDER_WIN][COLLIDER_CHECKPOINT] = false;
 	matrix[COLLIDER_WIN][COLLIDER_COIN] = false;
 	matrix[COLLIDER_WIN][COLLIDER_HEART] = false;
@@ -86,6 +92,7 @@ Collisions::Collisions()
 	matrix[COLLIDER_CHECKPOINT][COLLIDER_DEAD] = false;
 	matrix[COLLIDER_CHECKPOINT][COLLIDER_END] = false;
 	matrix[COLLIDER_CHECKPOINT][COLLIDER_WIN] = false;
+	matrix[COLLIDER_CHECKPOINT][COLLIDER_FINISH] = false;
 	matrix[COLLIDER_CHECKPOINT][COLLIDER_CHECKPOINT] = false;
 	matrix[COLLIDER_CHECKPOINT][COLLIDER_COIN] = false;
 	matrix[COLLIDER_CHECKPOINT][COLLIDER_HEART] = false;
@@ -111,8 +118,16 @@ Collisions::Collisions()
 	matrix[COLLIDER_HEART][COLLIDER_COIN] = false;
 	matrix[COLLIDER_HEART][COLLIDER_HEART] = false;
 
-	
-	
+	matrix[COLLIDER_FINISH][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_FINISH][COLLIDER_FLOOR] = false;
+	matrix[COLLIDER_FINISH][COLLIDER_WALL] = false;
+	matrix[COLLIDER_FINISH][COLLIDER_DEAD] = false;
+	matrix[COLLIDER_FINISH][COLLIDER_END] = false;
+	matrix[COLLIDER_FINISH][COLLIDER_WIN] = false;
+	matrix[COLLIDER_FINISH][COLLIDER_FINISH] = false;
+	matrix[COLLIDER_FINISH][COLLIDER_CHECKPOINT] = false;
+	matrix[COLLIDER_FINISH][COLLIDER_COIN] = false;
+	matrix[COLLIDER_FINISH][COLLIDER_HEART] = false;
 	
 
 	name.Create("map");
@@ -182,6 +197,12 @@ bool Collisions::LoadColliders(pugi::xml_node& node)
 								{
 									coltype = COLLIDER_WIN;
 									LOG("Collider win");
+								}
+
+								else if (type == "finish")
+								{
+									coltype = COLLIDER_FINISH;
+									LOG("Collider finish");
 								}
 
 								rect.x = app->map->MapToWorld(x, y).x;
@@ -379,6 +400,8 @@ void Collisions::DebugDraw()
 		case COLLIDER_WIN:
 			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 255, alpha);
 			break;
+		case COLLIDER_FINISH:
+			app->render->DrawRectangle(colliders[i]->rect, 80, 30, 20, alpha);
 		case COLLIDER_DEAD:
 			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 0, alpha);
 			break;

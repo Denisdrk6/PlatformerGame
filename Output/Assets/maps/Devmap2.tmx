@@ -17,6 +17,11 @@
     <property name="Type" value="wall"/>
    </properties>
   </tile>
+  <tile id="169">
+   <properties>
+    <property name="Type" value="finish"/>
+   </properties>
+  </tile>
   <tile id="170">
    <properties>
     <property name="Type" value="floor"/>
@@ -10734,7 +10739,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="4"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -20741,7 +20746,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="168"/>
    <tile/>
    <tile/>
    <tile/>
@@ -20749,7 +20753,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="170"/>
+   <tile gid="170"/>
    <tile/>
    <tile/>
    <tile/>
@@ -20848,8 +20853,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="170"/>
+   <tile gid="170"/>
    <tile/>
    <tile/>
    <tile/>

@@ -59,8 +59,8 @@ bool Scene::Start()
 		img = app->tex->Load("Assets/textures/background.png");
 		heartsTex = app->tex->Load("Assets/textures/heart.png");
 		coinsTex = app->tex->Load("Assets/textures/coins.png");
-		iglu = app->tex->Load("Assets/textures/iglu.png");
 		flags = app->tex->Load("Assets/textures/Check_points.png");
+		iglu = app->tex->Load("Assets/textures/iglu.png");
 
 		app->audio->PlayMusic("Assets/audio/music/Friends.ogg");
 		app->audio->LoadFx("Assets/audio/fx/hurt_sound.wav");
@@ -91,6 +91,8 @@ bool Scene::Start()
 		hearts.position = { 85,74 };
 		if (hearts.position.x != 0 || hearts.position.y != 0)
 			hearts.collider = app->col->AddCollider({ hearts.position.x * app->map->data.tileWidth, hearts.position.y * app->map->data.tileHeight,app->map->data.tileWidth,app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_HEART, this);
+		
+		app->render->camera.y = -77.5 * 32;
 	}
 
 	return true;
@@ -225,8 +227,6 @@ bool Scene::Update(float dt)
 			break;
 		}
 	}
-	
-
 
 	app->render->DrawTexture(coinsTex, app->render->camera.x*-1 + 135, app->render->camera.y*-1 + 15, &rotateCoin.GetCurrentFrame());
 
@@ -266,6 +266,9 @@ bool Scene::Update(float dt)
 			app->render->DrawTexture(loadTex.texture, 1050, 620, &loadTex.rect);
 		}
 	}
+
+	if (app->player->map == 2)
+		app->render->DrawTexture(iglu, 7 * app->map->data.tileWidth, 5 * app->map->data.tileWidth - (3 * app->map->data.tileWidth / 4) - 5, NULL);
 
 	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d, FPS: %i , Av.FPS:%2i  Last Frame Ms:%02i", app->map->data.width, app->map->data.height, app->map->data.tileWidth, app->map->data.tileHeight, app->map->data.tilesets.Count(), app->FPS_n, app->FPS_a, app->Last_ms);
 	app->win->SetTitle(title.GetString());

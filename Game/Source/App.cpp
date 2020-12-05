@@ -6,10 +6,10 @@
 #include "Audio.h"
 #include "SceneIntro.h"
 #include "Scene.h"
+#include "SceneWin.h"
 #include "Map.h"
 #include "Player.h"
 #include "FadeToBlack.h"
-//#include "Animation.h"
 #include "Collisions.h"
 #include "Fonts.h"
 #include "Defs.h"
@@ -37,6 +37,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	col = new Collisions();
 	fade = new FadeToBlack();
 	intro = new SceneIntro();
+	winScene = new SceneWin();
 	fonts = new Fonts();
 	pathfinding = new PathFinding();
 
@@ -49,12 +50,13 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(intro);
 	AddModule(scene);
+	AddModule(winScene);
 	AddModule(fonts);
 	AddModule(map);
 	AddModule(player);
 	AddModule(col);
-	AddModule(fade);
 	AddModule(pathfinding);
+	AddModule(fade);
 
 	// Render last to swap buffer
 	AddModule(render);
@@ -82,7 +84,7 @@ App::~App()
 void App::AddModule(Module* module)
 {
 	bool initialState = true;
-	if (module == map || module == scene || module == audio || module == col || module == player) initialState = false;
+	if (module == map || module == scene || module == audio || module == col || module == player || module == winScene) initialState = false;
 	module->Init(initialState);
 	modules.Add(module);
 }

@@ -10,6 +10,7 @@
 #include "Log.h"
 #include "Map.h"
 #include "Window.h"
+#include "FadeToBlack.h"
 
 #include <stdio.h>
 
@@ -86,6 +87,14 @@ Player::Player() : Module()
 	lShootAnim.PushBack({ 295,39,20,27 });
 	lShootAnim.PushBack({ 264,39,21,27 });
 	lShootAnim.speed = 0.02f;
+
+	loadingAnim.PushBack({ 0, 0, 370, 46 });
+	loadingAnim.PushBack({ 0, 47, 370, 46 });
+	loadingAnim.PushBack({ 0, 94, 370, 46 });
+	loadingAnim.PushBack({ 0, 141, 370, 46 });
+	loadingAnim.PushBack({ 0, 188, 370, 46 });
+	loadingAnim.PushBack({ 0, 235, 370, 46 });
+	loadingAnim.speed = 0.00f;
 
 }
 
@@ -286,6 +295,11 @@ bool Player::Update(float dt)
 			currentAnimation == &lShootAnim;
 	}
 
+	/*if (app->input->GetKey(SDL_SCANCODE_F7) == KeyState::KEY_DOWN)
+	{
+		if (map == 1) ChangeMap(2);
+		else ChangeMap(1);
+	}*/
 	
 	 //If no right/left/up movement detected, set the current animation back to idle
 	if (app->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_IDLE
@@ -405,6 +419,73 @@ bool Player::PostUpdate()
 		for (int i = 0, j = 0; i < lifes; ++i, j += 30)
 		{
 			app->render->DrawTexture(heart, (app->render->camera.x * -1) + 1180 - (30 * lifes) + j, app->render->camera.y * -1 + 25);
+		}
+
+		// Level 1 to level 2 transition
+		if (changingMap == true || (loadingScreen.loaded == true && loadingBalls.loaded == true))
+		{
+			if (loadingScreen.loaded == false)
+			{
+				loadingScreen.texture = app->tex->Load("Assets/screens/transition.png");
+				loadingScreen.alpha = 255;
+				loadingScreen.loaded = true;
+			}
+
+			if (loadingBalls.loaded == false)
+			{
+				loadingBalls.texture = app->tex->Load("Assets/screens/loading.png");
+				loadingBalls.alpha = 255;
+				loadingBalls.loaded = true;
+				loadingAnim.Reset();
+				loadingAnim.speed = 0.008f;
+			}
+
+			if (loadingScreen.loaded == true && loadingScreen.alpha <= 0)
+			{
+				app->tex->UnLoad(loadingScreen.texture);
+				loadingScreen.loaded = false;
+			}
+
+			if (loadingBalls.loaded == true && loadingBalls.alpha <= 0)
+			{
+				app->tex->UnLoad(loadingBalls.texture);
+				loadingBalls.loaded = false;
+			}
+
+			if (loadingScreen.loaded == true && loadingBalls.loaded == true && alphaModifier == 0)
+			{
+				SDL_SetTextureAlphaMod(loadingScreen.texture, loadingScreen.alpha);
+				app->render->DrawTexture(loadingScreen.texture, app->render->camera.x * -1, app->render->camera.y * -1, NULL);
+
+				SDL_SetTextureAlphaMod(loadingBalls.texture, loadingScreen.alpha);
+				app->render->DrawTexture(loadingBalls.texture, app->render->camera.x * -1 + 450, app->render->camera.y * -1 + 500, &loadingAnim.GetCurrentFrame());
+
+				app->render->DrawTexture(texture, app->render->camera.x * -1 + 575, app->render->camera.y * -1 + 285, &rWalkAnim.GetCurrentFrame());
+			}
+
+			SDL_Rect middle = { 0, 94, 370, 46 };
+
+			// Load second level when in middle of loading animation. mapChanged makes it so that we anly call ChangeMap function once
+			if (EqualFrames(loadingAnim.GetCurrentFrame(), middle) &&mapChanged == false) ChangeMap(2);
+
+			SDL_Rect last = { 0, 235, 370, 46 };
+
+			// When loading animation is at last frame we start taking alpha and stop the animation
+			if (EqualFrames(loadingAnim.GetCurrentFrame(), last))
+			{
+				int modifier = 3 * (60 / (1 / delta));
+				if (modifier > 3 * 1.5f) modifier = 2 * 3;
+				else if (modifier > 3 * 0.5f) modifier = 1 * 3;
+				alphaModifier = -modifier;
+				mapChanged = false;
+				loadingAnim.speed = 0.0f;
+			}
+
+			if (loadingScreen.loaded == true) 
+				loadingScreen.alpha += alphaModifier;
+
+			if (loadingBalls.loaded == true) 
+				loadingBalls.alpha += alphaModifier;
 		}
 
 		ret = true;
@@ -540,6 +621,9 @@ void Player::ChangeMap(int mapNum)
 	default:
 		break;
 	}
+
+	mapChanged = true;
+	changingMap = false;
 }
 
 bool Player::Save(pugi::xml_node& data)const
@@ -631,6 +715,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 
 
 		}
+
 		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_WALL)
 		{
 			fPoint relativePosition = position;
@@ -690,7 +775,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		}
 
 		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_WIN)
-			ChangeMap(map + 1);
+			changingMap = true;
 
 		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_CHECKPOINT)
 		{
@@ -709,6 +794,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				}
 			}
 		}
+
 		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_COIN)
 		{
 
@@ -723,6 +809,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				}
 			}
 		}
+
 		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_HEART)
 		{
 
@@ -733,8 +820,11 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				app->scene->hearts.activated = true;
 				app->col->DeleteCollider(app->scene->hearts.collider);
 			}
-
 		}
 
+		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_FINISH)
+		{
+			app->fade->Fade(this, (Module*)app->winScene, 90);
+		}
 	}
 }

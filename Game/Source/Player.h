@@ -63,6 +63,8 @@ public:
 	// The player spritesheet loaded into an SDL_Texture
 	SDL_Texture*	texture = nullptr;
 	SDL_Texture*	heart = nullptr;
+	BlendedTexture	loadingScreen;
+	BlendedTexture	loadingBalls;
 	BlendedTexture	textureHurt;
 
 	// The pointer to the current player animation
@@ -81,6 +83,8 @@ public:
 	Animation		rShootAnim;
 	Animation		lShootAnim;
 
+	Animation		loadingAnim;
+
 
 	bool			wallCol = false;
 	bool			downCol = false;
@@ -89,7 +93,9 @@ public:
 	bool			doubleJump = false;
 	bool			firstFrame = true;
 	bool			waiting = false;
+	bool			changingMap = false;
 	bool			changingSavedMap = false;
+	bool			mapChanged = false;
 
 	int				lifes = 3;
 	int				lifeWait = 0;
@@ -97,6 +103,7 @@ public:
 	
 	int				spawnY = 95;
 	int				map = 1;
+	int				alphaModifier = 0;
 
 	// The player's collider
 	Collider*		collider = nullptr;

@@ -23,6 +23,7 @@ class Player;
 class Collisions;
 class FadeToBlack;
 class SceneIntro;
+class SceneWin;
 class Fonts;
 class PathFinding;
 
@@ -103,6 +104,7 @@ public:
 	Collisions*			col;
 	FadeToBlack*		fade;
 	SceneIntro*			intro;
+	SceneWin* winScene;
 	Fonts*				fonts;
 	PathFinding*		pathfinding;
 
