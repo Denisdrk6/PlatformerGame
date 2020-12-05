@@ -118,6 +118,33 @@ iPoint Map::MapToWorld(int x, int y) const
 	return ret;
 }
 
+iPoint Map::WorldToMap(int x, int y) const
+{
+	iPoint ret(0, 0);
+
+	if (data.type == MAPTYPE_ORTHOGONAL)
+	{
+		ret.x = x / data.tileWidth;
+		ret.y = y / data.tileHeight;
+	}
+	else if (data.type == MAPTYPE_ISOMETRIC)
+	{
+
+		float half_width = data.tileWidth * 0.5f;
+		float half_height = data.tileHeight * 0.5f;
+		ret.x = int((x / half_width + y / half_height) / 2) - 1;
+		ret.y = int((y / half_height - (x / half_width)) / 2);
+	}
+	else
+	{
+
+		ret.x = x; ret.y = y;
+	}
+
+	return ret;
+}
+
+
 TileSetInfo* Map::GetTilesetFromTileId(int id) const
 {
 	ListItem<TileSetInfo*>* item = data.tilesets.start;

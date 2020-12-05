@@ -8,6 +8,7 @@
 #include "Map.h"
 #include "Player.h"
 #include "Collisions.h"
+#include "Pathfinding.h" 
 
 #include "Defs.h"
 #include "Log.h"
@@ -94,6 +95,13 @@ bool Scene::Start()
 		
 		app->render->camera.y = -77.5 * 32;
 	}
+	int w, h;
+	uchar* data = NULL;
+	if (app->map->CreateWalkabilityMap(w, h, &data))
+		app->pathfinding->SetMap(w, h, data);
+	
+
+	RELEASE_ARRAY(data);
 
 	return true;
 }
