@@ -25,6 +25,7 @@
  - F5 & F6 saves and loads the game state.
  - F9 Lets you see the coliders/logic in-game.
  - F10 enables God Mode.
+ - F11 Enable/Disable 30 FPS.
  
 
 ## Developers
