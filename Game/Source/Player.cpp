@@ -96,6 +96,15 @@ Player::Player() : Module()
 	loadingAnim.PushBack({ 0, 235, 370, 46 });
 	loadingAnim.speed = 0.00f;
 
+	rDeadAnim.PushBack({ 223, 70, 22, 29 });
+	rDeadAnim.PushBack({ 255, 68, 25, 29 });
+	rDeadAnim.PushBack({ 287, 79, 26, 19 });
+	rDeadAnim.PushBack({ 319, 88, 29, 11 });
+	rDeadAnim.PushBack({ 351, 87, 35, 12 });
+	rDeadAnim.PushBack({ 339, 86, 25, 13 });
+	rDeadAnim.PushBack({ 422, 84, 25, 15 });
+	rDeadAnim.PushBack({ 447, 83, 11, 17 });
+	rDeadAnim.speed = 0.0f;
 }
 
 Player::~Player()
@@ -134,6 +143,99 @@ bool Player::Start()
 }
 void Player::Death() {
 
+	if (deadScreen.loaded == false)
+	{
+		deadScreen.texture = app->tex->Load("Assets/screens/dead.png");
+		deadScreen.alpha = 255;
+		deadScreen.loaded = true;
+		position.x = 0;
+		position.y = 0;
+		rDeadAnim.speed = 0.04f;
+	}
+
+	else
+	{
+		if (app->input->GetKey(SDL_SCANCODE_R) == KeyState::KEY_REPEAT)
+		{
+			reload = true;
+
+			if (map != 1) ChangeMap(1);
+			else
+			{
+				spawnY = 95;
+				if (changingSavedMap == false)
+				{
+					position.x = 3 * 32;
+					position.y = spawnY * 32;
+					app->render->camera.x = 0;
+					app->render->camera.y = -77.5 * app->map->data.tileHeight;
+				}
+				currentAnimation = &rIdleAnim;
+				groundCol = true;
+				firstFrame = true;
+				spacePressed = false;
+				doubleJump = false;
+				speedY = 1.4f;
+
+				app->scene->checkPoints[0].position = { 76, 88 };
+				if (app->scene->checkPoints[0].activated == true)
+				{
+					app->scene->checkPoints[0].activated = false;
+					app->scene->checkPoints[0].collider = app->col->AddCollider({ app->scene->checkPoints[0].position.x * app->map->data.tileWidth, app->scene->checkPoints[0].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
+				}
+
+				app->scene->checkPoints[1].position = { 33, 44 };
+				if (app->scene->checkPoints[1].activated == true)
+				{
+					app->scene->checkPoints[1].activated = false;
+					app->scene->checkPoints[1].collider = app->col->AddCollider({ app->scene->checkPoints[1].position.x * app->map->data.tileWidth, app->scene->checkPoints[1].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
+				}
+
+				app->scene->coins[0].position = { 3, 84 };
+				app->scene->coins[0].activated = false;
+				app->scene->coins[1].position = { 43, 88 };
+				app->scene->coins[1].activated = false;
+				app->scene->coins[2].position = { 85, 95 };
+				app->scene->coins[2].activated = false;
+				app->scene->coins[3].position = { 86, 81 };
+				app->scene->coins[3].activated = false;
+				app->scene->coins[4].position = { 97, 62 };
+				app->scene->coins[4].activated = false;
+				app->scene->coins[5].position = { 68, 50 };
+				app->scene->coins[5].activated = false;
+				app->scene->coins[6].position = { 16, 39 };
+				app->scene->coins[6].activated = false;
+
+				app->scene->hearts.position = { 85, 74 };
+				if (app->scene->hearts.activated == true)
+				{
+					app->scene->hearts.activated = false;
+					app->scene->hearts.collider = app->col->AddCollider({ app->scene->hearts.position.x * app->map->data.tileWidth, app->scene->hearts.position.y * app->map->data.tileHeight, app->map->data.tileWidth, app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_HEART, this);
+				}
+
+				score = 0;
+			}
+		}
+
+		if (reload == true)
+		{
+			app->tex->UnLoad(deadScreen.texture);
+			deadScreen.loaded = false;
+			rDeadAnim.speed = 0.0f;
+			lifes = 3;
+			reload = false;
+		}
+
+		if (deadScreen.loaded == true)
+		{
+			SDL_SetTextureAlphaMod(deadScreen.texture, deadScreen.alpha);
+			app->render->DrawTexture(deadScreen.texture, app->render->camera.x * -1, app->render->camera.y * -1, NULL);
+
+			app->render->DrawTexture(texture, app->render->camera.x * -1 + 565, app->render->camera.y * -1 + 280, &rDeadAnim.GetCurrentFrame());
+		}
+	}
+
+	/*
 	bool loaded = false;
 	for (int i = 1; i >= 0; i--)
 	{
@@ -164,19 +266,20 @@ void Player::Death() {
 		speedY = 1.4f;
 	}
 	app->audio->PlayFx(1);
-	lifes = 3;
+	lifes = 3;*/
 }
 bool Player::Update(float dt)
 {
+	if (lifes == 0)
+		Death();
+
 	bool ret = true;
 	if (position.x > app->map->data.tileWidth * app->map->data.width || position.x < 0) {
 		lifes = 0;
-		Death();
 	}
 
 	if (position.y>app->map->data.height*app->map->data.tileHeight) {
 		lifes = 0;
-		Death();
 	}
 
 	delta = dt;
@@ -486,6 +589,8 @@ bool Player::PostUpdate()
 
 			if (loadingBalls.loaded == true) 
 				loadingBalls.alpha += alphaModifier;
+
+			
 		}
 
 		ret = true;
@@ -539,7 +644,7 @@ void Player::ChangeMap(int mapNum)
 		app->scene->checkPoints[1].position = { 33, 44 };
 		app->scene->checkPoints[1].activated = false;
 		app->col->DeleteCollider(app->scene->checkPoints[1].collider);
-		app->scene->checkPoints[0].collider = app->col->AddCollider({ app->scene->checkPoints[1].position.x * app->map->data.tileWidth, app->scene->checkPoints[1].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
+		app->scene->checkPoints[1].collider = app->col->AddCollider({ app->scene->checkPoints[1].position.x * app->map->data.tileWidth, app->scene->checkPoints[1].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
 
 		app->scene->coins[0].position = { 3, 84 };
 		app->scene->coins[0].activated = false;
@@ -666,7 +771,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 {
 	if (collider->type != COLLIDER_GODMODE)
 	{
-		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_DEAD)
+		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && (c2->type == COLLIDER_TYPE::COLLIDER_DEAD || (c2->type == COLLIDER_TYPE::COLLIDER_ENEMY && (c1->rect.y + c1->rect.w / 2 > c2->rect.y))))
 		{
 			if (waiting == false && lifeTaken == false)
 			{
@@ -684,8 +789,6 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 					textureHurt.alpha = 255;
 					textureHurt.loaded = true;
 				}
-
-
 
 				LOG("lifes: %d", lifes);
 			}
@@ -712,8 +815,6 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 
 			if (lifes == 0)
 				Death();
-
-
 		}
 
 		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_WALL)

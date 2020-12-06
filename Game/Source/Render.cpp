@@ -157,7 +157,7 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 			rect.h = section->h;
 		}
 
-		else if (texturePlayer == true && app->player->loadingAnim.speed != 0.0f == true)
+		else if (texturePlayer == true && (app->player->loadingAnim.speed != 0.0f || app->player->rDeadAnim.speed != 0.0f))
 		{
 			rect.w = section->w * 5;
 			rect.h = section->h * 5;

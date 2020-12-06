@@ -10,14 +10,18 @@
 	<:anonymous />
 	<map />
 	<player>
-		<player x="96" y="3042.62451" />
+		<player x="208" y="3041.48242" />
 		<map num="1" />
 	</player>
 	<entities>
 		<Fly_Enemies>
 			<Fly_Enemy>
-				<position x="596" y="2714" />
-				<initial_position x="596" y="2714" />
+				<position x="595" y="2672" />
+				<initial_position x="595" y="2672" />
+			</Fly_Enemy>
+			<Fly_Enemy>
+				<position x="0" y="2372" />
+				<initial_position x="595" y="2672" />
 			</Fly_Enemy>
 		</Fly_Enemies>
 	</entities>
@@ -25,6 +29,6 @@
 	<pathfinding />
 	<:anonymous />
 	<renderer>
-		<camera x="-36" y="-2480" />
+		<camera x="-78" y="-2480" />
 	</renderer>
 </game_state>

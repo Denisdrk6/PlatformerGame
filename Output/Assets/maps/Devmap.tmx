@@ -40054,7 +40054,7 @@
   </data>
  </layer>
  <objectgroup id="23" name="Entities">
-  <object id="232" name="FlyEnemy" x="596" y="2714.67" width="57.3333" height="47"/>
-  <object id="234" name="FloorEnemy" x="603.333" y="2486" width="55" height="47.3333"/>
+  <object id="232" name="FlyEnemy" x="595" y="2672.67" width="57.3333" height="47"/>
+  <object id="234" name="FloorEnemy" x="596.666" y="3046" width="55" height="47.3333"/>
  </objectgroup>
 </map>

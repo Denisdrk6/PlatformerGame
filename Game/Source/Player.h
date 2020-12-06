@@ -66,6 +66,7 @@ public:
 	BlendedTexture	loadingScreen;
 	BlendedTexture	loadingBalls;
 	BlendedTexture	textureHurt;
+	BlendedTexture	deadScreen;
 
 	// The pointer to the current player animation
 	// It will be switched depending on the player's movement direction
@@ -82,6 +83,7 @@ public:
 	Animation		lFallAnim;
 	Animation		rShootAnim;
 	Animation		lShootAnim;
+	Animation		rDeadAnim;
 
 	Animation		loadingAnim;
 
@@ -96,6 +98,7 @@ public:
 	bool			changingMap = false;
 	bool			changingSavedMap = false;
 	bool			mapChanged = false;
+	bool			reload = false;
 
 	int				lifes = 3;
 	int				lifeWait = 0;
@@ -104,6 +107,7 @@ public:
 	int				spawnY = 95;
 	int				map = 1;
 	int				alphaModifier = 0;
+	int				alphaModifierDead = 0;
 
 	// The player's collider
 	Collider*		collider = nullptr;

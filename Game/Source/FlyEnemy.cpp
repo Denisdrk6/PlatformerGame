@@ -24,7 +24,7 @@ FlyEnemy::FlyEnemy(iPoint pos) : Entity(EntityType::fly_enemy) {
 
 
 	//add collider
-	col = app->col->AddCollider({ position.x, position.y, 28,28 }, COLLIDER_ENEMY, app->entities);
+	col = app->col->AddCollider({ position.x, position.y, 36,36 }, COLLIDER_ENEMY, app->entities);
 
 	//save positions
 	initial_position = position = pos;
@@ -75,7 +75,7 @@ void FlyEnemy::Reset() {
 	}
 	dead = false;
 	falling = false;
-	col = app->col->AddCollider({ position.x,position.y,32,32 }, COLLIDER_ENEMY, app->entities);
+	col = app->col->AddCollider({ position.x,position.y,64,64 }, COLLIDER_ENEMY, app->entities);
 }
 
 void FlyEnemy::Update(float dt) {
@@ -84,6 +84,7 @@ void FlyEnemy::Update(float dt) {
 		private_dt = dt;
 		if (lives == 0) {
 			dead = true;
+			app->col->DeleteCollider(col);
 			falling = true;
 		}
 
@@ -114,6 +115,7 @@ void FlyEnemy::Update(float dt) {
 		Draw();
 		col->SetPos(position.x, position.y);
 	}
+
 	else if (dead == true) {
 		if (falling == true) {
 			vel.y = 100;
@@ -186,4 +188,16 @@ void FlyEnemy::OnCollision(Collider* c1, Collider* c2) {
 	//Decrease speed if touches player.
 	//If touches floor vel.y = vel.x = 0
 	//Less lives if touches player
+
+	if (c1->type == COLLIDER_TYPE::COLLIDER_ENEMY && c2->type == COLLIDER_TYPE::COLLIDER_PLAYER)
+	{
+		int offset = -2 - (120 / (1 / app->dt));
+		if (offset < -7) offset = -7;
+		SDL_Rect nextCollision = { c1->rect.x, c1->rect.y + vel.y, c1->rect.w, c1->rect.h };
+
+		if ((app->player->CheckTunneling(nextCollision, c1->rect) == true || c1->rect.y - (c2->rect.h + c2->rect.y) >= offset) && app->player->speedY >= app->player->maxNegativeSpeedY)
+		{
+			lives = 0;
+		}
+	}
 }

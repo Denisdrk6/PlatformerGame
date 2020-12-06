@@ -24,6 +24,7 @@ Collisions::Collisions()
 	matrix[COLLIDER_PLAYER][COLLIDER_CHECKPOINT] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_COIN] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_HEART] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY] = true;
 
 	
 	matrix[COLLIDER_FLOOR][COLLIDER_PLAYER] = true;
@@ -239,6 +240,7 @@ bool Collisions::PreUpdate()
 	playerFloorCol = 0;
 	playerWallCol = 0;
 	playerDeadCol = 0;
+	playerEnemyCol = 0;
 
 	for (uint i = 0; i < MAX_COLLIDERS; ++i) {
 		if (colliders[i] != nullptr && colliders[i]->toDelete == true) {
@@ -309,6 +311,9 @@ bool Collisions::PreUpdate()
 				if ((c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_FLOOR) || (c2->type == COLLIDER_TYPE::COLLIDER_PLAYER && c1->type == COLLIDER_TYPE::COLLIDER_FLOOR)) 
 					playerFloorCol++;
 
+				if ((c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_ENEMY) || (c2->type == COLLIDER_TYPE::COLLIDER_PLAYER && c1->type == COLLIDER_TYPE::COLLIDER_ENEMY))
+					playerEnemyCol++;
+
 				if ((c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_WALL) || (c2->type == COLLIDER_TYPE::COLLIDER_PLAYER && c1->type == COLLIDER_TYPE::COLLIDER_WALL))
 				{
 					playerWallCol++;
@@ -338,13 +343,11 @@ bool Collisions::PreUpdate()
 		app->player->downCol = false;
 	}
 
-	if (playerDeadCol == 0 && app->player->firstFrame == false)
+	if (playerDeadCol == 0 && playerEnemyCol == 0 && app->player->firstFrame == false)
 	{
 		app->player->lifeWait = 0;
 		app->player->lifeTaken = false;
 		app->player->waiting = false;
-		/*app->player->textureHurt.loaded = false;
-		app->player->textureHurt.alpha = 0;*/
 	}
 
 	return true;

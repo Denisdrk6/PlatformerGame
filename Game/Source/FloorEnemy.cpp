@@ -20,7 +20,7 @@ FloorEnemy::FloorEnemy(iPoint pos) : Entity(EntityType::floor_enemy) {
 	idle.PushBack({ 211 , 68 , 25 , 28 });
 	idle.speed = 5.0f;
 
-	col = app->col->AddCollider({ position.x,position.y,32,32 }, COLLIDER_ENEMY, app->entities);
+	col = app->col->AddCollider({ position.x,position.y,36,36 }, COLLIDER_ENEMY, app->entities);
 
 	//Load position and save it
 	initialPosition = position = pos;
@@ -72,7 +72,7 @@ void FloorEnemy::Reset() {
 	if (col != nullptr) {
 		app->col->DeleteCollider(col);
 	}
-	col = app->col->AddCollider({ position.x,position.y,32,32 }, COLLIDER_ENEMY, app->entities);
+	col = app->col->AddCollider({ position.x,position.y,64,64 }, COLLIDER_ENEMY, app->entities);
 	dead = false;
 }
 

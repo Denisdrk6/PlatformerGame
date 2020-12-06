@@ -25,9 +25,9 @@ enum COLLIDER_TYPE
 	COLLIDER_CHECKPOINT,
 	COLLIDER_COIN,
 	COLLIDER_HEART,
-	COLLIDER_MAX,
 	COLLIDER_ENEMY,
-	COLLIDER_GODMODE
+	COLLIDER_GODMODE,
+	COLLIDER_MAX
 	
 };
 //------------------------------------------------------------------------
@@ -89,7 +89,8 @@ private:
 	bool					matrix[COLLIDER_MAX][COLLIDER_MAX];
 	int						playerFloorCol;
 	int						playerWallCol;
-	int playerDeadCol;
+	int						playerDeadCol;
+	int						playerEnemyCol;
 };
 
 #endif // __j1COLLISIONS_H__

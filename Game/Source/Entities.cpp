@@ -8,6 +8,7 @@
 #include "Collisions.h"
 #include "Audio.h"
 #include "Fonts.h"
+
 Entities::Entities() {
 	name.Create("entities");
 }
@@ -46,15 +47,15 @@ bool Entities::Load(pugi::xml_node& load) {
 
 
 	//Same with floor enemy
-	/*pugi::xml_node node_floor;
+	pugi::xml_node node_floor;
 	for (node_floor = load.child("Floor_Enemies").child("Floor_Enemy"); node_floor; node_floor = node_floor.next_sibling("Floor_Enemy")) {
 		iPoint pos;
 		pos.x = pos.y = 0;
 
 		FloorEnemy* retF = (FloorEnemy*)CreateEntity(Entity::EntityType::floor_enemy, pos);
-		ret->Load(node_floor);
+		retF->Load(node_floor);
 		app->scene->FloorEnemies.Add(retF);
-	}*/
+	}
 
 	return true;
 }
@@ -161,6 +162,13 @@ void Entities::OnCollision(Collider* c1, Collider* c2) {
 	for (fly_enemy = app->scene->FlyEnemies.start; fly_enemy; fly_enemy = fly_enemy->next) {
 		if (fly_enemy->data->col->rect.x == c1->rect.x && fly_enemy->data->col->rect.y == c1->rect.y && fly_enemy->data->col->rect.w == c1->rect.w && fly_enemy->data->col->rect.h == c1->rect.h) {
 			fly_enemy->data->OnCollision(c1, c2);
+		}
+	}
+
+	ListItem<FloorEnemy*>* floorEnemy;
+	for (floorEnemy = app->scene->FloorEnemies.start; floorEnemy; floorEnemy = floorEnemy->next) {
+		if (floorEnemy->data->col->rect.x == c1->rect.x && floorEnemy->data->col->rect.y == c1->rect.y && floorEnemy->data->col->rect.w == c1->rect.w && floorEnemy->data->col->rect.h == c1->rect.h) {
+			floorEnemy->data->OnCollision(c1, c2);
 		}
 	}
 
