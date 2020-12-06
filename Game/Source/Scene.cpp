@@ -173,6 +173,18 @@ bool Scene::Update(float dt)
 		else  app->player->collider->type = COLLIDER_PLAYER;
 	}
 
+	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) {// FPS cap to 30
+		if (app->max_framerate != 30) {
+			app->ChangeFrameCap(30);
+		}
+		else if (app->max_framerate == 30) {
+			app->ChangeFrameCap(0);
+
+
+
+		}
+	}
+
 	//Camera limits
 
 	if (app->player->collider->type == COLLIDER_PLAYER)
