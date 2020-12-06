@@ -49,7 +49,7 @@ public:
 
 public:
 	// Position of the player in the map
-	fPoint			position;
+	iPoint			position;
 
 	// The speed in which we move the player (pixels per frame)
 	float			speedX = 1.0f;

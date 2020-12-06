@@ -128,6 +128,17 @@ Collisions::Collisions()
 	matrix[COLLIDER_FINISH][COLLIDER_CHECKPOINT] = false;
 	matrix[COLLIDER_FINISH][COLLIDER_COIN] = false;
 	matrix[COLLIDER_FINISH][COLLIDER_HEART] = false;
+
+	matrix[COLLIDER_ENEMY][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_ENEMY][COLLIDER_FLOOR] = true;
+	matrix[COLLIDER_ENEMY][COLLIDER_WALL] = true;
+	matrix[COLLIDER_ENEMY][COLLIDER_DEAD] = false;
+	matrix[COLLIDER_ENEMY][COLLIDER_END] = false;
+	matrix[COLLIDER_ENEMY][COLLIDER_WIN] = false;
+	matrix[COLLIDER_ENEMY][COLLIDER_FINISH] = false;
+	matrix[COLLIDER_ENEMY][COLLIDER_CHECKPOINT] = false;
+	matrix[COLLIDER_ENEMY][COLLIDER_COIN] = false;
+	matrix[COLLIDER_ENEMY][COLLIDER_HEART] = false;
 	
 
 	name.Create("map");

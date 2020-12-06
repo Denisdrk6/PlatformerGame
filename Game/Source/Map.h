@@ -5,9 +5,12 @@
 #include "List.h"
 #include "Point.h"
 
+
+
 #include "PugiXml\src\pugixml.hpp"
 
 // Ignore Terrain Types and Tile Types for now, but we want the image!
+
 
 struct TileSetInfo
 {
@@ -43,7 +46,9 @@ struct Properties
     struct Property
     {
         SString name;
+        SString type;
         int value;
+        float f_value;
     };
 
     ~Properties()
@@ -62,7 +67,7 @@ struct Properties
 
     // L06: DONE 7: Method to ask for the value of a custom property
     int GetProperty(const char* name, int default_value = 0) const;
-
+    float GetPropertyF(const char* name, int default_value = 0) const;
     List<Property*> list;
 };
 
@@ -91,7 +96,18 @@ struct MapLayer
 	}
 };
 
+struct ObjectData {
+    SString name;
+    int x;
+    int y;
+    int w;
+    int h;
+};
 
+struct ObjectLayer {
+    SString name;
+    List<ObjectData*> list;
+};
 struct MapInfo
 {
     SString             orientation;
@@ -105,6 +121,7 @@ struct MapInfo
     List<TileSetInfo*>  tilesets;
 	List<MapLayer*>     layers;
     List<Collider*>     colliders;
+    List<ObjectLayer*>  obj_layers;
 };
 
 
@@ -142,6 +159,7 @@ public:
 
     bool    collisionDraw = false;
 
+   
 private:
 
     pugi::xml_document      mapFile;
@@ -151,7 +169,7 @@ private:
     bool LoadMapData(pugi::xml_node);
     bool LoadTileset(pugi::xml_node, TileSetInfo*);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
-
+    bool LoadObjLayer(pugi::xml_node& node, ObjectLayer* layer);
     // L06: DONE 6: Load a group of properties 
     bool LoadProperties(pugi::xml_node& node, Properties& properties);
 

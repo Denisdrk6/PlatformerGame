@@ -31,7 +31,19 @@ int Properties::GetProperty(const char* value, int defaultValue) const
 
 	return defaultValue;
 }
+float Properties::GetPropertyF(const char* value, int default_value) const
+{
+	ListItem<Property*>* item = list.start;
 
+	while (item)
+	{
+		if (item->data->name == value)
+			return item->data->f_value;
+		item = item->next;
+	}
+
+	return default_value;
+}
 // Called before render is available
 bool Map::Awake(pugi::xml_node& config)
 {
@@ -430,6 +442,27 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 		
 		properties.list.Add(&property);
 	}
+	return ret;
+}
+
+bool Map::LoadObjLayer(pugi::xml_node& node, ObjectLayer* layer) {
+	bool ret = true;
+
+	layer->name = node.attribute("name").as_string();
+
+	pugi::xml_node object;
+	for (object = node.child("object"); object; object = object.next_sibling("object")) {
+		ObjectData* obj_data = new ObjectData();
+
+		obj_data->name = object.attribute("name").as_string();
+		obj_data->x = object.attribute("x").as_int();
+		obj_data->y = object.attribute("y").as_int();
+		obj_data->w = object.attribute("width").as_int();
+		obj_data->h = object.attribute("height").as_int();
+
+		layer->list.Add(obj_data);
+	}
+
 	return ret;
 }
 

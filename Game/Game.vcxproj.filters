@@ -29,6 +29,9 @@
     <ClCompile Include="Source\Fonts.cpp" />
     <ClCompile Include="Source\Pathfinding.cpp" />
     <ClCompile Include="Source\SceneWin.cpp" />
+    <ClCompile Include="Source\Entities.cpp" />
+    <ClCompile Include="Source\FlyEnemy.cpp" />
+    <ClCompile Include="Source\FloorEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -78,6 +81,9 @@
     <ClInclude Include="Source\Fonts.h" />
     <ClInclude Include="Source\Pathfinding.h" />
     <ClInclude Include="Source\SceneWin.h" />
+    <ClInclude Include="Source\Entities.h" />
+    <ClInclude Include="Source\FlyEnemy.h" />
+    <ClInclude Include="Source\FloorEnemy.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

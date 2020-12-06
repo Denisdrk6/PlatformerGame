@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "Collisions.h"
 #include "Pathfinding.h" 
+#include "Entities.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -102,7 +103,14 @@ bool Scene::Start()
 	
 
 	RELEASE_ARRAY(data);
-
+	
+	ListItem<ObjectLayer*>* ob_lay;
+	for (ob_lay = app->map->data.obj_layers.start; ob_lay; ob_lay = ob_lay->next) {
+		if (ob_lay->data->name == "Entities") {
+			app->entity->LoadFromObjectLayer(ob_lay->data);
+		}
+	}
+	return true;
 	return true;
 }
 
