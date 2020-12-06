@@ -91,6 +91,18 @@ struct MapLayer
 	}
 };
 
+struct ObjectData {
+    SString name;
+    int x;
+    int y;
+    int w;
+    int h;
+};
+
+struct ObjectLayer {
+    SString name;
+    List<ObjectData*> list;
+};
 
 struct MapInfo
 {

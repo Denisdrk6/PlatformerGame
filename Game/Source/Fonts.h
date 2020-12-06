@@ -58,6 +58,6 @@ private:
     uint fontsCount = 0;
 
 
-#endif
-
 };
+
+#endif

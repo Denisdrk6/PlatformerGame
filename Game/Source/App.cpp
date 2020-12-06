@@ -16,6 +16,8 @@
 #include "Log.h"
 #include "Player.h"
 #include "Pathfinding.h"
+#include "Entities.h"
+
 #include <iostream>
 #include <sstream>
 
@@ -40,6 +42,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	winScene = new SceneWin();
 	fonts = new Fonts();
 	pathfinding = new PathFinding();
+	entities = new Entities();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -54,6 +57,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fonts);
 	AddModule(map);
 	AddModule(player);
+	AddModule(entities);
 	AddModule(col);
 	AddModule(pathfinding);
 	AddModule(fade);

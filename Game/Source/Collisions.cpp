@@ -32,7 +32,7 @@ Collisions::Collisions()
 	matrix[COLLIDER_FLOOR][COLLIDER_DEAD] = false;
 	matrix[COLLIDER_FLOOR][COLLIDER_END] = false;
 	matrix[COLLIDER_FLOOR][COLLIDER_WIN] = false;
-	matrix[COLLIDER_FLOOR][COLLIDER_FINISH] = true;
+	matrix[COLLIDER_FLOOR][COLLIDER_FINISH] = false;
 	matrix[COLLIDER_FLOOR][COLLIDER_CHECKPOINT] = false;
 	matrix[COLLIDER_FLOOR][COLLIDER_COIN] = false;
 	matrix[COLLIDER_FLOOR][COLLIDER_HEART] = false;
@@ -108,7 +108,6 @@ Collisions::Collisions()
 	matrix[COLLIDER_COIN][COLLIDER_COIN] = false;
 	matrix[COLLIDER_COIN][COLLIDER_HEART] = false;
 
-
 	matrix[COLLIDER_HEART][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_HEART][COLLIDER_FLOOR] = false;
 	matrix[COLLIDER_HEART][COLLIDER_WALL] = false;
@@ -128,7 +127,11 @@ Collisions::Collisions()
 	matrix[COLLIDER_FINISH][COLLIDER_CHECKPOINT] = false;
 	matrix[COLLIDER_FINISH][COLLIDER_COIN] = false;
 	matrix[COLLIDER_FINISH][COLLIDER_HEART] = false;
-	
+
+	matrix[COLLIDER_ENEMY][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_ENEMY][COLLIDER_FLOOR] = true;
+	matrix[COLLIDER_ENEMY][COLLIDER_WALL] = true;
+	matrix[COLLIDER_ENEMY][COLLIDER_DEAD] = false;
 
 	name.Create("map");
 }

@@ -3,9 +3,12 @@
 
 #include "Module.h"
 #include "Animation.h"
+#include "List.h"
 
 struct SDL_Texture;
 class Collider;
+struct FlyEnemy;
+struct FloorEnemy;
 
 class BlendedTexture
 {
@@ -79,6 +82,9 @@ public:
 
 	SDL_Texture* flags;
 	SDL_Texture* img;
+
+	List<FlyEnemy*> FlyEnemies;
+	List<FloorEnemy*> FloorEnemies;
 
 private:
 	SDL_Texture*		heartsTex;
