@@ -19,7 +19,7 @@ bool Entities::Awake(pugi::xml_node& config) {
 	int cycles;
 
 	cycles = config.attribute("cycles_in_second").as_int();
-	update_ms_cycle = 1000.0f * (1 / (float)cycles);
+	updateMsCycle = 1000.0f * (1 / (float)cycles);
 
 	return ret;
 }
@@ -34,26 +34,26 @@ bool Entities::Load(pugi::xml_node& load) {
 
 
 
-	pugi::xml_node node_fly;
-	for (node_fly = load.child("Fly_Enemies").child("Fly_Enemy"); node_fly; node_fly = node_fly.next_sibling("FlyEnemy")) {
+	pugi::xml_node nodeFly;
+	for (nodeFly = load.child("Fly_Enemies").child("Fly_Enemy"); nodeFly; nodeFly = nodeFly.next_sibling("FlyEnemy")) {
 		iPoint pos;
 		pos.x = pos.y = 0;
 
-		FlyEnemy* ret = (FlyEnemy*)CreateEntity(Entity::EntityType::fly_enemy, pos);
-		ret->Load(node_fly);
+		FlyEnemy* ret = (FlyEnemy*)CreateEntity(Entity::EntityType::FLY_ENEMY, pos);
+		ret->Load(nodeFly);
 		app->scene->FlyEnemies.Add(ret);
 	}
 	//____________________
 
 
 	//Same with floor enemy
-	pugi::xml_node node_floor;
-	for (node_floor = load.child("Floor_Enemies").child("Floor_Enemy"); node_floor; node_floor = node_floor.next_sibling("Floor_Enemy")) {
+	pugi::xml_node nodeFloor;
+	for (nodeFloor = load.child("Floor_Enemies").child("Floor_Enemy"); nodeFloor; nodeFloor = nodeFloor.next_sibling("Floor_Enemy")) {
 		iPoint pos;
 		pos.x = pos.y = 0;
 
-		FloorEnemy* retF = (FloorEnemy*)CreateEntity(Entity::EntityType::floor_enemy, pos);
-		retF->Load(node_floor);
+		FloorEnemy* retF = (FloorEnemy*)CreateEntity(Entity::EntityType::FLOOR_ENEMY, pos);
+		retF->Load(nodeFloor);
 		app->scene->FloorEnemies.Add(retF);
 	}
 
@@ -64,15 +64,15 @@ bool Entities::Save(pugi::xml_node& save) const {
 
 	save.append_child("Fly_Enemies");
 	save.child("Fly_Enemies").append_child("Fly_Enemy");
-	pugi::xml_node fly_node;
-	fly_node = save.child("Fly_Enemies").child("Fly_Enemy");
+	pugi::xml_node flyNode;
+	flyNode = save.child("Fly_Enemies").child("Fly_Enemy");
 	ListItem<FlyEnemy*>* fly;
 	for (fly = app->scene->FlyEnemies.start; fly; fly = fly->next) {
-		fly->data->Save(fly_node);
+		fly->data->Save(flyNode);
 		if (fly->next != NULL) {
 			save.child("Fly_Enemies").append_child("Fly_Enemy");
 		}
-		fly_node = fly_node.next_sibling("Fly_Enemy");
+		flyNode = flyNode.next_sibling("Fly_Enemy");
 	}
 
 	return true;
@@ -96,7 +96,7 @@ bool Entities::Update(float dt) {
 		do_logic = true;
 	}*/
 
-	UpdateEntities(dt, do_logic);
+	UpdateEntities(dt, doLogic);
 	/*
 		if (do_logic == true) {
 			accumulated_time = 0.0f;
@@ -117,8 +117,8 @@ void Entities::UpdateEntities(float dt, bool do_logic) {
 Entity* Entities::CreateEntity(Entity::EntityType type, iPoint pos, int dest_X, int dest_Y) {
 	Entity* ret = nullptr;
 	switch (type) {
-	case Entity::EntityType::fly_enemy:				ret = new FlyEnemy(pos);			break;
-	case Entity::EntityType::floor_enemy:			ret = new FloorEnemy(pos);		break;
+	case Entity::EntityType::FLY_ENEMY:				ret = new FlyEnemy(pos);			break;
+	case Entity::EntityType::FLOOR_ENEMY:			ret = new FloorEnemy(pos);		break;
 		//case Entity::EntityType::particle:				ret = new Particle(pos, dest_X, dest_Y); break;
 	}
 
@@ -158,10 +158,10 @@ void Entities::OnCollision(Collider* c1, Collider* c2) {
 		app->player->OnCollision(c1, c2);
 	}
 
-	ListItem<FlyEnemy*>* fly_enemy;
-	for (fly_enemy = app->scene->FlyEnemies.start; fly_enemy; fly_enemy = fly_enemy->next) {
-		if (fly_enemy->data->col->rect.x == c1->rect.x && fly_enemy->data->col->rect.y == c1->rect.y && fly_enemy->data->col->rect.w == c1->rect.w && fly_enemy->data->col->rect.h == c1->rect.h) {
-			fly_enemy->data->OnCollision(c1, c2);
+	ListItem<FlyEnemy*>* flyEnemy;
+	for (flyEnemy = app->scene->FlyEnemies.start; flyEnemy; flyEnemy = flyEnemy->next) {
+		if (flyEnemy->data->col->rect.x == c1->rect.x && flyEnemy->data->col->rect.y == c1->rect.y && flyEnemy->data->col->rect.w == c1->rect.w && flyEnemy->data->col->rect.h == c1->rect.h) {
+			flyEnemy->data->OnCollision(c1, c2);
 		}
 	}
 
@@ -184,7 +184,7 @@ void Entities::LoadFromObjectLayer(ObjectLayer* layer) {
 			pos.x = obj->data->x;
 			pos.y = obj->data->y;
 
-			FlyEnemy* ret = (FlyEnemy*)CreateEntity(Entity::EntityType::fly_enemy, pos);
+			FlyEnemy* ret = (FlyEnemy*)CreateEntity(Entity::EntityType::FLY_ENEMY, pos);
 			app->scene->FlyEnemies.Add(ret);
 		}
 
@@ -193,7 +193,7 @@ void Entities::LoadFromObjectLayer(ObjectLayer* layer) {
 			pos.x = obj->data->x;
 			pos.y = obj->data->y;
 
-			FloorEnemy* ret = (FloorEnemy*)CreateEntity(Entity::EntityType::floor_enemy, pos);
+			FloorEnemy* ret = (FloorEnemy*)CreateEntity(Entity::EntityType::FLOOR_ENEMY, pos);
 			app->scene->FloorEnemies.Add(ret);
 		}
 	}

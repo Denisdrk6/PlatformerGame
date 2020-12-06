@@ -88,8 +88,8 @@ public:
 
 public:
 
-	SString		name;
-	bool		active;
+	SString name;
+	bool active;
 
 };
 

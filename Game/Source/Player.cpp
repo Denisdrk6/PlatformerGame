@@ -234,39 +234,6 @@ void Player::Death() {
 			app->render->DrawTexture(texture, app->render->camera.x * -1 + 565, app->render->camera.y * -1 + 280, &rDeadAnim.GetCurrentFrame());
 		}
 	}
-
-	/*
-	bool loaded = false;
-	for (int i = 1; i >= 0; i--)
-	{
-		if (app->scene->checkPoints[i].activated == true)
-		{
-			app->LoadGameRequest();
-			loaded = true;
-			groundCol = true;
-			firstFrame = true;
-			spacePressed = false;
-			doubleJump = false;
-			speedY = 1.4f;
-			currentAnimation = &rIdleAnim;
-		}
-	}
-
-	if (loaded == false)
-	{
-		currentAnimation = &rIdleAnim;
-		position.x = 2 * app->map->data.tileWidth;
-		position.y = spawnY * app->map->data.tileHeight;
-		app->render->camera.x = 0;
-		app->render->camera.y = -77.5 * app->map->data.tileHeight;
-		groundCol = true;
-		firstFrame = true;
-		spacePressed = false;
-		doubleJump = false;
-		speedY = 1.4f;
-	}
-	app->audio->PlayFx(1);
-	lifes = 3;*/
 }
 bool Player::Update(float dt)
 {
@@ -299,22 +266,22 @@ bool Player::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_REPEAT)
 	{
 		// We could delete the equal frame condition to make the animation more accuret, but it would be less smooth
-		if ((currentAnimation != &lJumpAnim && currentAnimation != &rJumpAnim && currentAnimation != &rFallAnim && currentAnimation != &lFallAnim) || (currentAnimation == &lJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), lJumpAnim.frames[lJumpAnim.last_frame - 1]) && groundCol == true)) {
+		if ((currentAnimation != &lJumpAnim && currentAnimation != &rJumpAnim && currentAnimation != &rFallAnim && currentAnimation != &lFallAnim) || (currentAnimation == &lJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), lJumpAnim.frames[lJumpAnim.lastFrame - 1]) && groundCol == true)) {
 			currentAnimation = &lWalkAnim;
 		}
 
 		else if (currentAnimation == &rJumpAnim)
 		{
-			float frame = currentAnimation->current_frame;
+			float frame = currentAnimation->currentFrame;
 			currentAnimation = &lJumpAnim;
-			currentAnimation->current_frame = frame;
+			currentAnimation->currentFrame = frame;
 		}
 
 		else if (currentAnimation == &rFallAnim)
 		{
-			float frame = currentAnimation->current_frame;
+			float frame = currentAnimation->currentFrame;
 			currentAnimation = &lFallAnim;
-			currentAnimation->current_frame = frame;
+			currentAnimation->currentFrame = frame;
 		}
 
 		// Camera can only move to the left if player is between tile width * 3 and the screen surface minus tile width * 11
@@ -329,23 +296,23 @@ bool Player::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_D) == KeyState::KEY_REPEAT)
 	{
 		// We change the animation to the right walking one if we are not jumping or falling or if we are on the las jumping frame and just touched a platform		if ((currentAnimation != &rJumpAnim && currentAnimation != &lJumpAnim && currentAnimation != &rFallAnim && currentAnimation != &lFallAnim) || (currentAnimation == &rJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), rJumpAnim.frames[rJumpAnim.last_frame - 1])))
-		if ((currentAnimation != &rJumpAnim && currentAnimation != &lJumpAnim && currentAnimation != &rFallAnim && currentAnimation != &lFallAnim) || (currentAnimation == &rJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), rJumpAnim.frames[rJumpAnim.last_frame - 1]) && groundCol == true))
+		if ((currentAnimation != &rJumpAnim && currentAnimation != &lJumpAnim && currentAnimation != &rFallAnim && currentAnimation != &lFallAnim) || (currentAnimation == &rJumpAnim && EqualFrames(currentAnimation->GetCurrentFrame(), rJumpAnim.frames[rJumpAnim.lastFrame - 1]) && groundCol == true))
 		{
 			currentAnimation = &rWalkAnim;
 		}
 
 		else if (currentAnimation == &lJumpAnim)
 		{
-			float frame = currentAnimation->current_frame;
+			float frame = currentAnimation->currentFrame;
 			currentAnimation = &rJumpAnim;
-			currentAnimation->current_frame = frame;
+			currentAnimation->currentFrame = frame;
 		}
 
 		else if (currentAnimation == &lFallAnim)
 		{
-			float frame = currentAnimation->current_frame;
+			float frame = currentAnimation->currentFrame;
 			currentAnimation = &rFallAnim;
-			currentAnimation->current_frame = frame;
+			currentAnimation->currentFrame = frame;
 		}
 
 		// Camera can only move to the right if player is between tile width * 4 and the screen surface minus tile width * 11

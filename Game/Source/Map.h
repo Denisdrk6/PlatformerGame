@@ -12,20 +12,20 @@
 struct TileSetInfo
 {
 
-    int         firstGid;
-    SString     name;
-    int         tileWidth;
-    int         tileHeight;
-    int         spacing;
-    int         margin;
-	int	        numTilesWidth;
-	int	        numTilesHeight;
+    int firstGid;
+    SString name;
+    int tileWidth;
+    int tileHeight;
+    int spacing;
+    int margin;
+	int	numTilesWidth;
+	int	numTilesHeight;
 
-    SString     source;
-    int         imageWidth;
-    int         imageHeight;
+    SString source;
+    int imageWidth;
+    int imageHeight;
 
-    SDL_Texture*texture;
+    SDL_Texture* texture;
 	
 	SDL_Rect GetTileRect(int id) const;
 };
@@ -38,42 +38,14 @@ enum MapTypes
     MAPTYPE_STAGGERED
 };
 
-/*struct Properties
-{
-    struct Property
-    {
-        SString name;
-        int value;
-    };
-
-    ~Properties()
-    {
-        ListItem<Property*>* item;
-        item = list.start;
-
-        while (item != NULL)
-        {
-            RELEASE(item->data);
-            item = item->next;
-        }
-
-        list.Clear();
-    }
-
-    // L06: DONE 7: Method to ask for the value of a custom property
-    /*int GetProperty(const char* name, int default_value = 0) const;
-
-    List<Property*> list;
-};*/
-
 // L04: DONE 1: Create a struct for the map layer
 struct MapLayer
 {
-	SString	    name;
-	int         width;
-	int         height;
+	SString	name;
+	int width;
+	int height;
     //Properties properties;
-	uint*       data;
+	uint* data;
     //int         tilesetNum;
 
 	MapLayer() : data(NULL)
@@ -105,18 +77,18 @@ struct ObjectLayer {
 
 struct MapInfo
 {
-    SString             orientation;
-    SString             renderOrder;
-    int                 width;
-    int                 height;
-    int                 tileWidth;
-    int                 tileHeight;
-    int                 nextObjectId;
-    MapTypes            type;
-    List<TileSetInfo*>  tilesets;
-	List<MapLayer*>     layers;
-    List<Collider*>     colliders;
-    List<ObjectLayer*>  obj_layers;
+    SString orientation;
+    SString renderOrder;
+    int width;
+    int height;
+    int tileWidth;
+    int tileHeight;
+    int nextObjectId;
+    MapTypes type;
+    List<TileSetInfo*> tilesets;
+	List<MapLayer*> layers;
+    List<Collider*> colliders;
+    List<ObjectLayer*> obj_layers;
 };
 
 
@@ -152,20 +124,18 @@ public:
 
     MapInfo data;
 
-    bool    collisionDraw = false;
+    bool collisionDraw = false;
 
 private:
 
-    pugi::xml_document      mapFile;
-    SString                 folder;
-    bool                    mapLoaded;
+    pugi::xml_document mapFile;
+    SString folder;
+    bool mapLoaded;
 
     bool LoadMapData(pugi::xml_node);
     bool LoadTileset(pugi::xml_node, TileSetInfo*);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
     bool LoadObjLayer(pugi::xml_node& node, ObjectLayer* layer);
-    // L06: DONE 6: Load a group of properties 
-    //Properties::Property LoadProperties(pugi::xml_node& node);
 
     TileSetInfo* GetTilesetFromTileId(int id) const;
 

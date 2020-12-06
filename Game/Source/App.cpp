@@ -117,11 +117,11 @@ bool App::Awake()
 		organization.Create(configApp.child("organization").child_value());
 
 		// 1: Read from config file your framerate cap
-		max_framerate = configApp.attribute("framerate_cap").as_int();
+		maxFramerate = configApp.attribute("framerate_cap").as_int();
 
-		if (max_framerate != 0) {
-			max_frame_ms = 1000.0f * (1 / (float)max_framerate);
-			fps_capped = true;
+		if (maxFramerate != 0) {
+			maxFrameMs = 1000.0f * (1 / (float)maxFramerate);
+			fpsCapped = true;
 		}
 	}
 
@@ -160,23 +160,23 @@ bool App::Start()
 		ret = item->data->Start();
 		item = item->next;
 	}
-	startup_time.Start();
+	startupTime.Start();
 
 	PERF_PEEK(ptimer);
 
 	return ret;
 }
 void App::ChangeFrameCap(int cap) {
-	max_framerate = cap;
-	fps_capped = true;
+	maxFramerate = cap;
+	fpsCapped = true;
 
-	if (max_framerate != 0) {
-		max_frame_ms = 1000.0f * (1 / (float)max_framerate);
+	if (maxFramerate != 0) {
+		maxFrameMs = 1000.0f * (1 / (float)maxFramerate);
 
 	}
-	else if (max_framerate == 0) {
-		max_frame_ms = NULL;
-		fps_capped = false;
+	else if (maxFramerate == 0) {
+		maxFrameMs = NULL;
+		fpsCapped = false;
 	}
 }
 
@@ -220,12 +220,12 @@ pugi::xml_node App::LoadConfig(pugi::xml_document& configFile) const
 // ---------------------------------------------
 void App::PrepareUpdate()
 {
-	frame_count++;
-	last_sec_frame_count++;
+	frameCount++;
+	lastSecFrameCount++;
 
 	// 4: Calculate the dt: differential time since last frame
-	DeltaTime = frame_time.ReadSec();
-	frame_time.Start();
+	DeltaTime = frameTime.ReadSec();
+	frameTime.Start();
 	ptimer.Start();
 }
 
@@ -239,24 +239,24 @@ void App::FinishUpdate()
 
 	// Framerate calculations --
 
-	if (last_sec_frame_time.Read() > 1000)
+	if (lastSecFrameTime.Read() > 1000)
 	{
-		last_sec_frame_time.Start();
-		prev_last_sec_frame_count = last_sec_frame_count;
-		last_sec_frame_count = 0;
+		lastSecFrameTime.Start();
+		prevLastSecFrameCount = lastSecFrameCount;
+		lastSecFrameCount = 0;
 	}
 
-	float avg_fps = float(frame_count) / startup_time.ReadSec();
-	float seconds_since_startup = startup_time.ReadSec();
-	uint last_frame_ms = frame_time.Read();
-	uint frames_on_last_update = prev_last_sec_frame_count;
+	float avgFps = float(frameCount) / startupTime.ReadSec();
+	float secondsSinceStartup = startupTime.ReadSec();
+	uint lastFrameMs = frameTime.Read();
+	uint framesOnLastUpdate = prevLastSecFrameCount;
 
-	SString frame_cap_title;
-	if (fps_capped == true) {
-		frame_cap_title = "ON";
+	SString frameCapTitle;
+	if (fpsCapped == true) {
+		frameCapTitle = "ON";
 	}
-	else if (fps_capped == false) {
-		frame_cap_title = "OFF";
+	else if (fpsCapped == false) {
+		frameCapTitle = "OFF";
 	}
 
 
@@ -266,16 +266,16 @@ void App::FinishUpdate()
 	app->win->SetTitle(title);*/
 
 	// 2: Use SDL_Delay to make sure you get your capped framerate
-	if (last_frame_ms < max_frame_ms && framerate > 0) {
-		PerfTimer Delay_ms;
-		Delay_ms.Start();
-		SDL_Delay(max_frame_ms - last_frame_ms);
+	if (lastFrameMs < maxFrameMs && framerate > 0) {
+		PerfTimer delayMs;
+		delayMs.Start();
+		SDL_Delay(maxFrameMs - lastFrameMs);
 		//LOG("We waited for %i miliseconds and got back in %f", (int)max_frame_ms, Delay_ms.ReadMs());
 	}
 	// 3: Measure accurately the amount of time it SDL_Delay actually waits compared to what was expected
-	FPS_n = frames_on_last_update;
-	FPS_a = avg_fps;
-	Last_ms = last_frame_ms;
+	fpsN = framesOnLastUpdate;
+	fpsA = avgFps;
+	lastMs = lastFrameMs;
 
 }
 

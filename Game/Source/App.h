@@ -93,44 +93,44 @@ private:
 public:
 
 	// Modules
-	Window*				win;
-	Input*				input;
-	Render*				render;
-	Textures*			tex;
-	Audio*				audio;
-	Scene*				scene;
-	Map*				map;
-	Animation*			animation;
-	Player*				player;
-	Collisions*			col;
-	FadeToBlack*		fade;
-	SceneIntro*			intro;
-	SceneWin*			winScene;
-	Fonts*				fonts;
-	PathFinding*		pathfinding;
-	Entities*			entities;
+	Window* win;
+	Input* input;
+	Render* render;
+	Textures* tex;
+	Audio* audio;
+	Scene* scene;
+	Map* map;
+	Animation* animation;
+	Player* player;
+	Collisions* col;
+	FadeToBlack* fade;
+	SceneIntro* intro;
+	SceneWin* winScene;
+	Fonts* fonts;
+	PathFinding* pathfinding;
+	Entities* entities;
 
-	int					max_framerate = 0;
-	bool				fps_capped;
-	int					FPS_n;
-	int					FPS_a;
-	int					Last_ms;
+	int maxFramerate = 0;
+	bool fpsCapped;
+	int fpsN;
+	int fpsA;
+	int lastMs;
 	
-	uint16_t			framerate = 1000 / 45;
+	uint16_t framerate = 1000 / 45;
 	
-	float				dt;
+	float dt;
 
 private:
 
-	float				DeltaTime;
+	float DeltaTime;
 
-	int					argc;
-	char**				args;
-	SString				title;
-	SString				organization;
+	int argc;
+	char** args;
+	SString title;
+	SString organization;
 
 
-	List<Module *>		modules;
+	List<Module *> modules;
 
 	// L01: DONE 2: Create new variables from pugui namespace
 	// NOTE: Redesigned LoadConfig() to avoid storing this variables
@@ -140,22 +140,22 @@ private:
 
 	
 	// the filename for save / load
-	uint				frames;
-	mutable bool		saveGameRequested;
-	bool				loadGameRequested;
+	uint frames;
+	mutable bool saveGameRequested;
+	bool loadGameRequested;
 	/*SString loadedGame;
 	mutable SString savedGame;*/
 
-	PerfTimer			ptimer;
-	uint				frame_count = 0;
-	Timer				startup_time;
-	Timer				frame_time;
-	Timer				last_sec_frame_time;
-	uint				last_sec_frame_count = 0;
-	uint				prev_last_sec_frame_count = 0;
+	PerfTimer ptimer;
+	uint frameCount = 0;
+	Timer startupTime;
+	Timer frameTime;
+	Timer lastSecFrameTime;
+	uint lastSecFrameCount = 0;
+	uint prevLastSecFrameCount = 0;
 
 	
-	float				max_frame_ms;
+	float maxFrameMs;
 };
 
 extern App* app;

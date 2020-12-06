@@ -10,7 +10,7 @@
 #define SPEED 100
 
 
-FloorEnemy::FloorEnemy(iPoint pos) : Entity(EntityType::floor_enemy) {
+FloorEnemy::FloorEnemy(iPoint pos) : Entity(EntityType::FLOOR_ENEMY) {
 	//Load Sprite
 	sprite = app->tex->Load("Assets/enemies/enemies.png");
 

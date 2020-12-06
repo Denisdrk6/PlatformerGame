@@ -71,13 +71,13 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	BlendedTexture		saveTex;
-	BlendedTexture		loadTex;
+	BlendedTexture saveTex;
+	BlendedTexture loadTex;
 
-	CheckPoint			checkPoints[2];
+	CheckPoint checkPoints[2];
 
-	Coin				coins[7];
-	Heart				hearts;
+	Coin coins[7];
+	Heart hearts;
 
 
 	SDL_Texture* flags;
@@ -87,16 +87,16 @@ public:
 	List<FloorEnemy*> FloorEnemies;
 
 private:
-	SDL_Texture*		heartsTex;
-	SDL_Texture*		coinsTex;
-	SDL_Texture*		iglu;
+	SDL_Texture* heartsTex;
+	SDL_Texture* coinsTex;
+	SDL_Texture* iglu;
 	
-	Animation			rotateCoin;
-	Animation			redCheckPoint;
-	Animation			greenCheckPoint;
+	Animation rotateCoin;
+	Animation redCheckPoint;
+	Animation greenCheckPoint;
 
 
-	bool				playerCol = true;
+	bool playerCol = true;
 
 protected:
 };

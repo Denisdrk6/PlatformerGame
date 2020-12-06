@@ -104,10 +104,10 @@ bool Scene::Start()
 
 		RELEASE_ARRAY(data);
 
-		ListItem<ObjectLayer*>* ob_lay;
-		for (ob_lay = app->map->data.obj_layers.start; ob_lay; ob_lay = ob_lay->next) {
-			if (ob_lay->data->name == "Entities") {
-				app->entities->LoadFromObjectLayer(ob_lay->data);
+		ListItem<ObjectLayer*>* obLay;
+		for (obLay = app->map->data.obj_layers.start; obLay; obLay = obLay->next) {
+			if (obLay->data->name == "Entities") {
+				app->entities->LoadFromObjectLayer(obLay->data);
 			}
 		}
 	}
@@ -174,10 +174,10 @@ bool Scene::Update(float dt)
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) {// FPS cap to 30
-		if (app->max_framerate != 30) {
+		if (app->maxFramerate != 30) {
 			app->ChangeFrameCap(30);
 		}
-		else if (app->max_framerate == 30) {
+		else if (app->maxFramerate == 30) {
 			app->ChangeFrameCap(0);
 
 
@@ -299,7 +299,7 @@ bool Scene::Update(float dt)
 	if (app->player->map == 2)
 		app->render->DrawTexture(iglu, 7 * app->map->data.tileWidth, 5 * app->map->data.tileWidth - (3 * app->map->data.tileWidth / 4) - 5, NULL);
 
-	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d, FPS: %i , Av.FPS:%2i  Last Frame Ms:%02i", app->map->data.width, app->map->data.height, app->map->data.tileWidth, app->map->data.tileHeight, app->map->data.tilesets.Count(), app->FPS_n, app->FPS_a, app->Last_ms);
+	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d, FPS: %i , Av.FPS:%2i  Last Frame Ms:%02i", app->map->data.width, app->map->data.height, app->map->data.tileWidth, app->map->data.tileHeight, app->map->data.tilesets.Count(), app->fpsN, app->fpsA, app->lastMs);
 	app->win->SetTitle(title.GetString());
 	/*sprintf_s(title, 256, "FPS: %i / Av.FPS: %.2f / Last Frame Ms: %02u (Frame Cap: %s) ",
 		frames_on_last_update, avg_fps, last_frame_ms, frame_cap_title.GetString());*/

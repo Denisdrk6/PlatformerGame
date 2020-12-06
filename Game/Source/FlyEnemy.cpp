@@ -8,7 +8,7 @@
 #define SPEED 100
 
 
-FlyEnemy::FlyEnemy(iPoint pos) : Entity(EntityType::fly_enemy) {
+FlyEnemy::FlyEnemy(iPoint pos) : Entity(EntityType::FLY_ENEMY) {
 	//load graphics
 	sprite = app->tex->Load("Assets/enemies/flying_enemy.png");
 

@@ -6,10 +6,7 @@
 #include "Audio.h"
 #include "Input.h"
 #include "FadeToBlack.h"
-//#include "ModuleEnemies.h"
-//#include "Globals.h"
 #include "Player.h"
-//#include "Particles.h"
 #include "Log.h"
 #include "Collisions.h"
 #include "Window.h"
@@ -39,11 +36,6 @@ bool SceneIntro::Start()
 	bgTexture.loaded = true;
 
 	opening = app->tex->Load("Assets/screens/opening.png");
-
-	/*if (app->enemies->IsEnabled() == true)
-	{
-		app->enemies->Disable();
-	}*/
 
 	app->player->score = 0;
 	if (app->player->lifes != 3) app->player->lifes = 3;

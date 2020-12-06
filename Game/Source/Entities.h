@@ -14,11 +14,11 @@ class Entity
 {
 public:
 	enum class EntityType {
-		player = 0,
-		floor_enemy,
-		fly_enemy,
+		PLAYER = 0,
+		FLOOR_ENEMY,
+		FLY_ENEMY,
 		//particle,
-		unknown
+		UNKNOWN
 	};
 
 	iPoint position;
@@ -68,12 +68,12 @@ private:
 
 	List<Entity*> entities;
 
-	float accumulated_time;
-	float update_ms_cycle;
+	float accumulatedTime;
+	float updateMsCycle;
 
 
 
-	bool do_logic = false;
+	bool doLogic = false;
 };
 
 #endif

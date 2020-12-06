@@ -83,14 +83,14 @@ public:
 
 private:
 	//bool LoadColliders();
-	SString					folder;
-	pugi::xml_document		collisionsData;
-	Collider*				colliders[MAX_COLLIDERS];
-	bool					matrix[COLLIDER_MAX][COLLIDER_MAX];
-	int						playerFloorCol;
-	int						playerWallCol;
-	int						playerDeadCol;
-	int						playerEnemyCol;
+	SString folder;
+	pugi::xml_document collisionsData;
+	Collider* colliders[MAX_COLLIDERS];
+	bool matrix[COLLIDER_MAX][COLLIDER_MAX];
+	int	playerFloorCol;
+	int	playerWallCol;
+	int	playerDeadCol;
+	int	playerEnemyCol;
 };
 
 #endif // __j1COLLISIONS_H__

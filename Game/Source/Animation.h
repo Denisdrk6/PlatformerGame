@@ -11,31 +11,31 @@ public:
 	SDL_Rect frames[MAX_FRAMES];
 
 public:
-	float current_frame;
-	int last_frame = 0;
+	float currentFrame;
+	int lastFrame = 0;
 	int finished = 0;
 
 public:
 
 	void PushBack(const SDL_Rect& rect)
 	{
-		frames[last_frame++] = rect;
+		frames[lastFrame++] = rect;
 	}
 
 	SDL_Rect& GetCurrentFrame()
 	{
-		current_frame += speed;
-		if (current_frame >= last_frame) {
-			current_frame = 0;
+		currentFrame += speed;
+		if (currentFrame >= lastFrame) {
+			currentFrame = 0;
 			finished = 1;
 		}
 		else finished = 0;
 
-		return frames[(int)current_frame];
+		return frames[(int)currentFrame];
 	}
 	int GetFinished() { return finished; }
 	void Finish() { finished = 1; }
-	void Reset() { current_frame = 0;	finished = 0; }
+	void Reset() { currentFrame = 0; finished = 0; }
 };
 
 #endif
