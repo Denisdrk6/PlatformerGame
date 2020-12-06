@@ -20,9 +20,6 @@ FloorEnemy::FloorEnemy(iPoint pos) : Entity(EntityType::floor_enemy) {
 	idle.PushBack({ 211 , 68 , 25 , 28 });
 	idle.speed = 5.0f;
 
-
-
-
 	col = app->col->AddCollider({ position.x,position.y,32,32 }, COLLIDER_ENEMY, app->entities);
 
 	//Load position and save it

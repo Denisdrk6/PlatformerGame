@@ -405,6 +405,10 @@ void Collisions::DebugDraw()
 			break;
 		case COLLIDER_FINISH:
 			app->render->DrawRectangle(colliders[i]->rect, 80, 30, 20, alpha);
+			break;
+		case COLLIDER_ENEMY:
+			app->render->DrawRectangle(colliders[i]->rect, 30, 20, 80, alpha);
+			break;
 		case COLLIDER_DEAD:
 			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 0, alpha);
 			break;

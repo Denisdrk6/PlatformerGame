@@ -499,8 +499,8 @@ bool Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 		}
 
 		*buffer = map;
-		width = data.width;
-		height = data.height;
+		width = data.width * data.tileWidth;
+		height = data.height * data.tileHeight;
 		ret = true;
 
 		break;

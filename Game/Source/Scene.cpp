@@ -95,19 +95,20 @@ bool Scene::Start()
 			hearts.collider = app->col->AddCollider({ hearts.position.x * app->map->data.tileWidth, hearts.position.y * app->map->data.tileHeight,app->map->data.tileWidth,app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_HEART, this);
 
 		app->render->camera.y = -77.5 * 32;
-	}
-	int w, h;
-	uchar* data = NULL;
-	if (app->map->CreateWalkabilityMap(w, h, &data))
-		app->pathfinding->SetMap(w, h, data);
+
+		int w, h;
+		uchar* data = NULL;
+		if (app->map->CreateWalkabilityMap(w, h, &data))
+			app->pathfinding->SetMap(w, h, data);
 
 
-	RELEASE_ARRAY(data);
+		RELEASE_ARRAY(data);
 
-	ListItem<ObjectLayer*>* ob_lay;
-	for (ob_lay = app->map->data.obj_layers.start; ob_lay; ob_lay = ob_lay->next) {
-		if (ob_lay->data->name == "Entities") {
-			app->entities->LoadFromObjectLayer(ob_lay->data);
+		ListItem<ObjectLayer*>* ob_lay;
+		for (ob_lay = app->map->data.obj_layers.start; ob_lay; ob_lay = ob_lay->next) {
+			if (ob_lay->data->name == "Entities") {
+				app->entities->LoadFromObjectLayer(ob_lay->data);
+			}
 		}
 	}
 

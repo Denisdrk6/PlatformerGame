@@ -10,12 +10,16 @@
 
 FlyEnemy::FlyEnemy(iPoint pos) : Entity(EntityType::fly_enemy) {
 	//load graphics
-	sprite = app->tex->Load("Assets/enemies/enemies.png");
+	sprite = app->tex->Load("Assets/enemies/flying_enemy.png");
 
 	//Load animations
-	idle.PushBack({ 0 , 0 , 0 , 0 });
-	idle.PushBack({ 0, 0 , 0 , 0 });
-	idle.speed = 1.0f;
+	idle.PushBack({ 0 , 51 , 46 , 45 });
+	idle.PushBack({ 55, 51 , 46 , 45 });
+	idle.PushBack({ 108, 51 , 46 , 45 });
+	idle.PushBack({ 164, 51 , 46 , 45 });
+	idle.PushBack({ 212, 51 , 46 , 45 });
+	idle.PushBack({ 266, 51 , 46 , 45 });
+	idle.speed = 0.05f;
 
 
 
@@ -125,7 +129,6 @@ void FlyEnemy::Update(float dt) {
 
 void FlyEnemy::Draw() {
 	Current_animation = &idle;
-
 
 	app->render->DrawTexture(sprite, position.x, position.y, &Current_animation->GetCurrentFrame(), 1.0f, NULL, NULL, NULL);
 }
