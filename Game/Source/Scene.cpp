@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "Collisions.h"
 #include "Pathfinding.h" 
+#include "Entities.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -75,7 +76,7 @@ bool Scene::Start()
 				checkPoints[i].collider = app->col->AddCollider({ checkPoints[i].position.x * app->map->data.tileWidth, checkPoints[i].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
 		}
 
-		coins[0].position = { 3, 84};
+		coins[0].position = { 3, 84 };
 		coins[1].position = { 43, 88 };
 		coins[2].position = { 85, 95 };
 		coins[3].position = { 86, 81 };
@@ -92,16 +93,23 @@ bool Scene::Start()
 		hearts.position = { 85,74 };
 		if (hearts.position.x != 0 || hearts.position.y != 0)
 			hearts.collider = app->col->AddCollider({ hearts.position.x * app->map->data.tileWidth, hearts.position.y * app->map->data.tileHeight,app->map->data.tileWidth,app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_HEART, this);
-		
+
 		app->render->camera.y = -77.5 * 32;
 	}
 	int w, h;
 	uchar* data = NULL;
 	if (app->map->CreateWalkabilityMap(w, h, &data))
 		app->pathfinding->SetMap(w, h, data);
-	
+
 
 	RELEASE_ARRAY(data);
+
+	ListItem<ObjectLayer*>* ob_lay;
+	for (ob_lay = app->map->data.obj_layers.start; ob_lay; ob_lay = ob_lay->next) {
+		if (ob_lay->data->name == "Entities") {
+			app->entities->LoadFromObjectLayer(ob_lay->data);
+		}
+	}
 
 	return true;
 }

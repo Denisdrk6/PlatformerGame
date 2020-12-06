@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="23" nextobjectid="232">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="24" nextobjectid="235">
  <tileset firstgid="1" name="Tileset" tilewidth="32" tileheight="32" tilecount="180" columns="15">
   <image source="Tileset.png" width="482" height="385"/>
   <tile id="165">
@@ -10032,103 +10032,6 @@
    <tile/>
   </data>
  </layer>
- <objectgroup id="21" name="Object Layer 1" visible="0">
-  <object id="124" name="floor" x="-1" y="3105" width="909" height="16"/>
-  <object id="125" name="wall" x="898" y="2548.13" width="35" height="573.875"/>
-  <object id="126" name="floor" x="353" y="3007.75" width="190" height="20"/>
-  <object id="127" name="floor" x="671" y="2943.91" width="160" height="20.0909"/>
-  <object id="128" name="floor" x="382" y="2848.18" width="226" height="21.8182"/>
-  <object id="129" name="floor" x="63" y="2751.73" width="225" height="20.2727"/>
-  <object id="130" name="floor" x="320" y="2656.36" width="94" height="19.6364"/>
-  <object id="131" name="floor" x="576.125" y="2559.88" width="254.875" height="18.125"/>
-  <object id="132" name="floor" x="897" y="2527.88" width="253" height="20.125"/>
-  <object id="133" name="floor" x="1024" y="2655.75" width="287" height="18.25"/>
-  <object id="135" name="floor" x="1247" y="2880" width="255" height="18"/>
-  <object id="136" name="floor" x="1602.5" y="2783.75" width="219.5" height="19.25"/>
-  <object id="137" name="floor" x="1503" y="3008" width="637" height="26"/>
-  <object id="138" name="floor" x="2207" y="2880.18" width="288" height="22.8182"/>
-  <object id="140" name="floor" x="2110" y="3137" width="125" height="23"/>
-  <object id="141" name="floor" x="2527" y="2976.27" width="95" height="16.7273"/>
-  <object id="142" name="floor" x="2655" y="3071.82" width="95" height="20.1818"/>
-  <object id="143" name="floor" x="2816" y="3073" width="31" height="24"/>
-  <object id="144" name="floor" x="2879.91" y="3010" width="95.0909" height="26"/>
-  <object id="145" name="floor" x="3039" y="2881" width="159.667" height="23"/>
-  <object id="146" name="floor" x="3072" y="2719.67" width="32" height="22"/>
-  <object id="147" name="floor" x="2721" y="2655" width="254" height="23"/>
-  <object id="148" name="floor" x="2720" y="2402" width="32" height="24"/>
-  <object id="149" name="floor" x="2816" y="2530" width="31" height="21"/>
-  <object id="150" name="floor" x="2913" y="2400" width="287" height="24"/>
-  <object id="151" name="floor" x="3104" y="2272.33" width="94" height="16.6667"/>
-  <object id="152" name="floor" x="2975" y="2176" width="97" height="24"/>
-  <object id="153" name="floor" x="3137" y="2048" width="63" height="17"/>
-  <object id="154" name="floor" x="2847" y="1986" width="96" height="26"/>
-  <object id="155" name="floor" x="2399" y="1536" width="31" height="19"/>
-  <object id="156" name="floor" x="2271" y="1473" width="33" height="19"/>
-  <object id="157" name="floor" x="2143.83" y="1346" width="96.6667" height="12"/>
-  <object id="158" name="floor" x="2079" y="1567" width="32" height="20"/>
-  <object id="159" name="floor" x="2433" y="1887.67" width="349" height="20.3333"/>
-  <object id="160" name="floor" x="2273" y="1824" width="158" height="19"/>
-  <object id="161" name="floor" x="2498" y="1665" width="223" height="17"/>
-  <object id="162" name="floor" x="1535" y="1664" width="479" height="17"/>
-  <object id="163" name="floor" x="1726" y="1599.67" width="97" height="14.3333"/>
-  <object id="164" name="floor" x="1440" y="1599.67" width="95" height="13.3333"/>
-  <object id="165" name="floor" x="1280" y="1472" width="190" height="15"/>
-  <object id="166" name="floor" x="-1" y="1471" width="1151" height="19"/>
-  <object id="167" name="floor" x="895" y="1343" width="34" height="17"/>
-  <object id="170" name="floor" x="703" y="1312.67" width="32" height="17.3333"/>
-  <object id="171" name="floor" x="639" y="1183" width="31" height="19"/>
-  <object id="172" name="floor" x="417" y="1184" width="29" height="22"/>
-  <object id="173" name="floor" x="257" y="1313" width="31" height="24"/>
-  <object id="174" name="floor" x="127" y="1279.33" width="31" height="19.6667"/>
-  <object id="175" name="floor" x="1" y="1154.88" width="29" height="17.75"/>
-  <object id="176" name="floor" x="352" y="737" width="63" height="14"/>
-  <object id="177" name="floor" x="94" y="864" width="99" height="16"/>
-  <object id="178" name="floor" x="0" y="992" width="94" height="16"/>
-  <object id="179" name="wall" x="1602.2" y="2802.67" width="30.4583" height="202.667"/>
-  <object id="180" name="wall" x="1790" y="2803.25" width="32.6667" height="204.417"/>
-  <object id="181" name="wall" x="2112.67" y="3034.25" width="27.3333" height="102.417"/>
-  <object id="182" name="wall" x="2211.33" y="2902.78" width="27.3333" height="235.212"/>
-  <object id="183" name="wall" x="2472.67" y="2903.33" width="20.6667" height="292.667"/>
-  <object id="184" name="wall" x="2818.67" y="2550" width="27.3333" height="102"/>
-  <object id="185" name="wall" x="2722" y="2424.75" width="28.6667" height="229.25"/>
-  <object id="186" name="wall" x="2746.67" y="1907.33" width="35.3333" height="204.667"/>
-  <object id="187" name="wall" x="2404.67" y="1842" width="26.6667" height="72.6666"/>
-  <object id="188" name="wall" x="2402" y="1552.67" width="27.3333" height="78"/>
-  <object id="189" name="wall" x="2272.67" y="1491.33" width="30" height="171.333"/>
-  <object id="190" name="wall" x="2081.33" y="1586" width="28" height="142"/>
-  <object id="191" name="wall" x="1983.33" y="1680" width="31.3333" height="175.333"/>
-  <object id="192" name="wall" x="1538" y="1680" width="30" height="174.667"/>
-  <object id="193" name="wall" x="1122" y="1490" width="28.6667" height="366"/>
-  <object id="194" name="wall" x="896.667" y="1359.33" width="29.3333" height="114.667"/>
-  <object id="195" name="wall" x="706" y="1329.33" width="27.3333" height="143.333"/>
-  <object id="196" name="wall" x="641.333" y="1201.33" width="27.3333" height="270"/>
-  <object id="197" name="wall" x="418" y="1204" width="27.3333" height="268.667"/>
-  <object id="198" name="wall" x="258" y="1336" width="26.6667" height="135.333"/>
-  <object id="199" name="wall" x="131.333" y="1298" width="25.3333" height="173.333"/>
-  <object id="200" name="wall" x="2.66667" y="1170" width="26" height="302"/>
-  <object id="201" name="spike" x="1152" y="2638.2" width="31.3333" height="17.3333"/>
-  <object id="203" name="spike" x="1311.33" y="2864.13" width="64.6667" height="15.5417"/>
-  <object id="205" name="spike" x="1502.67" y="2990.08" width="98.875" height="17.3333"/>
-  <object id="206" name="spike" x="1728" y="2767.42" width="65.7917" height="17.25"/>
-  <object id="207" name="spike" x="2141.33" y="3119.33" width="68.6667" height="18.6667"/>
-  <object id="209" name="spike" x="2528" y="2957.33" width="65.3333" height="18.6667"/>
-  <object id="210" name="spike" x="2656.36" y="3055.03" width="35.3333" height="16"/>
-  <object id="211" name="spike" x="2911.33" y="2992.55" width="35.3333" height="14.7878"/>
-  <object id="212" name="spike" x="2143.83" y="1327" width="94" height="20"/>
-  <object id="213" name="spike" x="1919.33" y="1646" width="37.3333" height="18"/>
-  <object id="214" name="spike" x="1694.67" y="1646.67" width="163.333" height="16.6667"/>
-  <object id="215" name="spike" x="1600.67" y="1647.33" width="34.6667" height="16.6667"/>
-  <object id="216" name="spike" x="733.333" y="1455.33" width="162.667" height="14.6667"/>
-  <object id="217" name="spike" x="670" y="1454" width="35.3333" height="18"/>
-  <object id="218" name="spike" x="444.667" y="1452" width="196" height="21.3333"/>
-  <object id="219" name="spike" x="286" y="1455.33" width="130.667" height="14.6667"/>
-  <object id="220" name="spike" x="160.667" y="1456.67" width="100" height="14.6667"/>
-  <object id="221" name="spike" x="29.3333" y="1454.67" width="98.6667" height="18.6667"/>
-  <object id="223" name="wall" x="-12" y="284" width="12" height="2904"/>
-  <object id="224" name="wall" x="3199.61" y="600" width="9.09091" height="2593.94"/>
-  <object id="227" name="spike" x="2848" y="2639.25" width="34.75" height="15.25"/>
-  <object id="228" name="spike" x="2752.25" y="2640.75" width="65.25" height="13.75"/>
- </objectgroup>
  <layer id="18" name="Floor" width="100" height="100">
   <data>
    <tile/>
@@ -30140,4 +30043,8 @@
    <tile/>
   </data>
  </layer>
+ <objectgroup id="23" name="Entities">
+  <object id="232" name="FlyEnemy" x="596" y="2714.67" width="45.3333" height="36"/>
+  <object id="234" name="FloorEnemy" x="629.333" y="3060" width="44" height="41.3333"/>
+ </objectgroup>
 </map>

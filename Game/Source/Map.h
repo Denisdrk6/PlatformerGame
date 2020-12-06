@@ -117,6 +117,7 @@ struct MapInfo
     List<TileSetInfo*>  tilesets;
 	List<MapLayer*>     layers;
     List<Collider*>     colliders;
+    List<ObjectLayer*>  obj_layers;
 };
 
 
@@ -163,7 +164,7 @@ private:
     bool LoadMapData(pugi::xml_node);
     bool LoadTileset(pugi::xml_node, TileSetInfo*);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
-
+    bool LoadObjLayer(pugi::xml_node& node, ObjectLayer* layer);
     // L06: DONE 6: Load a group of properties 
     bool LoadProperties(pugi::xml_node& node, Properties& properties);
 
