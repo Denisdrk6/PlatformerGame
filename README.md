@@ -34,13 +34,13 @@
  - [Pol Pallares Mur](https://github.com/Zeta115) - Designer
  
 ## Screenshots
-![Screenshot1](https://github.com/Denisdrk6/PlatformerGame/blob/master/Screenshots/Screenshot1.PNG)
-![Screenshot2](https://github.com/Denisdrk6/PlatformerGame/blob/master/Screenshots/Screenshot2.PNG)
-![Screenshot3](https://github.com/Denisdrk6/PlatformerGame/blob/master/Screenshots/Screenshot3.PNG)
-![Screenshot4](https://github.com/Denisdrk6/PlatformerGame/blob/master/Screenshots/Screenshot4.PNG)
-![Screenshot5](https://github.com/Denisdrk6/PlatformerGame/blob/master/Screenshots/Screenshot5.PNG)
-![Screenshot6](https://github.com/Denisdrk6/PlatformerGame/blob/master/Screenshots/Screenshot6.PNG)
-![Screenshot7](https://github.com/Denisdrk6/PlatformerGame/blob/master/Screenshots/Screenshot7.PNG)
+![Screenshot1](https://github.com/Denisdrk6/PlatformerGame/blob/master/Screenshots/Screenshot1.png)
+![Screenshot2](https://github.com/Denisdrk6/PlatformerGame/blob/master/Screenshots/Screenshot2.png)
+![Screenshot3](https://github.com/Denisdrk6/PlatformerGame/blob/master/Screenshots/Screenshot3.png)
+![Screenshot4](https://github.com/Denisdrk6/PlatformerGame/blob/master/Screenshots/Screenshot4.png)
+![Screenshot5](https://github.com/Denisdrk6/PlatformerGame/blob/master/Screenshots/Screenshot5.png)
+![Screenshot6](https://github.com/Denisdrk6/PlatformerGame/blob/master/Screenshots/Screenshot6.png)
+![Screenshot7](https://github.com/Denisdrk6/PlatformerGame/blob/master/Screenshots/Screenshot7.png)
 ## License
 
 This project is licensed under an unmodified MIT license, which is an OSI-certified license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
