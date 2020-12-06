@@ -3,9 +3,7 @@
 
 #include "Module.h"
 #include "Animation.h"
-#include "Point.h"
 
-#include "PugiXml\src\pugixml.hpp"
 struct SDL_Texture;
 class Collider;
 
@@ -81,7 +79,6 @@ public:
 
 	SDL_Texture* flags;
 	SDL_Texture* img;
-
 
 private:
 	SDL_Texture*		heartsTex;

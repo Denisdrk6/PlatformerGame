@@ -26,8 +26,7 @@ enum COLLIDER_TYPE
 	COLLIDER_COIN,
 	COLLIDER_HEART,
 	COLLIDER_MAX,
-	COLLIDER_GODMODE,
-	COLLIDER_ENEMY
+	COLLIDER_GODMODE
 	
 };
 //------------------------------------------------------------------------

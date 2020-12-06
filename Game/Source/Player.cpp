@@ -718,7 +718,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 
 		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_WALL)
 		{
-			iPoint relativePosition = position;
+			fPoint relativePosition = position;
 			// Checks if we are colliding a wall from below
 			if (c1->rect.y <= c2->rect.y + c2->rect.h && c1->rect.y >= c2->rect.y + c2->rect.h - 10 && groundCol == false && speedY > 0 && wallCol == false)
 			{
