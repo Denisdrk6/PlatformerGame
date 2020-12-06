@@ -166,7 +166,7 @@ void FloorEnemy::HandeInput() {
 	}
 
 	if (falling == true) {
-		vel.y += 10;
+		vel.y += 2;
 	}
 }
 
@@ -179,7 +179,7 @@ void FloorEnemy::Draw() {
 
 void FloorEnemy::OnCollision(Collider* c1, Collider* c2) {
 
-	if (c2->type == COLLIDER_FLOOR) {
+	if (c1->type == COLLIDER_TYPE::COLLIDER_ENEMY && c2->type == COLLIDER_TYPE::COLLIDER_FLOOR) {
 		if (vel.y > 0) {
 			vel.y = 0;
 		}

@@ -18,20 +18,6 @@ Map::Map() : Module(), mapLoaded(false)
 Map::~Map()
 {}
 
-int Properties::GetProperty(const char* value, int defaultValue) const
-{
-	ListItem<Property*>* item = list.start;
-
-	while (item)
-	{
-		if (item->data->name == value)
-			return item->data->value;
-		item = item->next;
-	}
-
-	return defaultValue;
-}
-
 // Called before render is available
 bool Map::Awake(pugi::xml_node& config)
 {
@@ -80,7 +66,7 @@ void Map::Draw()
 	{
 		if (collisionDraw == false)
 		{
-			if (layer->data->name != "Colisions")
+			if (layer->data->name != "Colisions" && layer->data->name != "Navigation")
 			{
 				for (int y = 0; y < data.height; ++y)
 				{
@@ -282,14 +268,11 @@ bool Map::Load(const char* filename)
 		pugi::xml_node layer;
 		for (layer = mapFile.child("map").child("layer"); layer && ret; layer = layer.next_sibling("layer"))
 		{
-			if (layer.child("properties").child("property").attribute("value").as_int() == i)
-			{
-				MapLayer* set2 = new MapLayer();
+			MapLayer* set2 = new MapLayer();
 
-				if (ret == true) ret = LoadLayer(layer, set2);
-
-				data.layers.Add(set2);
-			}
+			if (ret == true) ret = LoadLayer(layer, set2);
+			data.layers.Add(set2);
+			
 		}
 
 		pugi::xml_node object;
@@ -374,6 +357,7 @@ bool Map::LoadMapData(pugi::xml_node mapData)
 	data.tileWidth = mapData.attribute("tilewidth").as_int();
 	data.tileHeight = mapData.attribute("tileheight").as_int();
 	data.nextObjectId = mapData.attribute("nextobjectid").as_int();
+	data.type = MapTypes::MAPTYPE_ORTHOGONAL;
 
     return ret;
 }
@@ -412,8 +396,6 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	layer->width = node.attribute("width").as_int();
 	layer->height = node.attribute("height").as_int();
 	layer->name = node.attribute("name").as_string();
-	if(layer->name == "Colisions") LoadProperties(node, layer->properties);
-	//layer->tilesetNum = node.child("properties").child("property").attribute("value").as_int();
 	layer->data = new unsigned int[layer->width * layer->height * sizeof(unsigned int)];
 	memset(layer->data, 0, layer->width * layer->height * sizeof(unsigned int));
 	int i = 0;
@@ -448,24 +430,6 @@ void Map::OnCollision(Collider* c1, Collider* c2) {
 	}
 }
 
-// L06: TODO 6: Load a group of properties from a node and fill a list with it
-bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
-{
-	bool ret = false;
-
-	//..
-	
-	for (pugi::xml_node propNode = node.child("properties").child("property"); propNode; propNode = propNode.next_sibling("property"))
-	{
-		Properties::Property property;
-		property.name = propNode.attribute("name").as_string();
-		property.value = propNode.attribute("value").as_int();
-		
-		properties.list.Add(&property);
-	}
-	return ret;
-}
-
 bool Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 {
 	bool ret = false;
@@ -476,7 +440,7 @@ bool Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 	{
 		MapLayer* layer = item->data;
 
-		if (layer->properties.GetProperty("Navigation", 0) == 0)
+		if (layer->name != "Navigation")
 			continue;
 
 		uchar* map = new uchar[layer->width * layer->height];
@@ -499,8 +463,8 @@ bool Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 		}
 
 		*buffer = map;
-		width = data.width * data.tileWidth;
-		height = data.height * data.tileHeight;
+		width = data.width;
+		height = data.height;
 		ret = true;
 
 		break;

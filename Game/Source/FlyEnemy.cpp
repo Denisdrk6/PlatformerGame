@@ -138,7 +138,7 @@ void FlyEnemy::HandeInput() {
 	CurrentState = NONE;
 
 	if (ChasePlayer(app->player->position) == true) {
-		app->pathfinding->CreatePath(app->map->WorldToMap(position.x, position.y), app->map->WorldToMap(app->player->position.x, app->player->position.y), true);
+      		app->pathfinding->CreatePath(app->map->WorldToMap(position.x, position.y), app->map->WorldToMap(app->player->position.x, app->player->position.y), true);
 
 		const DynArray<Path>* path = app->pathfinding->GetLastPath();
 

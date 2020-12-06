@@ -40,8 +40,8 @@ void PathFinding::SetMap(uint width, uint height, uchar* data)
 // Utility: return true if pos is inside the map boundaries
 bool PathFinding::CheckBoundaries(const iPoint& pos) const
 {
-	return (pos.x >= 0 && pos.x <= (int)width &&
-		pos.y >= 0 && pos.y <= (int)height);
+	return (pos.x/32 >= 0 && pos.x/32 <= (int)width &&
+		pos.y/32 >= 0 && pos.y/32 <= (int)height);
 }
 
 // Utility: returns true is the tile is walkable
@@ -64,7 +64,7 @@ bool PathFinding::IsWalkable(const iPoint& pos, bool Fly) const
 uchar PathFinding::GetTileAt(const iPoint& pos) const
 {
 	if (CheckBoundaries(pos))
-		return map[(pos.y * width) + pos.x];
+		return map[(pos.y/32 * width) + pos.x/32];
 
 	return INVALID_WALK_CODE;
 }
@@ -179,7 +179,7 @@ int PathNode::CalculateF(const iPoint& destination)
 int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, bool Fly)
 {
 	//Clear the last path
-	lastPath.Clear();
+ 	lastPath.Clear();
 	// L12b: TODO 1: if origin or destination are not walkable, return -1
 	if (IsWalkable(origin, Fly) == false || IsWalkable(destination, Fly) == false) {
 		return -1;

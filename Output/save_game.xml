@@ -10,7 +10,7 @@
 	<:anonymous />
 	<map />
 	<player>
-		<player x="328" y="2945.22949" />
+		<player x="96" y="3042.62451" />
 		<map num="1" />
 	</player>
 	<entities>
@@ -25,6 +25,6 @@
 	<pathfinding />
 	<:anonymous />
 	<renderer>
-		<camera x="-198" y="-2480" />
+		<camera x="-36" y="-2480" />
 	</renderer>
 </game_state>

@@ -38,7 +38,7 @@ enum MapTypes
     MAPTYPE_STAGGERED
 };
 
-struct Properties
+/*struct Properties
 {
     struct Property
     {
@@ -61,10 +61,10 @@ struct Properties
     }
 
     // L06: DONE 7: Method to ask for the value of a custom property
-    int GetProperty(const char* name, int default_value = 0) const;
+    /*int GetProperty(const char* name, int default_value = 0) const;
 
     List<Property*> list;
-};
+};*/
 
 // L04: DONE 1: Create a struct for the map layer
 struct MapLayer
@@ -72,10 +72,9 @@ struct MapLayer
 	SString	    name;
 	int         width;
 	int         height;
+    //Properties properties;
 	uint*       data;
     //int         tilesetNum;
-
-    Properties properties;
 
 	MapLayer() : data(NULL)
 	{}
@@ -166,7 +165,7 @@ private:
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
     bool LoadObjLayer(pugi::xml_node& node, ObjectLayer* layer);
     // L06: DONE 6: Load a group of properties 
-    bool LoadProperties(pugi::xml_node& node, Properties& properties);
+    //Properties::Property LoadProperties(pugi::xml_node& node);
 
     TileSetInfo* GetTilesetFromTileId(int id) const;
 

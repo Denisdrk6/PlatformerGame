@@ -36,6 +36,7 @@ Collisions::Collisions()
 	matrix[COLLIDER_FLOOR][COLLIDER_CHECKPOINT] = false;
 	matrix[COLLIDER_FLOOR][COLLIDER_COIN] = false;
 	matrix[COLLIDER_FLOOR][COLLIDER_HEART] = false;
+	matrix[COLLIDER_FLOOR][COLLIDER_ENEMY] = true;
 
 
 	matrix[COLLIDER_WALL][COLLIDER_PLAYER] = true;
@@ -96,8 +97,6 @@ Collisions::Collisions()
 	matrix[COLLIDER_CHECKPOINT][COLLIDER_CHECKPOINT] = false;
 	matrix[COLLIDER_CHECKPOINT][COLLIDER_COIN] = false;
 	matrix[COLLIDER_CHECKPOINT][COLLIDER_HEART] = false;
-
-	
 	
 	matrix[COLLIDER_COIN][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_COIN][COLLIDER_FLOOR] = false;
@@ -294,6 +293,9 @@ bool Collisions::PreUpdate()
 
 			if (c1->CheckCollision(c2->rect) == true)
 			{
+
+				if (c1->type == COLLIDER_TYPE::COLLIDER_ENEMY && c2->type == COLLIDER_TYPE::COLLIDER_FLOOR)
+					int a = 0;
 
 				if (matrix[c1->type][c2->type] && c1->toDelete == false && c1->callback) {
 					c1->callback->OnCollision(c1, c2);
