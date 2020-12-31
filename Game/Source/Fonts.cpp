@@ -114,7 +114,7 @@ void Fonts::BlitText(int x, int y, int fontIndex, const char* text) const
 		spriteRect.x = spriteRect.w * (charIndex % font->columns);
 		spriteRect.y = spriteRect.h * (charIndex / font->columns);
 
-		app->render->DrawTexture(font->texture, x, y, &spriteRect, 0.0f, false);
+		app->render->DrawTexture(font->texture, x, y, &spriteRect, 1, 0.0f, false);
 
 		// Advance the position where we blit the next character
 		x += spriteRect.w;

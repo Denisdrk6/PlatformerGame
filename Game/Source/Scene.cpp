@@ -57,15 +57,15 @@ bool Scene::Start()
 {
 	if (active == true)
 	{
-		app->map->Load("Devmap.tmx");
-		img = app->tex->Load("Assets/textures/background.png");
-		heartsTex = app->tex->Load("Assets/textures/heart.png");
-		coinsTex = app->tex->Load("Assets/textures/coins.png");
-		flags = app->tex->Load("Assets/textures/Check_points.png");
-		iglu = app->tex->Load("Assets/textures/iglu.png");
+		app->map->Load("devmap.tmx");
+		img = app->tex->Load("Assets/Textures/background.png");
+		heartsTex = app->tex->Load("Assets/Textures/heart.png");
+		coinsTex = app->tex->Load("Assets/Textures/coins.png");
+		flags = app->tex->Load("Assets/Textures/check_points.png");
+		iglu = app->tex->Load("Assets/Textures/iglu_icon.png");
 
-		app->audio->PlayMusic("Assets/audio/music/Friends.ogg");
-		app->audio->LoadFx("Assets/audio/fx/hurt_sound.wav");
+		app->audio->PlayMusic("Assets/Audio/Music/friends.ogg");
+		app->audio->LoadFx("Assets/Audio/Fx/hurt_sound.wav");
 
 		//WARNING: might be called when we change maps
 		checkPoints[0].position = { 76, 88 };
@@ -131,7 +131,7 @@ bool Scene::Update(float dt)
 
 		// Load texture parameters
 		loadTex.rect = { 234, 0, 224, 83 };
-		if (loadTex.loaded == false) loadTex.texture = app->tex->Load("Assets/textures/saveLoad.png");
+		if (loadTex.loaded == false) loadTex.texture = app->tex->Load("Assets/Textures/Save_load.png");
 		loadTex.alpha = 255;
 		loadTex.loaded = true;
 	}
@@ -142,7 +142,7 @@ bool Scene::Update(float dt)
 
 		// Save texture parameters
 		saveTex.rect = { 0, 0, 224, 83 };
-		if (saveTex.loaded == false) saveTex.texture = app->tex->Load("Assets/textures/saveLoad.png");
+		if (saveTex.loaded == false) saveTex.texture = app->tex->Load("Assets/Textures/save_load.png");
 		saveTex.alpha = 255;
 		saveTex.loaded = true;
 	}
@@ -178,11 +178,23 @@ bool Scene::Update(float dt)
 			app->ChangeFrameCap(30);
 		}
 		else if (app->maxFramerate == 30) {
-			app->ChangeFrameCap(0);
-
-
-
+			app->ChangeFrameCap(60);
 		}
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && app->player->map != 1)
+	{
+		app->player->ChangeMap(1);
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN && app->player->map != 2)
+	{
+		app->player->ChangeMap(2);
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+	{
+		app->player->ChangeMap(app->player->map);
 	}
 
 	//Camera limits
@@ -211,7 +223,7 @@ bool Scene::Update(float dt)
 	}
 
 	// Draw map
-	app->render->DrawTexture(img, 0, 0, NULL);
+	app->render->DrawTexture(img, 0, 0, NULL, 1);
 	if (app->map->active == true) app->map->Draw();
 
 	// Draw extras (coins, hearts, flags, iglu)
@@ -222,7 +234,7 @@ bool Scene::Update(float dt)
 		switch (coins[i].activated)
 		{
 		case false:
-			app->render->DrawTexture(coinsTex, coins[i].position.x* app->map->data.tileWidth, coins[i].position.y * app->map->data.tileHeight, &rotateCoin.GetCurrentFrame());
+			app->render->DrawTexture(coinsTex, coins[i].position.x* app->map->data.tileWidth, coins[i].position.y * app->map->data.tileHeight, &rotateCoin.GetCurrentFrame(), 1);
 
 			break;
 		case true:
@@ -233,7 +245,7 @@ bool Scene::Update(float dt)
 	switch (hearts.activated)
 	{
 	case false:
-		app->render->DrawTexture(heartsTex, hearts.position.x * app->map->data.tileWidth, hearts.position.y * app->map->data.tileHeight);
+		app->render->DrawTexture(heartsTex, hearts.position.x * app->map->data.tileWidth, hearts.position.y * app->map->data.tileHeight, NULL, 1);
 
 		break;
 	case true:
@@ -247,17 +259,17 @@ bool Scene::Update(float dt)
 		case false:
 			if (checkPoints[i].position.x == 0 && checkPoints[i].position.y == 0)
 				break;
-			else app->render->DrawTexture(flags, checkPoints[i].position.x * app->map->data.tileWidth, checkPoints[i].position.y * app->map->data.tileHeight + 14, &redCheckPoint.GetCurrentFrame());
+			else app->render->DrawTexture(flags, checkPoints[i].position.x * app->map->data.tileWidth, checkPoints[i].position.y * app->map->data.tileHeight + 14, &redCheckPoint.GetCurrentFrame(), 2);
 			break;
 		case true:
 			if (checkPoints[i].position.x == 0 && checkPoints[i].position.y == 0)
 				break;
-			else app->render->DrawTexture(flags, checkPoints[i].position.x * app->map->data.tileWidth, checkPoints[i].position.y * app->map->data.tileHeight + 14, &greenCheckPoint.GetCurrentFrame());
+			else app->render->DrawTexture(flags, checkPoints[i].position.x * app->map->data.tileWidth, checkPoints[i].position.y * app->map->data.tileHeight + 14, &greenCheckPoint.GetCurrentFrame(), 2);
 			break;
 		}
 	}
 
-	app->render->DrawTexture(coinsTex, app->render->camera.x*-1 + 135, app->render->camera.y*-1 + 15, &rotateCoin.GetCurrentFrame());
+	app->render->DrawTexture(coinsTex, app->render->camera.x*-1 + 135, app->render->camera.y*-1 + 15, &rotateCoin.GetCurrentFrame(), 1);
 
 	//Draw save or load textures
 	if (saveTex.loaded == true)
@@ -275,7 +287,7 @@ bool Scene::Update(float dt)
 		{
 			//Set alpha value to texture and render it
 			SDL_SetTextureAlphaMod(saveTex.texture, saveTex.alpha);
-			app->render->DrawTexture(saveTex.texture, 1050, 620, &saveTex.rect);
+			app->render->DrawTexture(saveTex.texture, 1050, 620, &saveTex.rect, 1);
 		}
 	}
 
@@ -292,12 +304,12 @@ bool Scene::Update(float dt)
 		else
 		{
 			SDL_SetTextureAlphaMod(loadTex.texture, loadTex.alpha);
-			app->render->DrawTexture(loadTex.texture, 1050, 620, &loadTex.rect);
+			app->render->DrawTexture(loadTex.texture, 1050, 620, &loadTex.rect, 1);
 		}
 	}
 
 	if (app->player->map == 2)
-		app->render->DrawTexture(iglu, 7 * app->map->data.tileWidth, 5 * app->map->data.tileWidth - (3 * app->map->data.tileWidth / 4) - 5, NULL);
+		app->render->DrawTexture(iglu, 7 * app->map->data.tileWidth, 4 * app->map->data.tileWidth - (3 * app->map->data.tileWidth / 4) - 5, NULL, 1);
 
 	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d, FPS: %i , Av.FPS:%2i  Last Frame Ms:%02i", app->map->data.width, app->map->data.height, app->map->data.tileWidth, app->map->data.tileHeight, app->map->data.tilesets.Count(), app->fpsN, app->fpsA, app->lastMs);
 	app->win->SetTitle(title.GetString());
@@ -321,6 +333,9 @@ bool Scene::PostUpdate()
 bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
+	app->player->active = false;
+	app->map->active = false;
+	app->col->active = false;
 
 	return true;
 }

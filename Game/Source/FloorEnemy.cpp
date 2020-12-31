@@ -113,7 +113,7 @@ void FloorEnemy::Update(float dt) {
 	}
 	else if (dead == true) {
 		Current_animation = &death;
-		app->render->DrawTexture(sprite, position.x, position.y, &Current_animation->GetCurrentFrame(), 1.0f, NULL, NULL, NULL);
+		app->render->DrawTexture(sprite, position.x, position.y, &Current_animation->GetCurrentFrame(), 1, 1.0f, NULL, NULL, NULL);
 	}
 }
 
@@ -174,7 +174,7 @@ void FloorEnemy::Draw() {
 
 	Current_animation = &idle;
 
-	app->render->DrawTexture(sprite, position.x, position.y, &Current_animation->GetCurrentFrame(), 1.0f, NULL, NULL, NULL);
+	app->render->DrawTexture(sprite, position.x, position.y, &Current_animation->GetCurrentFrame(), 1, 1.0f, NULL, NULL, NULL);
 }
 
 void FloorEnemy::OnCollision(Collider* c1, Collider* c2) {

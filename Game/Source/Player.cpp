@@ -123,16 +123,17 @@ bool Player::Start()
 
 	bool ret = true;
 
-	texture = app->tex->Load("Assets/player/player.png");
-	heart = app->tex->Load("Assets/textures/heart.png");
-	textureHurt.texture = app->tex->Load("Assets/player/playerHurt.png");
+	texture = app->tex->Load("Assets/Player/player.png");
+	heart = app->tex->Load("Assets/Textures/heart.png");
+	textureHurt.texture = app->tex->Load("Assets/Player/player_hurt.png");
 	textureHurt.loaded = false;
 	currentAnimation = &rIdleAnim;
 
 	position.x = 3 * 32; //app->map->data.tileWidth;
 	position.y = 95 * 32; //app->map->data.tileHeight;
-	app->render->camera.x = 0;
-	app->render->camera.y = -77.5 * app->map->data.tileHeight;
+	/*app->render->camera.x = 0;
+	app->render->camera.y = 0;*/
+	//app->render->camera.y = -77.5 * app->map->data.tileHeight;
 
 	destroyed = false;
 
@@ -145,7 +146,7 @@ void Player::Death() {
 
 	if (deadScreen.loaded == false)
 	{
-		deadScreen.texture = app->tex->Load("Assets/screens/dead.png");
+		deadScreen.texture = app->tex->Load("Assets/Screens/dead.png");
 		deadScreen.alpha = 255;
 		deadScreen.loaded = true;
 		position.x = 0;
@@ -175,7 +176,7 @@ void Player::Death() {
 				firstFrame = true;
 				spacePressed = false;
 				doubleJump = false;
-				speedY = 1.4f;
+				speedY = 1.6f;
 
 				app->scene->checkPoints[0].position = { 76, 88 };
 				if (app->scene->checkPoints[0].activated == true)
@@ -229,9 +230,9 @@ void Player::Death() {
 		if (deadScreen.loaded == true)
 		{
 			SDL_SetTextureAlphaMod(deadScreen.texture, deadScreen.alpha);
-			app->render->DrawTexture(deadScreen.texture, app->render->camera.x * -1, app->render->camera.y * -1, NULL);
+			app->render->DrawTexture(deadScreen.texture, app->render->camera.x * -1, app->render->camera.y * -1, NULL, 1);
 
-			app->render->DrawTexture(texture, app->render->camera.x * -1 + 565, app->render->camera.y * -1 + 280, &rDeadAnim.GetCurrentFrame());
+			app->render->DrawTexture(texture, app->render->camera.x * -1 + 565, app->render->camera.y * -1 + 280, &rDeadAnim.GetCurrentFrame(), 5);
 		}
 	}
 }
@@ -256,11 +257,11 @@ bool Player::Update(float dt)
 	if (speedX - (int)speedX >= 0.5f) speedX = (int)speedX + 1;
 	else speedX = (int)speedX;
 
-	if (speedY == 1.45f)
+	if (speedY == 1.6f)
 	{
-		speedY = 1.45f * dt * speedMultiplier;
+		speedY = 1.6f * dt * speedMultiplier;
 		maxNegativeSpeedY = (speedY * -1) + (0.05f * dt * speedMultiplier);
-		gravity = (speedY / 145) * dt * speedMultiplier;
+		gravity = (speedY / 160) * dt * speedMultiplier;
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_REPEAT)
@@ -337,7 +338,7 @@ bool Player::Update(float dt)
 		if ((spacePressed == true && doubleJump == false) || (spacePressed == false && doubleJump == false && speedY < 0))
 		{
 			doubleJump = true;
-			speedY = 1.25f * dt * speedMultiplier;
+			speedY = 1.45f * dt * speedMultiplier;
 		}
 	}
 
@@ -466,7 +467,7 @@ bool Player::PostUpdate()
 	if (!destroyed)
 	{
 		SDL_Rect rect = currentAnimation->GetCurrentFrame();
-		app->render->DrawTexture(texture, position.x, position.y, &rect);
+		app->render->DrawTexture(texture, position.x, position.y, &rect, 2);
 		app->fonts->BlitText(10, 10, scoreFont, scoreText);
 
 		if(textureHurt.loaded == true)
@@ -481,14 +482,14 @@ bool Player::PostUpdate()
 			{
 				//Set alpha value to texture and render it
 				SDL_SetTextureAlphaMod(textureHurt.texture, textureHurt.alpha);
-				app->render->DrawTexture(textureHurt.texture, position.x, position.y, &textureHurt.rect);
+				app->render->DrawTexture(textureHurt.texture, position.x, position.y, &textureHurt.rect, 2);
 			}
 		}
 
 		// Lifes texture rendering
 		for (int i = 0, j = 0; i < lifes; ++i, j += 30)
 		{
-			app->render->DrawTexture(heart, (app->render->camera.x * -1) + 1180 - (30 * lifes) + j, app->render->camera.y * -1 + 25);
+			app->render->DrawTexture(heart, (app->render->camera.x * -1) + 1180 - (30 * lifes) + j, app->render->camera.y * -1 + 25, NULL, 1);
 		}
 
 		// Level 1 to level 2 transition
@@ -496,14 +497,14 @@ bool Player::PostUpdate()
 		{
 			if (loadingScreen.loaded == false)
 			{
-				loadingScreen.texture = app->tex->Load("Assets/screens/transition.png");
+				loadingScreen.texture = app->tex->Load("Assets/Screens/transition.png");
 				loadingScreen.alpha = 255;
 				loadingScreen.loaded = true;
 			}
 
 			if (loadingBalls.loaded == false)
 			{
-				loadingBalls.texture = app->tex->Load("Assets/screens/loading.png");
+				loadingBalls.texture = app->tex->Load("Assets/Screens/loading.png");
 				loadingBalls.alpha = 255;
 				loadingBalls.loaded = true;
 				loadingAnim.Reset();
@@ -525,12 +526,12 @@ bool Player::PostUpdate()
 			if (loadingScreen.loaded == true && loadingBalls.loaded == true && alphaModifier == 0)
 			{
 				SDL_SetTextureAlphaMod(loadingScreen.texture, loadingScreen.alpha);
-				app->render->DrawTexture(loadingScreen.texture, app->render->camera.x * -1, app->render->camera.y * -1, NULL);
+				app->render->DrawTexture(loadingScreen.texture, app->render->camera.x * -1, app->render->camera.y * -1, NULL, 1);
 
 				SDL_SetTextureAlphaMod(loadingBalls.texture, loadingScreen.alpha);
-				app->render->DrawTexture(loadingBalls.texture, app->render->camera.x * -1 + 450, app->render->camera.y * -1 + 500, &loadingAnim.GetCurrentFrame());
+				app->render->DrawTexture(loadingBalls.texture, app->render->camera.x * -1 + 450, app->render->camera.y * -1 + 500, &loadingAnim.GetCurrentFrame(), 1);
 
-				app->render->DrawTexture(texture, app->render->camera.x * -1 + 575, app->render->camera.y * -1 + 285, &rWalkAnim.GetCurrentFrame());
+				app->render->DrawTexture(texture, app->render->camera.x * -1 + 575, app->render->camera.y * -1 + 285, &rWalkAnim.GetCurrentFrame(), 5);
 			}
 
 			SDL_Rect middle = { 0, 94, 370, 46 };
@@ -586,9 +587,9 @@ void Player::ChangeMap(int mapNum)
 	switch (map)
 	{
 	case 1:
-		app->map->Load("Devmap.tmx");
+		app->map->Load("devmap.tmx");
 		app->tex->UnLoad(app->scene->img);
-		app->scene->img = app->tex->Load("Assets/textures/background.png");
+		app->scene->img = app->tex->Load("Assets/Textures/background.png");
 		spawnY = 95;
 		if (changingSavedMap == false)
 		{
@@ -602,7 +603,7 @@ void Player::ChangeMap(int mapNum)
 		firstFrame = true;
 		spacePressed = false;
 		doubleJump = false;
-		speedY = 1.4f;
+		speedY = 1.6f;
 
 		app->scene->checkPoints[0].position = { 76, 88 };
 		app->scene->checkPoints[0].activated = false;
@@ -638,10 +639,11 @@ void Player::ChangeMap(int mapNum)
 
 		score = 0;
 		break;
+
 	case 2:
-		app->map->Load("Devmap2.tmx");
+		app->map->Load("devmap2.tmx");
 		app->tex->UnLoad(app->scene->img);
-		app->scene->img = app->tex->Load("Assets/textures/background2.png");
+		app->scene->img = app->tex->Load("Assets/Textures/background2.png");
 		spawnY = 96;
 		if (changingSavedMap == false)
 		{
@@ -655,7 +657,7 @@ void Player::ChangeMap(int mapNum)
 		firstFrame = true;
 		spacePressed = false;
 		doubleJump = false;
-		speedY = 1.4f;
+		speedY = 1.6f;
 
 		app->scene->checkPoints[0].position = {81, 44};
 		app->scene->checkPoints[0].activated = false;
@@ -690,6 +692,7 @@ void Player::ChangeMap(int mapNum)
 		
 		score = 0;
 		break;
+
 	default:
 		break;
 	}
@@ -732,7 +735,11 @@ bool Player::Load(pugi::xml_node& data)
 
 bool Player::CheckTunneling(SDL_Rect r1, SDL_Rect r2)
 {
-	return (r1.y > r2.y&& r1.y + r1.h < r2.y + r2.h);
+	//return (r1.y + speedY < r2.y && r1.y + speedY + r1.h < r2.y + r2.h);
+	//return (r1.y + r1.h > r2.y&& r1.y < r2.y);
+	int offset = -2 - (120 / (1 / delta));
+	if (offset < -9) offset = -9;
+	return (r2.y - (r1.h + r1.y) >= offset);
 }
 void Player::OnCollision(Collider* c1, Collider* c2)
 {
@@ -838,7 +845,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				groundCol = true;
 				spacePressed = false;
 				doubleJump = false;
-				speedY = 1.45f;
+				speedY = 1.6f;
 			}
 		}
 
@@ -856,7 +863,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 					app->SaveGameRequest();
 
 					app->scene->saveTex.rect = { 0, 0, 224, 83 };
-					if (app->scene->saveTex.loaded == false) app->scene->saveTex.texture = app->tex->Load("Assets/textures/saveLoad.png");
+					if (app->scene->saveTex.loaded == false) app->scene->saveTex.texture = app->tex->Load("Assets/textures/save_load.png");
 					app->scene->saveTex.alpha = 255;
 					app->scene->saveTex.loaded = true;
 				}

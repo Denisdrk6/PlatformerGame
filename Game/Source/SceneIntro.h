@@ -9,10 +9,10 @@ struct SDL_Texture;
 class BlendTexture
 {
 public:
-	SDL_Texture* texture;
-	int alpha;
+	SDL_Texture* texture = nullptr;
+	int alpha = 0;
 	bool loaded = false;
-	SDL_Rect rect;
+	SDL_Rect rect = {0, 0, 0, 0};
 };
 
 class SceneIntro : public Module
@@ -41,7 +41,7 @@ public:
 public:
 	// The scene sprite sheet loaded into an SDL_Texture
 	BlendTexture bgTexture;
-	SDL_Texture* opening;
+	SDL_Texture* opening = nullptr;
 	int waitTime = 500;
 	int initTime = 0;
 	int alphaModifier = 4;

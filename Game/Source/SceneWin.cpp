@@ -31,7 +31,7 @@ bool SceneWin::Start()
 
 	bool ret = true;
 
-	bg = app->tex->Load("Assets/screens/win.png");
+	bg = app->tex->Load("Assets/Screens/win.png");
 
 	app->player->score = 0;
 	app->player->map = 1;
@@ -66,7 +66,7 @@ bool SceneWin::Update(float dt)
 bool SceneWin::PostUpdate()
 {
 	// Draw everything ---
-	app->render->DrawTexture(bg, app->render->camera.x + app->map->data.tileWidth * 2 + 8, app->render->camera.y, NULL);
+	app->render->DrawTexture(bg, app->render->camera.x * -1, app->render->camera.y * -1, NULL, 1);
 
 	return true;
 }

@@ -7,6 +7,7 @@
 #include "player.h"
 #include "Collisions.h"
 #include "Scene.h"
+#include "SceneIntro.h"
 
 #define VSYNC true
 
@@ -49,8 +50,8 @@ bool Render::Awake(pugi::xml_node& config)
 		camera.w = app->win->screenSurface->w;
 		camera.h = app->win->screenSurface->h;
 		camera.x = 0;
-		camera.y = -77.5 * 32;
-		//camera.y = 0;
+		//camera.y = -77.5 * 32;
+		camera.y = 0;
 	}
 
 	return ret;
@@ -128,16 +129,14 @@ void Render::ResetViewPort()
 }
 
 // Blit to screen
-bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivotX, int pivotY) const
+bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section, int mult, float speed, double angle, int pivotX, int pivotY) const
 {
 	bool ret = true;
 	uint scale = app->win->GetScale();
-
-	bool texturePlayer = (texture == app->player->texture || texture == app->player->textureHurt.texture || texture == app->scene->flags);
 	
-	SDL_Rect rect;
+	SDL_Rect rect = {0, 0, 0, 0};
 
-	if (texture != app->scene->saveTex.texture && texture != app->scene->loadTex.texture)
+	if (texture != app->scene->saveTex.texture && texture != app->scene->loadTex.texture /*&& texture != app->intro->opening*/)
 	{
 		rect.x = (int)(camera.x * speed) + x * scale;
 		rect.y = (int)(camera.y * speed) + y * scale;
@@ -151,24 +150,10 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 
 	if(section != NULL)
 	{
-		if (texturePlayer == false)
-		{
-			rect.w = section->w;
-			rect.h = section->h;
-		}
-
-		else if (texturePlayer == true && (app->player->loadingAnim.speed != 0.0f || app->player->rDeadAnim.speed != 0.0f))
-		{
-			rect.w = section->w * 5;
-			rect.h = section->h * 5;
-		}
-
-		else
-		{
-			rect.w = section->w * 2;
-			rect.h = section->h * 2;
-		}
+		rect.w = section->w * mult;
+		rect.h = section->h * mult;
 	}
+
 	else
 	{
 		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
@@ -189,6 +174,7 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 
 	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, SDL_FLIP_NONE) != 0)
 	{
+
 		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
 		ret = false;
 	}

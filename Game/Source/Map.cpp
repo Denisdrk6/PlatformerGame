@@ -82,7 +82,7 @@ void Map::Draw()
 						int tileId = layer->data->Get(x, y);
 						if (tileId > 0)
 						{
-							app->render->DrawTexture(tileset->data->texture, MapToWorld(x, y).x, MapToWorld(x, y).y, &tileset->data->GetTileRect(tileId));
+							app->render->DrawTexture(tileset->data->texture, MapToWorld(x, y).x, MapToWorld(x, y).y, &tileset->data->GetTileRect(tileId), 1);
 						}
 					}
 				}
@@ -104,7 +104,7 @@ void Map::Draw()
 					int tileId = layer->data->Get(x, y);
 					if (tileId > 0)
 					{
-						app->render->DrawTexture(tileset->data->texture, MapToWorld(x, y).x, MapToWorld(x, y).y, &tileset->data->GetTileRect(tileId));
+						app->render->DrawTexture(tileset->data->texture, MapToWorld(x, y).x, MapToWorld(x, y).y, &tileset->data->GetTileRect(tileId), 1);
 					}
 				}
 			}

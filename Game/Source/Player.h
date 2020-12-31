@@ -52,13 +52,13 @@ public:
 	fPoint position;
 
 	// The speed in which we move the player (pixels per frame)
-	float speedX = 1.0f;
-	float speedY = 1.45f;
+	float speedX = 1.5f;
+	float speedY = 1.6f;
 	float savedSpeed;
 	float gravity = 0.01f;
 	float maxNegativeSpeedY;
 	float delta = 0.0f;
-	int speedMultiplier = 120;
+	int speedMultiplier = 150;
 
 	// The player spritesheet loaded into an SDL_Texture
 	SDL_Texture* texture = nullptr;

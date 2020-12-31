@@ -31,11 +31,11 @@ bool SceneIntro::Start()
 
 	bool ret = true;
 
-	bgTexture.texture = app->tex->Load("Assets/textures/Logo_dev_team.png");
+	bgTexture.texture = app->tex->Load("Assets/Textures/logo_dev_team.png");
 	bgTexture.alpha = 1;
 	bgTexture.loaded = true;
 
-	opening = app->tex->Load("Assets/screens/opening.png");
+	opening = app->tex->Load("Assets/Screens/opening.png");
 
 	app->player->score = 0;
 	if (app->player->lifes != 3) app->player->lifes = 3;
@@ -72,7 +72,7 @@ bool SceneIntro::Update(float dt)
 bool SceneIntro::PostUpdate()
 {
 	// Draw everything ---
-	app->render->DrawTexture(bgTexture.texture, app->render->camera.x * -1 + (app->win->screenSurface->w / 2) - 180, app->render->camera.y * -1 + (app->win->screenSurface->h / 4), NULL);
+	//app->render->DrawTexture(bgTexture.texture, app->render->camera.x * -1 + (app->win->screenSurface->w / 2) - 180, app->render->camera.y * -1 + (app->win->screenSurface->h / 4), NULL, 1);
 
 	if (bgTexture.loaded == true)
 	{
@@ -95,11 +95,12 @@ bool SceneIntro::PostUpdate()
 		else
 		{
 			SDL_SetTextureAlphaMod(bgTexture.texture, bgTexture.alpha);
-			app->render->DrawTexture(bgTexture.texture, app->render->camera.x * -1 + (app->win->screenSurface->w / 2) - 180, app->render->camera.y * -1 + (app->win->screenSurface->h / 4), NULL);
+			app->render->DrawTexture(bgTexture.texture, app->render->camera.x * -1 + (app->win->screenSurface->w / 2) - 180, app->render->camera.y * -1 + (app->win->screenSurface->h / 4), NULL, 1);
 		}
 	}
 
-	else app->render->DrawTexture(opening, app->render->camera.x, app->render->camera.y, NULL);
+	else
+		app->render->DrawTexture(opening, 0, 0, NULL, 1);
 
 	return true;
 }
@@ -111,6 +112,7 @@ bool SceneIntro::CleanUp()
 	app->audio->active = true;
 	app->map->active = true;
 	app->col->active = true;
+	app->render->camera.y = -77.5 * 32;
 
 	return true;
 }

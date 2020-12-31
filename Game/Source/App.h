@@ -141,8 +141,8 @@ private:
 	
 	// the filename for save / load
 	uint frames;
-	mutable bool saveGameRequested;
-	bool loadGameRequested;
+	mutable bool saveGameRequested = false;
+	bool loadGameRequested = false;
 	/*SString loadedGame;
 	mutable SString savedGame;*/
 

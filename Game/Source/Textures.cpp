@@ -91,6 +91,7 @@ bool Textures::UnLoad(SDL_Texture* texture)
 		{
 			SDL_DestroyTexture(item->data);
 			textures.Del(item);
+			texture = nullptr;
 			return true;
 		}
 	}
