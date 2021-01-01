@@ -130,7 +130,7 @@ bool Player::Start()
 	currentAnimation = &rIdleAnim;
 
 	position.x = 3 * 32; //app->map->data.tileWidth;
-	position.y = 95 * 32; //app->map->data.tileHeight;
+	position.y = 94 * 32; //app->map->data.tileHeight;
 	/*app->render->camera.x = 0;
 	app->render->camera.y = 0;*/
 	//app->render->camera.y = -77.5 * app->map->data.tileHeight;
@@ -365,12 +365,6 @@ bool Player::Update(float dt)
 
 			currentAnimation == &lShootAnim;
 	}
-
-	/*if (app->input->GetKey(SDL_SCANCODE_F7) == KeyState::KEY_DOWN)
-	{
-		if (map == 1) ChangeMap(2);
-		else ChangeMap(1);
-	}*/
 	
 	 //If no right/left/up movement detected, set the current animation back to idle
 	if (app->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_IDLE
@@ -500,6 +494,8 @@ bool Player::PostUpdate()
 				loadingScreen.texture = app->tex->Load("Assets/Screens/transition.png");
 				loadingScreen.alpha = 255;
 				loadingScreen.loaded = true;
+				mapChanged = false;
+				alphaModifier = 0;
 			}
 
 			if (loadingBalls.loaded == false)
@@ -536,11 +532,12 @@ bool Player::PostUpdate()
 
 			SDL_Rect middle = { 0, 94, 370, 46 };
 
-			// Load second level when in middle of loading animation. mapChanged makes it so that we anly call ChangeMap function once
-			if (EqualFrames(loadingAnim.GetCurrentFrame(), middle) &&mapChanged == false) ChangeMap(2);
+			// Load second level when in middle of loading animation. mapChanged makes it so that we only call ChangeMap function once
+			if (EqualFrames(loadingAnim.GetCurrentFrame(), middle) && mapChanged == false)
+				ChangeMap(2);
 
 			SDL_Rect last = { 0, 235, 370, 46 };
-
+			
 			// When loading animation is at last frame we start taking alpha and stop the animation
 			if (EqualFrames(loadingAnim.GetCurrentFrame(), last))
 			{
@@ -548,7 +545,7 @@ bool Player::PostUpdate()
 				if (modifier > 3 * 1.5f) modifier = 2 * 3;
 				else if (modifier > 3 * 0.5f) modifier = 1 * 3;
 				alphaModifier = -modifier;
-				mapChanged = false;
+				//mapChanged = false;
 				loadingAnim.speed = 0.0f;
 			}
 
@@ -579,18 +576,29 @@ bool Player::CleanUp()
 
 void Player::ChangeMap(int mapNum)
 {
+	int externMap = map;
 	map = mapNum;
-	app->map->Disable();
-	app->map->Enable();
+
+	if(externMap != map || currentMap != map)
+	{
+		app->map->Disable();
+		app->map->Enable();
+
+		app->col->Disable();
+		app->col->Enable();
+	}
 	//app->map->data.tilesets.start->data->texture = app->tex->Load("");
 
 	switch (map)
 	{
 	case 1:
-		app->map->Load("devmap.tmx");
-		app->tex->UnLoad(app->scene->img);
-		app->scene->img = app->tex->Load("Assets/Textures/background.png");
-		spawnY = 95;
+		if (externMap != map || currentMap != map)
+		{
+			app->map->Load("devmap.tmx");
+			app->tex->UnLoad(app->scene->img);
+			app->scene->img = app->tex->Load("Assets/Textures/background.png");
+		}
+		spawnY = 94;
 		if (changingSavedMap == false)
 		{
 			position.x = 3 * 32;
@@ -629,8 +637,11 @@ void Player::ChangeMap(int mapNum)
 		app->scene->coins[6].position = { 16, 39 };
 		app->scene->coins[6].activated = false;
 
-		for (int i = 0; i < maxScore; i++)
-			app->scene->coins[i].collider = app->col->AddCollider({ app->scene->coins[i].position.x * app->map->data.tileWidth, app->scene->coins[i].position.y * app->map->data.tileHeight, app->map->data.tileWidth, app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_COIN, this);
+		if (externMap != map || currentMap != map)
+		{
+			for (int i = 0; i < maxScore; i++)
+				app->scene->coins[i].collider = app->col->AddCollider({ app->scene->coins[i].position.x * app->map->data.tileWidth, app->scene->coins[i].position.y * app->map->data.tileHeight, app->map->data.tileWidth, app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_COIN, this);
+		}
 
 		app->scene->hearts.position = { 85, 74 };
 		app->scene->hearts.activated = false;
@@ -641,10 +652,14 @@ void Player::ChangeMap(int mapNum)
 		break;
 
 	case 2:
-		app->map->Load("devmap2.tmx");
-		app->tex->UnLoad(app->scene->img);
-		app->scene->img = app->tex->Load("Assets/Textures/background2.png");
-		spawnY = 96;
+		if (externMap != map || currentMap != map)
+		{
+			app->map->Load("devmap2.tmx");
+			app->tex->UnLoad(app->scene->img);
+			app->scene->img = app->tex->Load("Assets/Textures/background2.png");
+		}
+
+		spawnY = 95;
 		if (changingSavedMap == false)
 		{
 			position.x = 3 * 32;
@@ -719,13 +734,14 @@ bool Player::Load(pugi::xml_node& data)
 	position.x = data.child("player").attribute("x").as_int();
 	position.y = data.child("player").attribute("y").as_float();
 
-	int current = map;
+	currentMap = map;
 
 	map = data.child("map").attribute("num").as_int();
 
-	if (current != map)
+	if (currentMap != map)
 	{
 		changingSavedMap = true;
+		mapChanged = false;
 		ChangeMap(map);
 		changingSavedMap = false;
 	}
@@ -838,9 +854,12 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				if (currentAnimation == &rFallAnim && firstFrame == false) currentAnimation = &rJumpAnim;
 				else if (currentAnimation == &lFallAnim && firstFrame == false) currentAnimation = &lJumpAnim;
 
-				// Avoids jumping animation when respawning
+				// Avoids jumping animation when respawning and sets idle animation when touching a platform
 				else if (firstFrame == false && groundCol == true && currentAnimation != &lWalkAnim && currentAnimation != &lIdleAnim && currentAnimation != &lFallAnim && currentAnimation != &lJumpAnim)
 					currentAnimation = &rIdleAnim;
+				// Avoids jumping animation when respawning and sets idle animation when touching a platform
+				else if (firstFrame == false && groundCol == true && currentAnimation != &rWalkAnim && currentAnimation != &rIdleAnim && currentAnimation != &rFallAnim && currentAnimation != &rJumpAnim)
+					currentAnimation = &lIdleAnim;
 
 				groundCol = true;
 				spacePressed = false;

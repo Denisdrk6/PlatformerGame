@@ -423,6 +423,7 @@ bool App::LoadGame()
 		while (item != NULL && ret == true)
 		{
 			ret = item->data->Load(root.child(item->data->name.GetString()));
+			//if (item->data->name.GetString() == "player" ) int externMap = app->player->map;
 			LOG("Name: %s", item->data->name.GetString());
 			item = item->next;
 		}

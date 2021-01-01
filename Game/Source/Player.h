@@ -104,10 +104,12 @@ public:
 	int	lifeWait = 0;
 	bool lifeTaken = false;
 	
-	int	spawnY = 95;
+	int	spawnY = 94;
 	int	map = 1;
 	int	alphaModifier = 0;
 	int	alphaModifierDead = 0;
+
+	int currentMap = 1;
 
 	// The player's collider
 	Collider* collider = nullptr;
