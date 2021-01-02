@@ -317,7 +317,7 @@ bool App::DoUpdate()
 			continue;
 		}
 
-      		ret = item->data->Update(DeltaTime);
+      	else ret = item->data->Update(DeltaTime);
 	}
 
 	return ret;

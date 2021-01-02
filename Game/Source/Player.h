@@ -9,6 +9,15 @@
 struct SDL_Texture;
 struct Collider;
 
+class BlendedTextures
+{
+public:
+	SDL_Texture* texture;
+	int alpha;
+	bool loaded = false;
+	SDL_Rect rect;
+};
+
 class Player : public Module
 {
 public:
@@ -63,10 +72,10 @@ public:
 	// The player spritesheet loaded into an SDL_Texture
 	SDL_Texture* texture = nullptr;
 	SDL_Texture* heart = nullptr;
-	BlendedTexture loadingScreen;
-	BlendedTexture loadingBalls;
-	BlendedTexture textureHurt;
-	BlendedTexture deadScreen;
+	BlendedTextures loadingScreen;
+	BlendedTextures loadingBalls;
+	BlendedTextures textureHurt;
+	BlendedTextures deadScreen;
 
 	// The pointer to the current player animation
 	// It will be switched depending on the player's movement direction

@@ -136,7 +136,7 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 	
 	SDL_Rect rect = {0, 0, 0, 0};
 
-	if (texture != app->scene->saveTex.texture && texture != app->scene->loadTex.texture /*&& texture != app->intro->opening*/)
+	if (texture != app->scene->saveTexBlending.texture && texture != app->scene->loadTexBlending.texture /*&& texture != app->intro->opening*/)
 	{
 		rect.x = (int)(camera.x * speed) + x * scale;
 		rect.y = (int)(camera.y * speed) + y * scale;

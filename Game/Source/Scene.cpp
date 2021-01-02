@@ -63,6 +63,8 @@ bool Scene::Start()
 		coinsTex = app->tex->Load("Assets/Textures/coins.png");
 		flags = app->tex->Load("Assets/Textures/check_points.png");
 		iglu = app->tex->Load("Assets/Textures/iglu_icon.png");
+		saveTexBlending.texture = app->tex->Load("Assets/textures/save_load.png");
+		loadTexBlending.texture = app->tex->Load("Assets/Textures/Save_load.png");
 
 		app->audio->PlayMusic("Assets/Audio/Music/friends.ogg");
 		app->audio->LoadFx("Assets/Audio/Fx/hurt_sound.wav");
@@ -105,7 +107,8 @@ bool Scene::Start()
 		RELEASE_ARRAY(data);
 
 		ListItem<ObjectLayer*>* obLay;
-		for (obLay = app->map->data.obj_layers.start; obLay; obLay = obLay->next) {
+		for (obLay = app->map->data.obj_layers.start; obLay; obLay = obLay->next)
+		{
 			if (obLay->data->name == "Entities") {
 				app->entities->LoadFromObjectLayer(obLay->data);
 			}
@@ -130,10 +133,10 @@ bool Scene::Update(float dt)
 		app->LoadGameRequest();
 
 		// Load texture parameters
-		loadTex.rect = { 234, 0, 224, 83 };
-		if (loadTex.loaded == false) loadTex.texture = app->tex->Load("Assets/Textures/Save_load.png");
-		loadTex.alpha = 255;
-		loadTex.loaded = true;
+		loadTexBlending.rect = { 234, 0, 224, 83 };
+		//if (loadTexBlending.loaded == false) loadTexBlending = app->tex->Load("Assets/Textures/Save_load.png");
+		loadTexBlending.alpha = 255;
+		loadTexBlending.loaded = true;
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
@@ -141,10 +144,10 @@ bool Scene::Update(float dt)
 		app->SaveGameRequest();
 
 		// Save texture parameters
-		saveTex.rect = { 0, 0, 224, 83 };
-		if (saveTex.loaded == false) saveTex.texture = app->tex->Load("Assets/Textures/save_load.png");
-		saveTex.alpha = 255;
-		saveTex.loaded = true;
+		saveTexBlending.rect = { 0, 0, 224, 83 };
+		//if (saveTexBlending.loaded == false) saveTex = app->tex->Load("Assets/Textures/save_load.png");
+		saveTexBlending.alpha = 255;
+		saveTexBlending.loaded = true;
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN) app->audio->VolumeControl(4);
@@ -195,6 +198,41 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 	{
 		app->player->ChangeMap(app->player->map);
+		
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+	{
+		if (currentCheckpoint == 0 || currentCheckpoint == 2 || app->player->map == 2)
+		{
+			app->player->position.x = checkPoints[0].position.x * 32;
+			app->player->position.y = checkPoints[0].position.y * 32;
+
+			if (app->player->map == 1)
+			{
+				app->render->camera.x = -1891;
+				app->render->camera.y = -2480;
+			}
+
+			else if (app->player->map == 2)
+			{
+				app->render->camera.x = -1888;
+				app->render->camera.y = -1061;
+			}
+
+			currentCheckpoint = 1;
+		}
+
+		else if (currentCheckpoint == 1 && app->player->map == 1)
+		{
+			app->player->position.x = checkPoints[1].position.x * 32;
+			app->player->position.y = checkPoints[1].position.y * 32;
+
+			app->render->camera.x = -577;
+			app->render->camera.y = -1021;
+
+			currentCheckpoint = 2;
+		}
 	}
 
 	//Camera limits
@@ -269,42 +307,49 @@ bool Scene::Update(float dt)
 		}
 	}
 
-	app->render->DrawTexture(coinsTex, app->render->camera.x*-1 + 135, app->render->camera.y*-1 + 15, &rotateCoin.GetCurrentFrame(), 1);
+	app->render->DrawTexture(coinsTex, app->render->camera.x * -1 + 135, app->render->camera.y * -1 + 15, &rotateCoin.GetCurrentFrame(), 1);
 
 	//Draw save or load textures
-	if (saveTex.loaded == true)
+	if (saveTexBlending.loaded == true)
 	{
-		saveTex.alpha--;
-		if (saveTex.alpha <= 0)
+		saveTexBlending.alpha--;
+		if (saveTexBlending.alpha <= 0)
 		{
 			//Unload texture if its completely transparent
-			app->tex->UnLoad(saveTex.texture);
-			saveTex.texture = nullptr;
-			saveTex.loaded = false;
+			LOG("DESTROYING SAVETEX");
+			//app->tex->UnLoad(saveTex);
+			LOG("SAVETEX SCREEN DESTROYED");
+			//saveTex = nullptr;
+			saveTexBlending.loaded = false;
 		}
 
 		else
 		{
 			//Set alpha value to texture and render it
-			SDL_SetTextureAlphaMod(saveTex.texture, saveTex.alpha);
-			app->render->DrawTexture(saveTex.texture, 1050, 620, &saveTex.rect, 1);
+			int success = SDL_SetTextureAlphaMod(saveTexBlending.texture, saveTexBlending.alpha);
+
+			if(success == 0)
+				app->render->DrawTexture(saveTexBlending.texture, 1050, 620, &saveTexBlending.rect, 1);
+
+			else
+				LOG("Error aplying alpha to texture: %s\n", SDL_GetError());
 		}
 	}
 
-	if (loadTex.loaded == true)
+	if (loadTexBlending.loaded == true)
 	{
-		loadTex.alpha--;
-		if (loadTex.alpha <= 0)
+		loadTexBlending.alpha--;
+		if (loadTexBlending.alpha <= 0)
 		{
-			app->tex->UnLoad(loadTex.texture);
-			loadTex.texture = nullptr;
-			loadTex.loaded = false;
+			//app->tex->UnLoad(loadTexBlending.texture);
+			//loadTexBlending.texture = nullptr;
+			loadTexBlending.loaded = false;
 		}
 
 		else
 		{
-			SDL_SetTextureAlphaMod(loadTex.texture, loadTex.alpha);
-			app->render->DrawTexture(loadTex.texture, 1050, 620, &loadTex.rect, 1);
+			SDL_SetTextureAlphaMod(loadTexBlending.texture, loadTexBlending.alpha);
+			app->render->DrawTexture(loadTexBlending.texture, 1050, 620, &loadTexBlending.rect, 1);
 		}
 	}
 

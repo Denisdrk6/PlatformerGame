@@ -75,7 +75,7 @@ void FlyEnemy::Reset() {
 	}
 	dead = false;
 	falling = false;
-	col = app->col->AddCollider({ position.x,position.y,64,64 }, COLLIDER_ENEMY, app->entities);
+	col = app->col->AddCollider({ position.x,position.y,32,32 }, COLLIDER_ENEMY, app->entities);
 }
 
 void FlyEnemy::Update(float dt) {

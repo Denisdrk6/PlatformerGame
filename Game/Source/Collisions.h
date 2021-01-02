@@ -9,7 +9,7 @@
 #include "SDL/include/SDL.h"
 #include "SDL_image/include/SDL_image.h"
 
-#define MAX_COLLIDERS 4000
+#define MAX_COLLIDERS 1000
 
 //------------------------------------------------------------------------
 enum COLLIDER_TYPE
@@ -81,11 +81,13 @@ public:
 
 	bool debug = false;
 
+
+	Collider* colliders[MAX_COLLIDERS];
+
 private:
 	//bool LoadColliders();
 	SString folder;
 	pugi::xml_document collisionsData;
-	Collider* colliders[MAX_COLLIDERS];
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX];
 	int	playerFloorCol;
 	int	playerWallCol;

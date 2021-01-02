@@ -71,8 +71,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	BlendedTexture saveTex;
-	BlendedTexture loadTex;
+	BlendedTexture saveTexBlending;
+	BlendedTexture loadTexBlending;
 
 	CheckPoint checkPoints[2];
 
@@ -95,6 +95,7 @@ private:
 	Animation redCheckPoint;
 	Animation greenCheckPoint;
 
+	int currentCheckpoint = 0;
 
 	bool playerCol = true;
 

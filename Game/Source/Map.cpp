@@ -225,6 +225,8 @@ bool Map::CleanUp()
 	}
 	data.colliders.Clear();
 
+	data.obj_layers.Clear();
+
 	// Clean up the pugui tree
 	mapFile.reset();
 
