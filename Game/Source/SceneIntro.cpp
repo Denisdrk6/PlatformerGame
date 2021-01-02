@@ -11,6 +11,7 @@
 #include "Collisions.h"
 #include "Window.h"
 
+
 #include "SDL/include/SDL_scancode.h"
 #include "SDL/include/SDL.h"
 
@@ -35,8 +36,8 @@ bool SceneIntro::Start()
 	bgTexture.alpha = 1;
 	bgTexture.loaded = true;
 
-	opening = app->tex->Load("Assets/Screens/opening.png");
-
+	opening = app->tex->Load("Assets/Screens/title.png");
+	
 	app->player->score = 0;
 	if (app->player->lifes != 3) app->player->lifes = 3;
 
@@ -65,6 +66,7 @@ bool SceneIntro::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
+	
 	return ret;
 }
 

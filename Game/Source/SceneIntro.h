@@ -45,6 +45,7 @@ public:
 	int waitTime = 500;
 	int initTime = 0;
 	int alphaModifier = 4;
+	
 };
 
 #endif

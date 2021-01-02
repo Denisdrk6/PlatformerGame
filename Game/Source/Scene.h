@@ -86,6 +86,12 @@ public:
 	List<FlyEnemy*> FlyEnemies;
 	List<FloorEnemy*> FloorEnemies;
 
+	char scoreText[10] = { "\0" };
+	int score = 0;
+	int hiscore = 0;
+	int scoreFont = -1;
+	int timer=0;
+
 private:
 	SDL_Texture* heartsTex;
 	SDL_Texture* coinsTex;

@@ -10,6 +10,7 @@
 #include "Collisions.h"
 #include "Pathfinding.h" 
 #include "Entities.h"
+#include "Fonts.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -65,6 +66,10 @@ bool Scene::Start()
 		iglu = app->tex->Load("Assets/Textures/iglu_icon.png");
 		saveTexBlending.texture = app->tex->Load("Assets/textures/save_load.png");
 		loadTexBlending.texture = app->tex->Load("Assets/Textures/Save_load.png");
+
+		char lookupTable[] = { "0123456789" };
+		scoreFont = app->fonts->Load("Assets/Fonts/timer_font.png", lookupTable, 1);
+
 
 		app->audio->PlayMusic("Assets/Audio/Music/friends.ogg");
 		app->audio->LoadFx("Assets/Audio/Fx/hurt_sound.wav");
@@ -127,6 +132,20 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+
+	if (timer < 60)
+	{
+		timer++;
+
+	}
+	if (timer == 60)
+	{
+		score = score + 1;
+		timer = 0;
+	}
+	
+
+
     // L02: DONE 3: Request Load / Save when pressing L/S
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 	{
@@ -367,6 +386,11 @@ bool Scene::Update(float dt)
 bool Scene::PostUpdate()
 {
 	bool ret = true;
+
+	//timer
+	sprintf_s(scoreText, 10, "%d", score);
+	app->fonts->BlitText(550, 15, scoreFont, scoreText);
+
 
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
