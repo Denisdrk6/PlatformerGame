@@ -103,7 +103,7 @@ private:
 
 	int currentCheckpoint = 0;
 
-	bool playerCol = true;
+	bool playerCol = false;
 
 protected:
 };
