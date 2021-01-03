@@ -18,16 +18,24 @@ h2 {
     font-size: 45px;
     font-family: Helvetica;
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     margin-top: 30px;
 }
 
 h3 {
     font-weight: normal;
-    font-size: 20px;
+    font-size: 18px;
     font-family: Helvetica;
     margin-bottom: 20px;
     text-align: center;
+    margin: auto;
+    width: 40%;
+    padding: 10px;
+}
+
+.aligned {
+    display: flex;
+    align-items: center;
     margin: auto;
     width: 40%;
     padding: 10px;
@@ -38,7 +46,7 @@ container{
 }
 
 html, body {
-    background: linear-gradient(0deg, #9e63d1, #4c3fbd, #39a3d9, #4c3fbd, #9e63d1);
+    background: linear-gradient(0deg, #684747, #d37777, #b49dd4, #48bdff, #5f58f8);
 }
 
 .description {
@@ -47,7 +55,7 @@ html, body {
 }
 
 .list {
-    font-size: 20px;
+    font-size: 18px;
     list-style-position: inside;
     text-align: left;
     margin-top: 20px;
@@ -129,16 +137,11 @@ time {
     margin-bottom: 10px;
 }
 
-.link {
-    margin-left: 100px;
-}
-
 button {
     display: block;
     margin-left: auto;
     margin-right: auto;
     width: 40%;
-
     position: relative;
     height: 60px;
     width: 200px;
@@ -227,5 +230,5 @@ button:hover{
 
 .margen
 {
-margin-bottom: 10px;
+    margin-bottom: 10px;
 }
