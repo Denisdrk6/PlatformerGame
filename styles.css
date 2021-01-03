@@ -18,13 +18,13 @@ h2 {
     font-size: 45px;
     font-family: Helvetica;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     margin-top: 30px;
 }
 
 h3 {
     font-weight: normal;
-    font-size: 18px;
+    font-size: 20px;
     font-family: Helvetica;
     margin-bottom: 20px;
     text-align: center;
@@ -38,7 +38,7 @@ container{
 }
 
 html, body {
-    background: linear-gradient(0deg, #684747, #d37777, #b49dd4, #48bdff, #5f58f8);
+    background: linear-gradient(0deg, #9e63d1, #4c3fbd, #39a3d9, #4c3fbd, #9e63d1);
 }
 
 .description {
@@ -47,7 +47,7 @@ html, body {
 }
 
 .list {
-    font-size: 18px;
+    font-size: 20px;
     list-style-position: inside;
     text-align: left;
     margin-top: 20px;
