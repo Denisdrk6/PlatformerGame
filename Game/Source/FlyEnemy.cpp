@@ -69,7 +69,7 @@ void FlyEnemy::Reset() {
 	position = initial_position;
 	vel.x = 0;
 	vel.y = 0;
-	lives = maxLives;
+	lives = 5;
 	if (col != nullptr) {
 		app->col->DeleteCollider(col);
 	}
@@ -200,4 +200,6 @@ void FlyEnemy::OnCollision(Collider* c1, Collider* c2) {
 			lives = 0;
 		}
 	}
+
+	
 }

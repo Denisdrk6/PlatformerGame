@@ -9,7 +9,7 @@ public:
 	FloorEnemy(iPoint pos);
 	~FloorEnemy();
 
-	void PreUpdate(float dt);
+	//void PreUpdate(float dt);
 	void Update(float dt);
 	void Draw();
 	void HandeInput();

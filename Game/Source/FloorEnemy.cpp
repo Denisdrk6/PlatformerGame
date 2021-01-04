@@ -12,13 +12,13 @@
 
 FloorEnemy::FloorEnemy(iPoint pos) : Entity(EntityType::FLOOR_ENEMY) {
 	//Load Sprite
-	sprite = app->tex->Load("Assets/enemies/enemies.png");
+	sprite = app->tex->Load("Assets/enemies/ground_enemy.png");
 
 	//Load Animations
 
-	idle.PushBack({ 148 , 68 , 23 , 28 });
-	idle.PushBack({ 211 , 68 , 25 , 28 });
-	idle.speed = 5.0f;
+	idle.PushBack({ 0 , 51 , 46 , 45 });;
+	idle.PushBack({ 55, 51 , 46 , 45 });;
+	idle.speed = 0.05f;
 
 	col = app->col->AddCollider({ position.x,position.y,36,36 }, COLLIDER_ENEMY, app->entities);
 
@@ -30,9 +30,9 @@ FloorEnemy::FloorEnemy(iPoint pos) : Entity(EntityType::FLOOR_ENEMY) {
 
 FloorEnemy::~FloorEnemy() {}
 
-void FloorEnemy::PreUpdate(float dt) {
-	private_dt = dt;
-}
+/*void FloorEnemy::PreUpdate(float dt) {
+	//private_dt = dt;
+}*/
 
 void FloorEnemy::Load(pugi::xml_node& load) {
 	//lives = load.attribute("lives").as_int();
@@ -64,8 +64,7 @@ void FloorEnemy::Save(pugi::xml_node& save) const {
 }
 
 void FloorEnemy::Reset() {
-	position.x = initialPosition.x;
-	position.y = initialPosition.y - 5;
+	position = initialPosition;
 	vel.x = 0;
 	vel.y = 0;
 	lives = 5;
@@ -122,10 +121,10 @@ bool FloorEnemy::ChasePlayer(fPoint player) {
 	player.y = (int)player.y;
 
 	if (player.x + 16 > position.x - 500 && player.x + 16 < position.x + 500) {
-		if (player.y > position.y - 200 && player.y < position.y + 300) {
+		//if (player.y > position.y - 200 && player.y < position.y + 300) {
 			return true;
 		}
-	}
+	//}
 
 	return false;
 }
@@ -179,10 +178,22 @@ void FloorEnemy::Draw() {
 
 void FloorEnemy::OnCollision(Collider* c1, Collider* c2) {
 
-	if (c1->type == COLLIDER_TYPE::COLLIDER_ENEMY && c2->type == COLLIDER_TYPE::COLLIDER_FLOOR) {
-		if (vel.y > 0) {
-			vel.y = 0;
+	if (c1->type == COLLIDER_TYPE::COLLIDER_ENEMY && c2->type == COLLIDER_TYPE::COLLIDER_PLAYER)
+	{
+		int offset = -2 - (120 / (1 / app->dt));
+		if (offset < -7) offset = -7;
+		SDL_Rect nextCollision = { c1->rect.x, c1->rect.y + vel.y, c1->rect.w, c1->rect.h };
+
+		if ((app->player->CheckTunneling(nextCollision, c1->rect) == true || c1->rect.y - (c2->rect.h + c2->rect.y) >= offset) && app->player->speedY >= app->player->maxNegativeSpeedY)
+		{
+			lives = 0;
 		}
-		falling = false;
+	}
+	if (c1->type == COLLIDER_TYPE::COLLIDER_ENEMY && c2->type == COLLIDER_TYPE::COLLIDER_FLOOR)
+	{
+		int offset = -2 - (120 / (1 / app->dt));
+		if (offset < -7) offset = -7;
+		SDL_Rect nextCollision = { c1->rect.x, c1->rect.y + vel.y, c1->rect.w, c1->rect.h };
+		vel.y = 0;
 	}
 }
