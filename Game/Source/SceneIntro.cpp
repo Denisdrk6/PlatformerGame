@@ -53,15 +53,16 @@ bool SceneIntro::Start()
 	return ret;
 }
 
-bool SceneIntro::Update(float dt)
+bool SceneIntro::Update(Input* input, float dt)
 {
 	bool ret = true;
 
 	// Alpha speed is the same for all fps
 	if(alphaModifier >= 0) alphaModifier = (int)(120 / (1/dt));
 
-	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && bgTexture.loaded == false)
-		app->sceneManager->current->transitionRequired == true;
+	if (input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && bgTexture.loaded == false)
+		TransitionToScene(SceneType::GAMEPLAY);
+		//app->sceneManager->current->transitionRequired == true;
 		//app->fade->Fade(this, (Module*)app->gameplay, 60);
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
@@ -110,7 +111,7 @@ bool SceneIntro::PostUpdate()
 }
 
 
-bool SceneIntro::CleanUp()
+bool SceneIntro::Unload()
 {
 	app->player->active = true;
 	app->audio->active = true;

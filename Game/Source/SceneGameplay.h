@@ -65,13 +65,13 @@ public:
 	bool PreUpdate();
 
 	// Called each loop iteration
-	bool Update(float dt);
+	bool Update(Input* input, float dt);
 
 	// Called before all Updates
 	bool PostUpdate();
 
 	// Called before quitting
-	bool CleanUp();
+	bool Unload();
 
 	BlendedTexture saveTexBlending;
 	BlendedTexture loadTexBlending;

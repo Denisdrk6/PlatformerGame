@@ -22,12 +22,22 @@ public:
 
     Scene() : active(true), loaded(false), transitionRequired(false) {}
 
+    virtual bool Start()
+    {
+        return true;
+    }
+
     virtual bool Load(Textures* tex)
     {
         return true;
     }
 
     virtual bool Update(Input* input, float dt)
+    {
+        return true;
+    }
+
+    virtual bool PostUpdate()
     {
         return true;
     }
@@ -65,6 +75,7 @@ public:
 
     bool transitionRequired;
     SceneType nextScene;
+    //SceneType currentScene;
 };
 
 #endif // __SCENE_H__

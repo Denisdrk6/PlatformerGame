@@ -22,6 +22,8 @@ SceneManager::SceneManager(Input* input, Render* render, Textures* tex) : Module
 {
 	name.Create("scenemanager");
 
+	//current = new SceneIntro();
+
 	onTransition = false;
 	fadeOutCompleted = false;
 	transitionAlpha = 0.0f;;
@@ -29,6 +31,10 @@ SceneManager::SceneManager(Input* input, Render* render, Textures* tex) : Module
 	this->input = input;
 	this->render = render;
 	this->tex = tex;
+
+	/*intro = new SceneIntro();
+	gameplay = new SceneGameplay();
+	win = new SceneWin();*/
 }
 
 // Destructor
@@ -48,7 +54,9 @@ bool SceneManager::Awake()
 bool SceneManager::Start()
 {
 	current = new SceneIntro();
+	//current->currentScene = SceneType::INTRO;
 	current->Load(tex);
+	current->Start();
 
 	next = nullptr;
 
@@ -89,6 +97,8 @@ bool SceneManager::PreUpdate()
 // Called each loop iteration
 bool SceneManager::Update(float dt)
 {
+	bool ret = true;
+
 	if (!onTransition)
 	{
 		//if (input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) render->camera.y -= 1;
@@ -97,6 +107,18 @@ bool SceneManager::Update(float dt)
 		//if (input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) render->camera.x += 1;
 
 		current->Update(input, dt);
+		/*if (current->currentScene == SceneType::INTRO)
+		{
+			ret = intro->Update(dt);
+		}
+		if (current->currentScene == SceneType::GAMEPLAY)
+		{
+			ret = gameplay->Update(dt);
+		}
+		if (current->currentScene == SceneType::WIN)
+		{
+			ret = win->Update(dt);
+		}*/
 	}
 	else
 	{
@@ -119,6 +141,8 @@ bool SceneManager::Update(float dt)
 
 				// Activate fade out effect to next loaded screen
 				fadeOutCompleted = true;
+
+				current->Start();
 			}
 		}
 		else  // Transition fade out logic
@@ -168,18 +192,21 @@ bool SceneManager::Update(float dt)
 		switch (current->nextScene)
 		{
 			case SceneType::INTRO:
-				intro = new SceneIntro();
-				next = intro;
+				//intro = new SceneIntro();
+				//current->currentScene = SceneType::INTRO;
+				next = new SceneIntro();
 				break;
 
 			case SceneType::GAMEPLAY: 
-				gameplay = new SceneGameplay();
-				next = gameplay;
+				//gameplay = new SceneGameplay();
+				//current->currentScene = SceneType::GAMEPLAY;
+				next = new SceneGameplay();
 				break;
 
 			case SceneType::WIN:
-				win = new SceneWin();
-				next = win;
+				//win = new SceneWin();
+				//current->currentScene = SceneType::WIN;
+				next = new SceneWin();
 				break;
 
 			default: break;
@@ -196,6 +223,8 @@ bool SceneManager::Update(float dt)
 bool SceneManager::PostUpdate()
 {
 	bool ret = true;
+
+	ret = current->PostUpdate();
 
 	return ret;
 }

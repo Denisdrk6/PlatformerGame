@@ -42,9 +42,11 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	SceneIntro* intro = nullptr;
+	/*SceneIntro* intro = nullptr;
 	SceneGameplay* gameplay = nullptr;
-	SceneWin* win = nullptr;
+	SceneWin* win = nullptr;*/
+
+	SceneGameplay* gameplay = new SceneGameplay();
 
 	Scene* current;
 	Scene* next;

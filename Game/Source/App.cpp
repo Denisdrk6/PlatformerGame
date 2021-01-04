@@ -56,6 +56,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	/*AddModule(intro);
 	AddModule(gameplay);
 	AddModule(winScene);*/
+	AddModule(sceneManager);
 	AddModule(fonts);
 	AddModule(map);
 	AddModule(player);

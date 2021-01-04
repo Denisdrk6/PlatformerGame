@@ -19,7 +19,7 @@
 SceneGameplay::SceneGameplay() : Scene()
 {
 	name.Create("gameplay");
-	active = false;
+	active = true;
 
 	rotateCoin.PushBack({ 0,0,15,32 });
 	rotateCoin.PushBack({ 18,0,24,32 });
@@ -132,7 +132,7 @@ bool SceneGameplay::PreUpdate()
 }
 
 // Called each loop iteration
-bool SceneGameplay::Update(float dt)
+bool SceneGameplay::Update(Input* input, float dt)
 {
 	if (app->pauseMenu == false)
 	{
@@ -150,7 +150,7 @@ bool SceneGameplay::Update(float dt)
 
 
     // L02: DONE 3: Request Load / Save when pressing L/S
-	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+	if (input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 	{
 		app->LoadGameRequest();
 
@@ -161,7 +161,7 @@ bool SceneGameplay::Update(float dt)
 		loadTexBlending.loaded = true;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	if (input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 	{
 		app->SaveGameRequest();
 
@@ -172,33 +172,33 @@ bool SceneGameplay::Update(float dt)
 		saveTexBlending.loaded = true;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN) app->audio->VolumeControl(4);
+	if (input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN) app->audio->VolumeControl(4);
 
-	if (app->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN) app->audio->VolumeControl(-4);
+	if (input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN) app->audio->VolumeControl(-4);
 
 	if (app->player->collider->type == COLLIDER_GODMODE)
 	{
-		if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+		if (input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 			app->render->camera.y += 5;
 
-		if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+		if (input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 			app->render->camera.y -= 5;
 
-		if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		if (input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 			app->render->camera.x += 5;
 
-		if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		if (input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 			app->render->camera.x -= 5;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	if (input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
 		playerCol = !playerCol;
 		if (playerCol) app->player->collider->type = COLLIDER_GODMODE;
 		else  app->player->collider->type = COLLIDER_PLAYER;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) {// FPS cap to 30
+	if (input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) {// FPS cap to 30
 		if (app->maxFramerate != 30) {
 			app->ChangeFrameCap(30);
 		}
@@ -207,23 +207,23 @@ bool SceneGameplay::Update(float dt)
 		}
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && app->player->map != 1)
+	if (input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && app->player->map != 1)
 	{
 		app->player->ChangeMap(1);
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN && app->player->map != 2)
+	if (input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN && app->player->map != 2)
 	{
 		app->player->ChangeMap(2);
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+	if (input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 	{
 		app->player->ChangeMap(app->player->map);
 		
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+	if (input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 	{
 		if (currentCheckpoint == 0 || currentCheckpoint == 2 || app->player->map == 2)
 		{
@@ -411,7 +411,7 @@ bool SceneGameplay::PostUpdate()
 }
 
 // Called before quitting
-bool SceneGameplay::CleanUp()
+bool SceneGameplay::Unload()
 {
 	LOG("Freeing scene");
 	app->player->active = false;

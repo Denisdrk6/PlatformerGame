@@ -72,7 +72,7 @@ bool SceneWin::PostUpdate()
 }
 
 
-bool SceneWin::CleanUp()
+bool SceneWin::Unload()
 {
 	app->player->active = true;
 	app->audio->active = true;
