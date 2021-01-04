@@ -3,7 +3,7 @@
 #include "Player.h"
 #include "FlyEnemy.h"
 #include "FloorEnemy.h"
-#include "Scene.h"
+#include "SceneGameplay.h"
 #include "Map.h"
 #include "Collisions.h"
 #include "Audio.h"
@@ -32,8 +32,8 @@ bool Entities::Load(pugi::xml_node& load) {
 	}
 	DestroyAll();
 
-	app->scene->FlyEnemies.Clear();
-	app->scene->FloorEnemies.Clear();
+	app->gameplay->FlyEnemies.Clear();
+	app->gameplay->FloorEnemies.Clear();
 
 	pugi::xml_node nodeFly;
 	for (nodeFly = load.child("Fly_Enemies").child("Fly_Enemy"); nodeFly; nodeFly = nodeFly.next_sibling("FlyEnemy")) {
@@ -42,7 +42,7 @@ bool Entities::Load(pugi::xml_node& load) {
 
 		FlyEnemy* ret = (FlyEnemy*)CreateEntity(Entity::EntityType::FLY_ENEMY, pos);
 		ret->Load(nodeFly);
-		app->scene->FlyEnemies.Add(ret);
+		app->gameplay->FlyEnemies.Add(ret);
 	}
 	//____________________
 
@@ -55,7 +55,7 @@ bool Entities::Load(pugi::xml_node& load) {
 
 		FloorEnemy* retF = (FloorEnemy*)CreateEntity(Entity::EntityType::FLOOR_ENEMY, pos);
 		retF->Load(nodeFloor);
-		app->scene->FloorEnemies.Add(retF);
+		app->gameplay->FloorEnemies.Add(retF);
 	}
 
 	return true;
@@ -68,7 +68,7 @@ bool Entities::Save(pugi::xml_node& save) const {
 	pugi::xml_node flyNode;
 	flyNode = save.child("Fly_Enemies").child("Fly_Enemy");
 	ListItem<FlyEnemy*>* fly;
-	for (fly = app->scene->FlyEnemies.start; fly; fly = fly->next) {
+	for (fly = app->gameplay->FlyEnemies.start; fly; fly = fly->next) {
 		fly->data->Save(flyNode);
 		if (fly->next != NULL) {
 			save.child("Fly_Enemies").append_child("Fly_Enemy");
@@ -81,7 +81,7 @@ bool Entities::Save(pugi::xml_node& save) const {
 	pugi::xml_node floorNode;
 	floorNode = save.child("Floor_Enemies").child("Floor_Enemy");
 	ListItem<FloorEnemy*>* floor;
-	for (floor = app->scene->FloorEnemies.start; floor; floor = floor->next) {
+	for (floor = app->gameplay->FloorEnemies.start; floor; floor = floor->next) {
 		floor->data->Save(floorNode);
 		if (floor->next != NULL) {
 			save.child("Floor_Enemies").append_child("Floor_Enemy");
@@ -173,14 +173,14 @@ void Entities::OnCollision(Collider* c1, Collider* c2) {
 	}
 
 	ListItem<FlyEnemy*>* flyEnemy;
-	for (flyEnemy = app->scene->FlyEnemies.start; flyEnemy; flyEnemy = flyEnemy->next) {
+	for (flyEnemy = app->gameplay->FlyEnemies.start; flyEnemy; flyEnemy = flyEnemy->next) {
 		if (flyEnemy->data->col->rect.x == c1->rect.x && flyEnemy->data->col->rect.y == c1->rect.y && flyEnemy->data->col->rect.w == c1->rect.w && flyEnemy->data->col->rect.h == c1->rect.h) {
 			flyEnemy->data->OnCollision(c1, c2);
 		}
 	}
 
 	ListItem<FloorEnemy*>* floorEnemy;
-	for (floorEnemy = app->scene->FloorEnemies.start; floorEnemy; floorEnemy = floorEnemy->next) {
+	for (floorEnemy = app->gameplay->FloorEnemies.start; floorEnemy; floorEnemy = floorEnemy->next) {
 		if (floorEnemy->data->col->rect.x == c1->rect.x && floorEnemy->data->col->rect.y == c1->rect.y && floorEnemy->data->col->rect.w == c1->rect.w && floorEnemy->data->col->rect.h == c1->rect.h) {
 			floorEnemy->data->OnCollision(c1, c2);
 		}
@@ -199,7 +199,7 @@ void Entities::LoadFromObjectLayer(ObjectLayer* layer) {
 			pos.y = obj->data->y;
 
 			FlyEnemy* ret = (FlyEnemy*)CreateEntity(Entity::EntityType::FLY_ENEMY, pos);
-			app->scene->FlyEnemies.Add(ret);
+			app->gameplay->FlyEnemies.Add(ret);
 		}
 
 		if (obj->data->name == "FloorEnemy") {
@@ -208,7 +208,7 @@ void Entities::LoadFromObjectLayer(ObjectLayer* layer) {
 			pos.y = obj->data->y;
 
 			FloorEnemy* ret = (FloorEnemy*)CreateEntity(Entity::EntityType::FLOOR_ENEMY, pos);
-			app->scene->FloorEnemies.Add(ret);
+			app->gameplay->FloorEnemies.Add(ret);
 		}
 	}
 }

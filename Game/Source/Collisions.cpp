@@ -385,40 +385,40 @@ void Collisions::DebugDraw()
 		switch (colliders[i]->type)
 		{
 		case COLLIDER_PLAYER: // green
-			app->render->DrawRectangle(colliders[i]->rect, 0, 255, 0, alpha);
+			app->render->DrawRectangle(colliders[i]->rect, { 0, 255, 0, alpha });
 			break;
 		case COLLIDER_FLOOR: // blue
-			app->render->DrawRectangle(colliders[i]->rect, 255, 255, 0, alpha);
+			app->render->DrawRectangle(colliders[i]->rect, { 255, 255, 0, alpha });
 			break;
 		case COLLIDER_WALL:
-			app->render->DrawRectangle(colliders[i]->rect, 0, 0, 255, alpha);
+			app->render->DrawRectangle(colliders[i]->rect, { 0, 0, 255, alpha });
 			break;
 		case COLLIDER_END:
-			app->render->DrawRectangle(colliders[i]->rect, 0, 255, 255, alpha);
+			app->render->DrawRectangle(colliders[i]->rect, { 0, 255, 255, alpha });
 			break;
 		case COLLIDER_CHECKPOINT:
-			app->render->DrawRectangle(colliders[i]->rect, 100, 255, 155, alpha);
+			app->render->DrawRectangle(colliders[i]->rect, { 100, 255, 155, alpha });
 			break;
 		case COLLIDER_COIN:
-			app->render->DrawRectangle(colliders[i]->rect, 100, 100, 100, alpha);
+			app->render->DrawRectangle(colliders[i]->rect, { 100, 100, 100, alpha });
 			break;
 		case COLLIDER_HEART:
-			app->render->DrawRectangle(colliders[i]->rect, 200, 200, 200, alpha);
+			app->render->DrawRectangle(colliders[i]->rect, { 200, 200, 200, alpha });
 			break;
 		case COLLIDER_WIN:
-			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 255, alpha);
+			app->render->DrawRectangle(colliders[i]->rect, { 255, 0, 255, alpha });
 			break;
 		case COLLIDER_FINISH:
-			app->render->DrawRectangle(colliders[i]->rect, 80, 30, 20, alpha);
+			app->render->DrawRectangle(colliders[i]->rect, { 80, 30, 20, alpha });
 			break;
 		case COLLIDER_ENEMY:
-			app->render->DrawRectangle(colliders[i]->rect, 30, 20, 80, alpha);
+			app->render->DrawRectangle(colliders[i]->rect, { 30, 20, 80, alpha });
 			break;
 		case COLLIDER_DEAD:
-			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 0, alpha);
+			app->render->DrawRectangle(colliders[i]->rect, { 255, 0, 0, alpha });
 			break;
 		case COLLIDER_GODMODE:
-			app->render->DrawRectangle(colliders[i]->rect, 255, 255, 255, alpha);
+			app->render->DrawRectangle(colliders[i]->rect, { 255, 255, 255, alpha });
 			break;
 		}
 	}

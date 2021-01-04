@@ -2,7 +2,7 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Player.h"
-#include "Scene.h"
+#include "SceneGameplay.h"
 #include "Collisions.h"
 #include "Pathfinding.h"
 #include "App.h"
@@ -132,7 +132,7 @@ void FloorEnemy::Update(float dt)
 		{
 			dead = true;
 			app->col->DeleteCollider(col);
-			app->scene->FloorEnemies.Del(app->scene->FloorEnemies.At(app->scene->FloorEnemies.Find(this)));
+			app->gameplay->FloorEnemies.Del(app->gameplay->FloorEnemies.At(app->gameplay->FloorEnemies.Find(this)));
 		}
 
 		HandeInput();

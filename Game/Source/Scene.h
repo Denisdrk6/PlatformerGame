@@ -1,111 +1,70 @@
 #ifndef __SCENE_H__
 #define __SCENE_H__
 
-#include "Module.h"
-#include "Animation.h"
-#include "List.h"
+#include "SString.h"
 
-struct SDL_Texture;
-class Collider;
-struct FlyEnemy;
-struct FloorEnemy;
+class Input;
+class Render;
+class Textures;
 
-class BlendedTexture
+class GuiControl;
+
+enum class SceneType
 {
-public:
-	SDL_Texture* texture;
-	int alpha;
-	bool loaded = false;
-	SDL_Rect rect;
+    INTRO,
+    GAMEPLAY,
+    WIN
 };
 
-class CheckPoint
-{
-public:
-	bool activated = false;
-	iPoint position = {0, 0};
-	Collider* collider;
-};
-
-class Heart
-{
-public:
-	bool activated = false;
-	iPoint position = { 0, 0 };
-	Collider* collider;
-};
-
-
-class Coin
-{
-public:
-	bool activated = false;
-	iPoint position = { 0, 0 };
-	Collider* collider;
-};
-
-class Scene : public Module
+class Scene
 {
 public:
 
-	Scene();
+    Scene() : active(true), loaded(false), transitionRequired(false) {}
 
-	// Destructor
-	virtual ~Scene();
+    virtual bool Load(Textures* tex)
+    {
+        return true;
+    }
 
-	// Called before render is available
-	bool Awake();
+    virtual bool Update(Input* input, float dt)
+    {
+        return true;
+    }
 
-	// Called before the first frame
-	bool Start();
+    virtual bool Draw(Render* render)
+    {
+        return true;
+    }
 
-	// Called before all Updates
-	bool PreUpdate();
+    virtual bool Unload()
+    {
+        return true;
+    }
 
-	// Called each loop iteration
-	bool Update(float dt);
+    void TransitionToScene(SceneType scene)
+    {
+        transitionRequired = true;
+        nextScene = scene;
+    }
 
-	// Called before all Updates
-	bool PostUpdate();
+    // Define multiple Gui Event methods
+    virtual bool OnGuiMouseClickEvent(GuiControl* control)
+    {
+        return true;
+    }
 
-	// Called before quitting
-	bool CleanUp();
+public:
 
-	BlendedTexture saveTexBlending;
-	BlendedTexture loadTexBlending;
+    bool active = true;
+    SString name;         // Scene name identifier?
 
-	CheckPoint checkPoints[2];
+    // Possible properties
+    bool loaded = false;
+    // TODO: Transition animation properties
 
-	Coin coins[7];
-	Heart hearts;
-
-
-	SDL_Texture* flags;
-	SDL_Texture* img;
-
-	List<FlyEnemy*> FlyEnemies;
-	List<FloorEnemy*> FloorEnemies;
-
-	char scoreText[10] = { "\0" };
-	int score = 0;
-	int hiscore = 0;
-	int scoreFont = -1;
-	int timer=0;
-	
-
-private:
-	SDL_Texture* heartsTex;
-	SDL_Texture* coinsTex;
-	SDL_Texture* iglu;
-
-	Animation rotateCoin;
-	Animation redCheckPoint;
-	Animation greenCheckPoint;
-
-	int currentCheckpoint = 0;
-	bool playerCol = false;
-
-protected:
+    bool transitionRequired;
+    SceneType nextScene;
 };
 
 #endif // __SCENE_H__

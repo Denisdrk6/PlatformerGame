@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Animation.h"
+#include "Scene.h"
 
 struct SDL_Texture;
 
@@ -15,7 +16,7 @@ public:
 	SDL_Rect rect = {0, 0, 0, 0};
 };
 
-class SceneIntro : public Module
+class SceneIntro : public Scene
 {
 public:
 	//Constructor

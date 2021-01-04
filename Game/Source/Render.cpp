@@ -6,7 +6,7 @@
 #include "Log.h"
 #include "player.h"
 #include "Collisions.h"
-#include "Scene.h"
+#include "SceneGameplay.h"
 #include "SceneIntro.h"
 
 #define VSYNC true
@@ -136,7 +136,7 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 	
 	SDL_Rect rect = {0, 0, 0, 0};
 
-	if (texture != app->scene->saveTexBlending.texture && texture != app->scene->loadTexBlending.texture /*&& texture != app->intro->opening*/)
+	if (texture != app->gameplay->saveTexBlending.texture && texture != app->gameplay->loadTexBlending.texture /*&& texture != app->intro->opening*/)
 	{
 		rect.x = (int)(camera.x * speed) + x * scale;
 		rect.y = (int)(camera.y * speed) + y * scale;
@@ -182,7 +182,7 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 	return ret;
 }
 
-bool Render::DrawRectangle(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, bool useCamera) const
+/*bool Render::DrawRectangle(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, bool useCamera) const
 {
 	bool ret = true;
 	uint scale = app->win->GetScale();
@@ -202,6 +202,26 @@ bool Render::DrawRectangle(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint
 	int result = (filled) ? SDL_RenderFillRect(renderer, &rec) : SDL_RenderDrawRect(renderer, &rec);
 
 	if(result != 0)
+	{
+		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
+		ret = false;
+	}
+
+	return ret;
+}*/
+
+bool Render::DrawRectangle(const SDL_Rect& rect, SDL_Color color, bool filled) const
+{
+	bool ret = true;
+
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+
+	SDL_Rect rec(rect);
+
+	int result = (filled) ? SDL_RenderFillRect(renderer, &rec) : SDL_RenderDrawRect(renderer, &rec);
+
+	if (result != 0)
 	{
 		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
 		ret = false;

@@ -14,7 +14,7 @@
 #include "SDL/include/SDL_scancode.h"
 #include "SDL/include/SDL.h"
 
-SceneWin::SceneWin() : Module()
+SceneWin::SceneWin() : Scene()
 {
 
 }

@@ -16,17 +16,18 @@ class Input;
 class Render;
 class Textures;
 class Audio;
-class Scene;
+//class SceneGameplay;
 class Map;
 class Animation;
 class Player;
 class Collisions;
 class FadeToBlack;
-class SceneIntro;
-class SceneWin;
+//class SceneIntro;
+//class SceneWin;
 class Fonts;
 class PathFinding;
 class Entities;
+class SceneManager;
 
 class App
 {
@@ -98,14 +99,15 @@ public:
 	Render* render;
 	Textures* tex;
 	Audio* audio;
-	Scene* scene;
+	//SceneGameplay* gameplay;
 	Map* map;
 	Animation* animation;
 	Player* player;
 	Collisions* col;
 	FadeToBlack* fade;
-	SceneIntro* intro;
-	SceneWin* winScene;
+	//SceneIntro* intro;
+	//SceneWin* winScene;
+	SceneManager* sceneManager;
 	Fonts* fonts;
 	PathFinding* pathfinding;
 	Entities* entities;
@@ -120,7 +122,6 @@ public:
 	float dt;
 
 	bool pauseMenu = false;
-	int keyPresses = 0;
 
 private:
 

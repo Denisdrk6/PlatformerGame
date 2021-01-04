@@ -15,7 +15,7 @@
 #include "SDL/include/SDL_scancode.h"
 #include "SDL/include/SDL.h"
 
-SceneIntro::SceneIntro() : Module()
+SceneIntro::SceneIntro() : Scene()
 {
 
 }
@@ -61,7 +61,7 @@ bool SceneIntro::Update(float dt)
 	if(alphaModifier >= 0) alphaModifier = (int)(120 / (1/dt));
 
 	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && bgTexture.loaded == false)
-		app->fade->Fade(this, (Module*)app->scene, 60);
+		app->fade->Fade(this, (Module*)app->gameplay, 60);
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 
