@@ -64,7 +64,7 @@ FloorEnemy::FloorEnemy(iPoint pos) : Entity(EntityType::FLOOR_ENEMY) {
 	lJumpAnim.PushBack({ 2, 296, 36, 52 });
 	lJumpAnim.speed = 0.025f;
 
-	col = app->col->AddCollider({ position.x,position.y,36,36 }, COLLIDER_ENEMY, app->entities);
+	col = app->col->AddCollider({ position.x,position.y,36,64 }, COLLIDER_ENEMY, app->entities);
 
 	//Load position and save it
 	initialPosition = position = pos;
@@ -115,7 +115,7 @@ void FloorEnemy::Reset() {
 	if (col != nullptr) {
 		app->col->DeleteCollider(col);
 	}
-	col = app->col->AddCollider({ position.x,position.y,64,64 }, COLLIDER_ENEMY, app->entities);
+	col = app->col->AddCollider({ position.x,position.y,36,64 }, COLLIDER_ENEMY, app->entities);
 	dead = false;
 }
 
@@ -165,10 +165,10 @@ bool FloorEnemy::ChasePlayer(fPoint player) {
 	player.y = (int)player.y;
 
 	if (player.x + 16 > position.x - 500 && player.x + 16 < position.x + 500) {
-		//if (player.y > position.y - 200 && player.y < position.y + 300) {
+		if (player.y > position.y - 200 && player.y < position.y + 300) {
 			return true;
 		}
-	//}
+	}
 
 	return false;
 }
@@ -179,7 +179,7 @@ void FloorEnemy::HandeInput() {
 	CurrentState = NONE;
 
 	if (ChasePlayer(app->player->position) == true) {
-		app->pathfinding->CreatePath(app->map->WorldToMap(position.x, position.y), app->map->WorldToMap(app->player->position.x, app->player->position.y + app->map->data.tileHeight + app->map->data.tileHeight / 2), false);
+		app->pathfinding->CreatePath(app->map->WorldToMap(position.x, position.y), app->map->WorldToMap(app->player->position.x, app->player->position.y + app->map->data.tileHeight + app->map->data.tileHeight / 2), true);
 
 		const DynArray<Path>* path = app->pathfinding->GetLastPath();
 
@@ -235,9 +235,10 @@ void FloorEnemy::OnCollision(Collider* c1, Collider* c2) {
 	}
 	if (c1->type == COLLIDER_TYPE::COLLIDER_ENEMY && c2->type == COLLIDER_TYPE::COLLIDER_FLOOR)
 	{
-		int offset = -2 - (120 / (1 / app->dt));
-		if (offset < -7) offset = -7;
-		SDL_Rect nextCollision = { c1->rect.x, c1->rect.y + vel.y, c1->rect.w, c1->rect.h };
+		//int offset = -2 - (120 / (1 / app->dt));
+		//if (offset < -7) offset = -7;
+		//SDL_Rect nextCollision = { c1->rect.x, c1->rect.y + vel.y, c1->rect.w, c1->rect.h };
 		vel.y = 0;
+
 	}
 }

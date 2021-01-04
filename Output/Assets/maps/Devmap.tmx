@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="25" nextobjectid="240">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="25" nextobjectid="241">
  <properties>
   <property name="Navigation" type="int" value="1"/>
  </properties>
@@ -40060,5 +40060,6 @@
   <object id="237" name="FlyEnemy" x="773.333" y="488.5" width="57.3333" height="47"/>
   <object id="238" name="FlyEnemy" x="1793.33" y="422.5" width="57.3333" height="47"/>
   <object id="239" name="FloorEnemy" x="679" y="3068" width="38" height="32"/>
+  <object id="240" name="FloorEnemy" x="474" y="2791" width="45" height="43"/>
  </objectgroup>
 </map>
