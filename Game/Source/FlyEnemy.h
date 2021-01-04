@@ -32,7 +32,7 @@ public:
 	bool dead = false;
 	bool falling = false;
 
-	iPoint initial_position;
+	iPoint initialPosition;
 	iPoint vel;
 
 	int maxLives;

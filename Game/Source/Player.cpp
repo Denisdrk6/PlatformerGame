@@ -670,6 +670,8 @@ void Player::ChangeMap(int mapNum)
 		if (externMap != map || currentMap != map)
 		{
 			app->entities->DestroyAll();
+			app->scene->FlyEnemies.Clear();
+			app->scene->FloorEnemies.Clear();
 			ListItem<ObjectLayer*>* obLay;
 			for (obLay = app->map->data.obj_layers.start; obLay; obLay = obLay->next)
 			{
@@ -760,6 +762,8 @@ void Player::ChangeMap(int mapNum)
 		if (externMap != map || currentMap != map)
 		{
 			app->entities->DestroyAll();
+			app->scene->FlyEnemies.Clear();
+			app->scene->FloorEnemies.Clear();
 			ListItem<ObjectLayer*>* obLay2;
 			for (obLay2 = app->map->data.obj_layers.start; obLay2; obLay2 = obLay2->next)
 			{

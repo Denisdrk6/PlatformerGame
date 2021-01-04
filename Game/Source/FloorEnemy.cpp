@@ -10,7 +10,8 @@
 #define SPEED 100
 
 
-FloorEnemy::FloorEnemy(iPoint pos) : Entity(EntityType::FLOOR_ENEMY) {
+FloorEnemy::FloorEnemy(iPoint pos) : Entity(EntityType::FLOOR_ENEMY)
+{
 	//Load Sprite
 	sprite = app->tex->Load("Assets/enemies/floor_enemy.png");
 
@@ -78,11 +79,12 @@ FloorEnemy::~FloorEnemy() {}
 	//private_dt = dt;
 }*/
 
-void FloorEnemy::Load(pugi::xml_node& load) {
+void FloorEnemy::Load(pugi::xml_node& load)
+{
 	//lives = load.attribute("lives").as_int();
 
 	position.x = load.child("position").attribute("x").as_int();
-	position.y = load.child("position").attribute("y").as_int() - 300;
+	position.y = load.child("position").attribute("y").as_int();
 
 	initialPosition.x = load.child("initial_position").attribute("x").as_int();
 	initialPosition.y = load.child("initial_position").attribute("y").as_int();
@@ -90,7 +92,8 @@ void FloorEnemy::Load(pugi::xml_node& load) {
 	vel.x = vel.y = 0;
 }
 
-void FloorEnemy::Save(pugi::xml_node& save) const {
+void FloorEnemy::Save(pugi::xml_node& save) const
+{
 	//save.append_attribute("lives");
 	//save.attribute("lives").set_value(lives);
 
@@ -107,7 +110,8 @@ void FloorEnemy::Save(pugi::xml_node& save) const {
 	save.child("initial_position").attribute("y").set_value(initialPosition.y);
 }
 
-void FloorEnemy::Reset() {
+void FloorEnemy::Reset()
+{
 	position = initialPosition;
 	vel.x = 0;
 	vel.y = 0;
@@ -119,12 +123,16 @@ void FloorEnemy::Reset() {
 	dead = false;
 }
 
-void FloorEnemy::Update(float dt) {
+void FloorEnemy::Update(float dt)
+{
 
-	if (dead == false) {
-		if (lives == 0) {
+	if (dead == false)
+	{
+		if (lives == 0)
+		{
 			dead = true;
 			app->col->DeleteCollider(col);
+			app->scene->FloorEnemies.Del(app->scene->FloorEnemies.At(app->scene->FloorEnemies.Find(this)));
 		}
 
 		HandeInput();
@@ -160,7 +168,8 @@ void FloorEnemy::Update(float dt) {
 	}
 }
 
-bool FloorEnemy::ChasePlayer(fPoint player) {
+bool FloorEnemy::ChasePlayer(fPoint player)
+{
 	player.x = (int)player.x;
 	player.y = (int)player.y;
 
@@ -173,18 +182,21 @@ bool FloorEnemy::ChasePlayer(fPoint player) {
 	return false;
 }
 
-void FloorEnemy::HandeInput() {
+void FloorEnemy::HandeInput()
+{
 	vel.x = 0;
 
 	CurrentState = NONE;
 
-	if (ChasePlayer(app->player->position) == true) {
+	if (ChasePlayer(app->player->position) == true)
+	{
 		app->pathfinding->CreatePath(app->map->WorldToMap(position.x, position.y), app->map->WorldToMap(app->player->position.x, app->player->position.y + app->map->data.tileHeight + app->map->data.tileHeight / 2), true);
 
 		const DynArray<Path>* path = app->pathfinding->GetLastPath();
 
 		const Path* path_dir = path->At(1);
-		if (path_dir != nullptr) {
+		if (path_dir != nullptr)
+		{
 
 			switch (path_dir->dir)
 			{
@@ -208,19 +220,22 @@ void FloorEnemy::HandeInput() {
 		}
 	}
 
-	if (falling == true) {
+	if (falling == true)
+	{
 		vel.y += 2;
 	}
 }
 
-void FloorEnemy::Draw() {
+void FloorEnemy::Draw()
+{
 
 	Current_animation = &rIdleAnim;
 
 	app->render->DrawTexture(sprite, position.x, position.y, &Current_animation->GetCurrentFrame(), 1, 1.0f, NULL, NULL, NULL);
 }
 
-void FloorEnemy::OnCollision(Collider* c1, Collider* c2) {
+void FloorEnemy::OnCollision(Collider* c1, Collider* c2)
+{
 
 	if (c1->type == COLLIDER_TYPE::COLLIDER_ENEMY && c2->type == COLLIDER_TYPE::COLLIDER_PLAYER)
 	{

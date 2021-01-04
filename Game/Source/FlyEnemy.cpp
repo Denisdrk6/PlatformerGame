@@ -8,7 +8,8 @@
 #define SPEED 100
 
 
-FlyEnemy::FlyEnemy(iPoint pos) : Entity(EntityType::FLY_ENEMY) {
+FlyEnemy::FlyEnemy(iPoint pos) : Entity(EntityType::FLY_ENEMY)
+{
 	//load graphics
 	sprite = app->tex->Load("Assets/enemies/flying_enemy.png");
 
@@ -27,7 +28,7 @@ FlyEnemy::FlyEnemy(iPoint pos) : Entity(EntityType::FLY_ENEMY) {
 	col = app->col->AddCollider({ position.x, position.y, 36,36 }, COLLIDER_ENEMY, app->entities);
 
 	//save positions
-	initial_position = position = pos;
+	initialPosition = position = pos;
 
 	//save lives
 	lives = maxLives = 8;
@@ -37,18 +38,20 @@ FlyEnemy::~FlyEnemy()
 {
 }
 
-void FlyEnemy::Load(pugi::xml_node& load) {
+void FlyEnemy::Load(pugi::xml_node& load)
+{
 	//lives = load.attribute("lives").as_int();
+	position.x = load.child("position").attribute("x").as_int();
+	position.y = load.child("position").attribute("y").as_int();
 
-	position.y = load.child("position").attribute("y").as_int() - 300;
-
-	initial_position.x = load.child("initial_position").attribute("x").as_int();
-	initial_position.y = load.child("initial_position").attribute("y").as_int();
+	initialPosition.x = load.child("initial_position").attribute("x").as_int();
+	initialPosition.y = load.child("initial_position").attribute("y").as_int();
 
 	vel.x = vel.y = 0;
 }
 
-void FlyEnemy::Save(pugi::xml_node& save) const {
+void FlyEnemy::Save(pugi::xml_node& save) const
+{
 	//save.append_attribute("lives");
 	//save.attribute("lives").set_value(lives);
 
@@ -61,16 +64,18 @@ void FlyEnemy::Save(pugi::xml_node& save) const {
 	save.append_child("initial_position");
 	save.child("initial_position").append_attribute("x");
 	save.child("initial_position").append_attribute("y");
-	save.child("initial_position").attribute("x").set_value(initial_position.x);
-	save.child("initial_position").attribute("y").set_value(initial_position.y);
+	save.child("initial_position").attribute("x").set_value(initialPosition.x);
+	save.child("initial_position").attribute("y").set_value(initialPosition.y);
 }
 
-void FlyEnemy::Reset() {
-	position = initial_position;
+void FlyEnemy::Reset()
+{
+	position = initialPosition;
 	vel.x = 0;
 	vel.y = 0;
 	lives = 5;
-	if (col != nullptr) {
+	if (col != nullptr)
+	{
 		app->col->DeleteCollider(col);
 	}
 	dead = false;
@@ -78,13 +83,17 @@ void FlyEnemy::Reset() {
 	col = app->col->AddCollider({ position.x,position.y,32,32 }, COLLIDER_ENEMY, app->entities);
 }
 
-void FlyEnemy::Update(float dt) {
+void FlyEnemy::Update(float dt)
+{
 
-	if (dead == false) {
+	if (dead == false)
+	{
 		private_dt = dt;
-		if (lives == 0) {
+		if (lives == 0)
+		{
 			dead = true;
 			app->col->DeleteCollider(col);
+			app->scene->FlyEnemies.Del(app->scene->FlyEnemies.At(app->scene->FlyEnemies.Find(this)));
 			falling = true;
 		}
 
@@ -129,23 +138,27 @@ void FlyEnemy::Update(float dt) {
 	}
 }
 
-void FlyEnemy::Draw() {
+void FlyEnemy::Draw()
+{
 	Current_animation = &idle;
 
 	app->render->DrawTexture(sprite, position.x, position.y, &Current_animation->GetCurrentFrame(), 1, 1.0f, NULL, NULL, NULL);
 }
 
-void FlyEnemy::HandeInput() {
+void FlyEnemy::HandeInput()
+{
 	vel.x = vel.y = 0;
 	CurrentState = NONE;
 
-	if (ChasePlayer(app->player->position) == true) {
+	if (ChasePlayer(app->player->position) == true)
+	{
       		app->pathfinding->CreatePath(app->map->WorldToMap(position.x, position.y), app->map->WorldToMap(app->player->position.x, app->player->position.y), true);
 
 		const DynArray<Path>* path = app->pathfinding->GetLastPath();
 
 		const Path* path_dir = path->At(1);
-		if (path_dir != nullptr) {
+		if (path_dir != nullptr)
+		{
 
 			switch (path_dir->dir)
 			{
@@ -170,12 +183,15 @@ void FlyEnemy::HandeInput() {
 	}
 }
 
-bool FlyEnemy::ChasePlayer(fPoint player) {
+bool FlyEnemy::ChasePlayer(fPoint player)
+{
 	player.x = (int)player.x;
 	player.y = (int)player.y;
 
-	if (player.x + 16 > position.x - 500 && player.x + 16 < position.x + 500) {
-		if (player.y > position.y - 200 && player.y < position.y + 300) {
+	if (player.x + 16 > position.x - 500 && player.x + 16 < position.x + 500)
+	{
+		if (player.y > position.y - 200 && player.y < position.y + 300)
+		{
 			return true;
 		}
 	}
@@ -183,7 +199,8 @@ bool FlyEnemy::ChasePlayer(fPoint player) {
 	return false;
 }
 
-void FlyEnemy::OnCollision(Collider* c1, Collider* c2) {
+void FlyEnemy::OnCollision(Collider* c1, Collider* c2)
+{
 	//Collision with shot or player if necessary.
 	//Decrease speed if touches player.
 	//If touches floor vel.y = vel.x = 0

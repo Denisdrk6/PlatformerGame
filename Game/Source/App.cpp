@@ -461,6 +461,9 @@ bool App::SaveGame() const
 	pugi::xml_document data;
 	pugi::xml_node root;
 
+	if(data.empty() == false)
+		data.reset();
+
 	root = data.append_child("game_state");
 
 	ListItem<Module*>* item = modules.start;

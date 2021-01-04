@@ -25,14 +25,15 @@ bool Entities::Awake(pugi::xml_node& config) {
 }
 
 bool Entities::Load(pugi::xml_node& load) {
+
 	ListItem<Entity*>* ent;
 	for (ent = entities.start; ent; ent = ent->next) {
 		app->col->DeleteCollider(ent->data->col);
 	}
 	DestroyAll();
 
-
-
+	app->scene->FlyEnemies.Clear();
+	app->scene->FloorEnemies.Clear();
 
 	pugi::xml_node nodeFly;
 	for (nodeFly = load.child("Fly_Enemies").child("Fly_Enemy"); nodeFly; nodeFly = nodeFly.next_sibling("FlyEnemy")) {
@@ -73,6 +74,19 @@ bool Entities::Save(pugi::xml_node& save) const {
 			save.child("Fly_Enemies").append_child("Fly_Enemy");
 		}
 		flyNode = flyNode.next_sibling("Fly_Enemy");
+	}
+
+	save.append_child("Floor_Enemies");
+	save.child("Floor_Enemies").append_child("Floor_Enemy");
+	pugi::xml_node floorNode;
+	floorNode = save.child("Floor_Enemies").child("Floor_Enemy");
+	ListItem<FloorEnemy*>* floor;
+	for (floor = app->scene->FloorEnemies.start; floor; floor = floor->next) {
+		floor->data->Save(floorNode);
+		if (floor->next != NULL) {
+			save.child("Floor_Enemies").append_child("Floor_Enemy");
+		}
+		floorNode = floorNode.next_sibling("Floor_Enemy");
 	}
 
 	return true;
