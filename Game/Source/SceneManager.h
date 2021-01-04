@@ -13,6 +13,7 @@ class GuiButton;
 class Input;
 class Render;
 class Textures;
+class Map;
 
 class SceneManager : public Module
 {
@@ -45,14 +46,15 @@ public:
 	SceneGameplay* gameplay = nullptr;
 	SceneWin* win = nullptr;
 
+	Scene* current;
+	Scene* next;
+
 private:
 
 	Input* input;
 	Render* render;
 	Textures* tex;
-
-	Scene* current;
-	Scene* next;
+	Map* map;
 
 	// Required variables to manage screen transitions (fade-in, fade-out)
 	bool onTransition;

@@ -6,8 +6,7 @@
 #include "Log.h"
 #include "player.h"
 #include "Collisions.h"
-#include "SceneGameplay.h"
-#include "SceneIntro.h"
+#include "SceneManager.h"
 
 #define VSYNC true
 
@@ -85,6 +84,16 @@ bool Render::PostUpdate()
 	return true;
 }
 
+iPoint Render::ScreenToWorld(int x, int y) const
+{
+	iPoint ret;
+
+	ret.x = (x - camera.x / app->win->GetScale());
+	ret.y = (y - camera.y / app->win->GetScale());
+
+	return ret;
+}
+
 // Called before quitting
 bool Render::CleanUp()
 {
@@ -136,7 +145,7 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 	
 	SDL_Rect rect = {0, 0, 0, 0};
 
-	if (texture != app->gameplay->saveTexBlending.texture && texture != app->gameplay->loadTexBlending.texture /*&& texture != app->intro->opening*/)
+	if (texture != app->sceneManager->gameplay->saveTexBlending.texture && texture != app->sceneManager->gameplay->loadTexBlending.texture /*&& texture != app->intro->opening*/)
 	{
 		rect.x = (int)(camera.x * speed) + x * scale;
 		rect.y = (int)(camera.y * speed) + y * scale;

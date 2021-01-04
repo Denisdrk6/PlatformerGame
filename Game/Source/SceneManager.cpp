@@ -1,5 +1,9 @@
 #include "SceneManager.h"
 
+#include "App.h"
+#include "Map.h"
+#include "Pathfinding.h"
+
 #include "Input.h"
 #include "Render.h"
 #include "Textures.h"
@@ -54,21 +58,21 @@ bool SceneManager::Start()
 // Called each loop iteration
 bool SceneManager::PreUpdate()
 {
-	/*
+	
 	// L12b: Debug pathfing
 	static iPoint origin;
 	static bool originSelected = false;
 
 	int mouseX, mouseY;
-	app->input->GetMousePosition(mouseX, mouseY);
-	iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
+	input->GetMousePosition(mouseX, mouseY);
+	iPoint p = render->ScreenToWorld(mouseX, mouseY);
 	p = app->map->WorldToMap(p.x, p.y);
 
-	if(app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if(input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		if(originSelected == true)
 		{
-			app->pathFinding->CreatePath(origin, p);
+			app->pathfinding->CreatePath(origin, p, true);
 			originSelected = false;
 		}
 		else
@@ -77,7 +81,7 @@ bool SceneManager::PreUpdate()
 			originSelected = true;
 		}
 	}
-	*/
+	
 
 	return true;
 }

@@ -1,4 +1,4 @@
-#include "SceneIntro.h"
+#include "SceneManager.h"
 
 #include "App.h"
 #include "Textures.h"
@@ -61,7 +61,8 @@ bool SceneIntro::Update(float dt)
 	if(alphaModifier >= 0) alphaModifier = (int)(120 / (1/dt));
 
 	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && bgTexture.loaded == false)
-		app->fade->Fade(this, (Module*)app->gameplay, 60);
+		app->sceneManager->current->transitionRequired == true;
+		//app->fade->Fade(this, (Module*)app->gameplay, 60);
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 

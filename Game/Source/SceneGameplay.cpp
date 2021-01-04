@@ -5,6 +5,7 @@
 #include "Render.h"
 #include "Window.h"
 #include "SceneGameplay.h"
+#include "SceneManager.h"
 #include "Map.h"
 #include "Player.h"
 #include "Collisions.h"
@@ -81,7 +82,7 @@ bool SceneGameplay::Start()
 		for (int i = 0; i < 2; i++)
 		{
 			if (checkPoints[i].position.x != 0 || checkPoints[i].position.y != 0)
-				checkPoints[i].collider = app->col->AddCollider({ checkPoints[i].position.x * app->map->data.tileWidth, checkPoints[i].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
+				checkPoints[i].collider = app->col->AddCollider({ checkPoints[i].position.x * app->map->data.tileWidth, checkPoints[i].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, app->sceneManager);
 		}
 
 		coins[0].position = { 3, 84 };
@@ -95,12 +96,12 @@ bool SceneGameplay::Start()
 		for (int i = 0; i < 7; i++)
 		{
 			if (coins[i].position.x != 0 || coins[i].position.y != 0)
-				coins[i].collider = app->col->AddCollider({ coins[i].position.x * app->map->data.tileWidth, coins[i].position.y * app->map->data.tileHeight,app->map->data.tileWidth,app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_COIN, this);
+				coins[i].collider = app->col->AddCollider({ coins[i].position.x * app->map->data.tileWidth, coins[i].position.y * app->map->data.tileHeight,app->map->data.tileWidth,app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_COIN, app->sceneManager);
 		}
 
 		hearts.position = { 85,74 };
 		if (hearts.position.x != 0 || hearts.position.y != 0)
-			hearts.collider = app->col->AddCollider({ hearts.position.x * app->map->data.tileWidth, hearts.position.y * app->map->data.tileHeight,app->map->data.tileWidth,app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_HEART, this);
+			hearts.collider = app->col->AddCollider({ hearts.position.x * app->map->data.tileWidth, hearts.position.y * app->map->data.tileHeight,app->map->data.tileWidth,app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_HEART, app->sceneManager);
 
 		app->render->camera.y = -77.5 * 32;
 
