@@ -184,21 +184,33 @@ void App::ChangeFrameCap(int cap) {
 bool App::Update()
 {
 	bool ret = true;
-	PrepareUpdate();
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		pauseMenu = !pauseMenu;
 
-	if(input->GetWindowEvent(WE_QUIT) == true)
-		ret = false;
+	if ( pauseMenu == false) {
 
-	if(ret == true)
-		ret = PreUpdate();
+		PrepareUpdate();
 
-	if(ret == true)
-		ret = DoUpdate();
+		if (input->GetWindowEvent(WE_QUIT) == true)
+			ret = false;
 
-	if(ret == true)
-		ret = PostUpdate();
+		if (ret == true)
+			ret = PreUpdate();
 
-	FinishUpdate();
+		if (ret == true)
+			ret = DoUpdate();
+
+		if (ret == true)
+			ret = PostUpdate();
+
+		FinishUpdate();
+	}
+	else {
+		SDL_Rect rect = { 0, 0, win->screenSurface->w,win->screenSurface->h };
+		SDL_SetRenderDrawColor(render->renderer, 255, 255, 255, 100);
+		SDL_RenderFillRect(render->renderer, &rect);
+		app->render->DrawTexture(player->pause, win->screenSurface->w / 3 + render->camera.x * -1, win->screenSurface->h / 5 + render->camera.y * -1);
+	}
 	return ret;
 }
 

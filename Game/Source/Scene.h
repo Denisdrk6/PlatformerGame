@@ -91,18 +91,18 @@ public:
 	int hiscore = 0;
 	int scoreFont = -1;
 	int timer=0;
+	
 
 private:
 	SDL_Texture* heartsTex;
 	SDL_Texture* coinsTex;
 	SDL_Texture* iglu;
-	
+
 	Animation rotateCoin;
 	Animation redCheckPoint;
 	Animation greenCheckPoint;
 
 	int currentCheckpoint = 0;
-
 	bool playerCol = false;
 
 protected:

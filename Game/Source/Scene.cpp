@@ -66,6 +66,7 @@ bool Scene::Start()
 		iglu = app->tex->Load("Assets/Textures/iglu_icon.png");
 		saveTexBlending.texture = app->tex->Load("Assets/textures/save_load.png");
 		loadTexBlending.texture = app->tex->Load("Assets/Textures/Save_load.png");
+		
 
 		char lookupTable[] = { "0123456789" };
 		scoreFont = app->fonts->Load("Assets/Fonts/timer_font.png", lookupTable, 1);
@@ -392,9 +393,7 @@ bool Scene::PostUpdate()
 	app->fonts->BlitText(550, 15, scoreFont, scoreText);
 
 
-	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
-
+	
 	return ret;
 }
 

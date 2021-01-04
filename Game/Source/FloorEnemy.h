@@ -48,8 +48,12 @@ private:
 	float private_dt;
 	//---------------------------------
 	Animation* Current_animation;
-	Animation idle;
-	Animation hit;
+	Animation rIdleAnim;
+	Animation lIdleAnim;
+	Animation rWalkAnim;
+	Animation lWalkAnim;
+	Animation rJumpAnim;
+	Animation lJumpAnim;
 	Animation death;
 
 };

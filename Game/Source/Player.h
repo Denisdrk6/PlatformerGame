@@ -72,6 +72,7 @@ public:
 	// The player spritesheet loaded into an SDL_Texture
 	SDL_Texture* texture = nullptr;
 	SDL_Texture* heart = nullptr;
+	SDL_Texture* pause;
 	BlendedTextures loadingScreen;
 	BlendedTextures loadingBalls;
 	BlendedTextures textureHurt;
@@ -108,6 +109,7 @@ public:
 	bool changingSavedMap = false;
 	bool mapChanged = false;
 	bool reload = false;
+	
 
 	int lifes = 3;
 	int	lifeWait = 0;

@@ -64,6 +64,7 @@ bool SceneIntro::Update(float dt)
 		app->fade->Fade(this, (Module*)app->scene, 60);
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+
 		ret = false;
 
 	

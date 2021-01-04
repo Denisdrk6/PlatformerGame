@@ -12,13 +12,57 @@
 
 FloorEnemy::FloorEnemy(iPoint pos) : Entity(EntityType::FLOOR_ENEMY) {
 	//Load Sprite
-	sprite = app->tex->Load("Assets/enemies/ground_enemy.png");
+	sprite = app->tex->Load("Assets/enemies/floor_enemy.png");
 
 	//Load Animations
+	rIdleAnim.PushBack({ 1*2, 2*2, 17*2, 26*2 });
+	rIdleAnim.PushBack({ 33*2, 1*2, 17*2, 27*2 });
+	rIdleAnim.PushBack({ 64*2, 1*2, 18*2, 27*2 });
+	rIdleAnim.PushBack({ 95*2, 2*2, 20*2, 26*2 });
+	rIdleAnim.speed = 0.02f;
 
-	idle.PushBack({ 0 , 51 , 46 , 45 });;
-	idle.PushBack({ 55, 51 , 46 , 45 });;
-	idle.speed = 0.05f;
+	lIdleAnim.PushBack({ 98*2, 30*2, 17*2, 26*2 });
+	lIdleAnim.PushBack({ 66 * 2, 29 * 2, 17 * 2, 27 * 2 });
+	lIdleAnim.PushBack({ 34 * 2, 29 * 2, 18 * 2, 27 * 2 });
+	lIdleAnim.PushBack({ 1 * 2, 30 * 2, 20 * 2, 26 * 2 });
+
+	lIdleAnim.speed = 0.02f;
+
+	rWalkAnim.PushBack({ 1 * 2, 59 * 2, 17 * 2, 25 * 2 });
+	rWalkAnim.PushBack({ 33 * 2, 58 * 2, 17 * 2, 26 * 2 });
+	rWalkAnim.PushBack({ 65 * 2, 57 * 2, 17 * 2, 27 * 2 });
+	rWalkAnim.PushBack({ 96 * 2, 59 * 2, 18 * 2, 25 * 2 });
+	rWalkAnim.PushBack({ 129 * 2, 58 * 2, 17 * 2, 26 * 2 });
+	rWalkAnim.PushBack({ 161 * 2, 57 * 2, 17 * 2, 27 * 2 });
+	rWalkAnim.speed = 0.1f;
+
+	lWalkAnim.PushBack({ 322, 174, 34, 50 });
+	lWalkAnim.PushBack({ 258, 172, 34, 52 });
+	lWalkAnim.PushBack({ 194, 170, 34, 54 });
+	lWalkAnim.PushBack({ 130, 174, 36, 50 });
+	lWalkAnim.PushBack({ 66, 172, 34, 52 });
+	lWalkAnim.PushBack({ 2, 170, 34, 54 });
+	lWalkAnim.speed = 0.1f;
+
+	rJumpAnim.PushBack({ 2, 234, 34, 52 });
+	rJumpAnim.PushBack({ 62, 238, 40, 48 });
+	rJumpAnim.PushBack({ 124, 236, 44, 48 });
+	rJumpAnim.PushBack({ 194, 226, 34, 60 });
+	rJumpAnim.PushBack({ 256, 226, 36, 54 });
+	rJumpAnim.PushBack({ 318, 230, 40, 54 });
+	rJumpAnim.PushBack({ 380, 238, 44, 48 });
+	rJumpAnim.PushBack({ 448, 234, 36, 52 });
+	rJumpAnim.speed = 0.025f;
+
+	lJumpAnim.PushBack({ 450, 296, 34, 52 });
+	lJumpAnim.PushBack({ 384, 300, 40, 48 });
+	lJumpAnim.PushBack({ 318, 300, 44, 48 });
+	lJumpAnim.PushBack({ 258, 288, 34, 60 });
+	lJumpAnim.PushBack({ 194, 288, 36, 54 });
+	lJumpAnim.PushBack({ 128, 292, 40, 54 });
+	lJumpAnim.PushBack({ 62, 300, 44, 48 });
+	lJumpAnim.PushBack({ 2, 296, 36, 52 });
+	lJumpAnim.speed = 0.025f;
 
 	col = app->col->AddCollider({ position.x,position.y,36,36 }, COLLIDER_ENEMY, app->entities);
 
@@ -171,7 +215,7 @@ void FloorEnemy::HandeInput() {
 
 void FloorEnemy::Draw() {
 
-	Current_animation = &idle;
+	Current_animation = &rIdleAnim;
 
 	app->render->DrawTexture(sprite, position.x, position.y, &Current_animation->GetCurrentFrame(), 1, 1.0f, NULL, NULL, NULL);
 }
