@@ -1,71 +1,111 @@
 #ifndef __SCENE_H__
 #define __SCENE_H__
 
-#include "SString.h"
+#include "Module.h"
+#include "Animation.h"
+#include "List.h"
 
-class Input;
-class Render;
-class Textures;
+struct SDL_Texture;
+class Collider;
+struct FlyEnemy;
+struct FloorEnemy;
 
-class GuiControl;
-
-enum class SceneType
+class BlendedTexture
 {
-    LOGO,
-    TITLE,
-    GAMEPLAY,
-    ENDING
+public:
+	SDL_Texture* texture;
+	int alpha;
+	bool loaded = false;
+	SDL_Rect rect;
 };
 
-class Scene
+class CheckPoint
+{
+public:
+	bool activated = false;
+	iPoint position = {0, 0};
+	Collider* collider;
+};
+
+class Heart
+{
+public:
+	bool activated = false;
+	iPoint position = { 0, 0 };
+	Collider* collider;
+};
+
+
+class Coin
+{
+public:
+	bool activated = false;
+	iPoint position = { 0, 0 };
+	Collider* collider;
+};
+
+class Scene : public Module
 {
 public:
 
-    Scene() : active(true), loaded(false), transitionRequired(false) {}
+	Scene();
 
-    virtual bool Load(Textures* tex)
-    {
-        return true;
-    }
+	// Destructor
+	virtual ~Scene();
 
-    virtual bool Update(Input* input, float dt)
-    {
-        return true;
-    }
+	// Called before render is available
+	bool Awake();
 
-    virtual bool Draw(Render* render)
-    {
-        return true;
-    }
+	// Called before the first frame
+	bool Start();
 
-    virtual bool Unload()
-    {
-        return true;
-    }
+	// Called before all Updates
+	bool PreUpdate();
 
-    void TransitionToScene(SceneType scene)
-    {
-        transitionRequired = true;
-        nextScene = scene;
-    }
+	// Called each loop iteration
+	bool Update(float dt);
 
-    // Define multiple Gui Event methods
-    virtual bool OnGuiMouseClickEvent(GuiControl* control)
-    {
-        return true;
-    }
+	// Called before all Updates
+	bool PostUpdate();
 
-public:
+	// Called before quitting
+	bool CleanUp();
 
-    bool active = true;
-    SString name;         // Scene name identifier?
+	BlendedTexture saveTexBlending;
+	BlendedTexture loadTexBlending;
 
-    // Possible properties
-    bool loaded = false;
-    // TODO: Transition animation properties
+	CheckPoint checkPoints[2];
 
-    bool transitionRequired;
-    SceneType nextScene;
+	Coin coins[7];
+	Heart hearts;
+
+
+	SDL_Texture* flags;
+	SDL_Texture* img;
+
+	List<FlyEnemy*> FlyEnemies;
+	List<FloorEnemy*> FloorEnemies;
+
+	char scoreText[10] = { "\0" };
+	int score = 0;
+	int hiscore = 0;
+	int scoreFont = -1;
+	int timer=0;
+	
+
+private:
+	SDL_Texture* heartsTex;
+	SDL_Texture* coinsTex;
+	SDL_Texture* iglu;
+
+	Animation rotateCoin;
+	Animation redCheckPoint;
+	Animation greenCheckPoint;
+
+	int currentCheckpoint = 0;
+	bool playerCol = false;
+
+protected:
 };
 
 #endif // __SCENE_H__

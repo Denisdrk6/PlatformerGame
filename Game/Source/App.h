@@ -16,7 +16,7 @@ class Input;
 class Render;
 class Textures;
 class Audio;
-class SceneGameplay;
+class Scene;
 class Map;
 class Animation;
 class Player;
@@ -98,7 +98,7 @@ public:
 	Render* render;
 	Textures* tex;
 	Audio* audio;
-	SceneGameplay* gameplay;
+	Scene* scene;
 	Map* map;
 	Animation* animation;
 	Player* player;

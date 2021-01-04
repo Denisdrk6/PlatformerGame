@@ -4,7 +4,7 @@
 #include "Audio.h"
 #include "Render.h"
 #include "Window.h"
-#include "SceneGameplay.h"
+#include "Scene.h"
 #include "Map.h"
 #include "Player.h"
 #include "Collisions.h"
@@ -15,9 +15,9 @@
 #include "Defs.h"
 #include "Log.h"
 
-SceneGameplay::SceneGameplay() : Module()
+Scene::Scene() : Module()
 {
-	name.Create("gameplay");
+	name.Create("scene");
 	active = false;
 
 	rotateCoin.PushBack({ 0,0,15,32 });
@@ -41,11 +41,11 @@ SceneGameplay::SceneGameplay() : Module()
 }
 
 // Destructor
-SceneGameplay::~SceneGameplay()
+Scene::~Scene()
 {}
 
 // Called before render is available
-bool SceneGameplay::Awake()
+bool Scene::Awake()
 {
 	LOG("Loading Scene");
 	bool ret = true;
@@ -54,7 +54,7 @@ bool SceneGameplay::Awake()
 }
 
 // Called before the first frame
-bool SceneGameplay::Start()
+bool Scene::Start()
 {
 	if (active == true)
 	{
@@ -125,13 +125,13 @@ bool SceneGameplay::Start()
 }
 
 // Called each loop iteration
-bool SceneGameplay::PreUpdate()
+bool Scene::PreUpdate()
 {
 	return true;
 }
 
 // Called each loop iteration
-bool SceneGameplay::Update(float dt)
+bool Scene::Update(float dt)
 {
 	if (app->pauseMenu == false)
 	{
@@ -387,7 +387,7 @@ bool SceneGameplay::Update(float dt)
 }
 
 // Called each loop iteration
-bool SceneGameplay::PostUpdate()
+bool Scene::PostUpdate()
 {
 	bool ret = true;
 
@@ -410,7 +410,7 @@ bool SceneGameplay::PostUpdate()
 }
 
 // Called before quitting
-bool SceneGameplay::CleanUp()
+bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
 	app->player->active = false;

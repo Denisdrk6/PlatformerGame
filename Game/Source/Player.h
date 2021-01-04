@@ -4,7 +4,7 @@
 #include "Module.h"
 #include "Animation.h"
 #include "Point.h"
-#include "SceneGameplay.h"
+#include "Scene.h"
 
 struct SDL_Texture;
 struct Collider;
