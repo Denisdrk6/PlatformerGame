@@ -2,7 +2,7 @@
 #include "Collisions.h"
 #include "Textures.h"
 #include "Pathfinding.h"
-#include "SceneGameplay.h"
+#include "Scene.h"
 #include "Player.h"
 
 #define SPEED 100
@@ -93,8 +93,7 @@ void FlyEnemy::Update(float dt)
 		{
 			dead = true;
 			app->col->DeleteCollider(col);
-			// Erase the enemy from the list
-			app->gameplay->FlyEnemies.Del(app->gameplay->FlyEnemies.At(app->gameplay->FlyEnemies.Find(this)));
+			app->scene->FlyEnemies.Del(app->scene->FlyEnemies.At(app->scene->FlyEnemies.Find(this)));
 			falling = true;
 		}
 

@@ -182,40 +182,40 @@ void Player::Death() {
 			doubleJump = false;
 			speedY = 1.6f;
 
-			app->gameplay->checkPoints[0].position = { 76, 88 };
-			if (app->gameplay->checkPoints[0].activated == true)
+			app->scene->checkPoints[0].position = { 76, 88 };
+			if (app->scene->checkPoints[0].activated == true)
 			{
-				app->gameplay->checkPoints[0].activated = false;
-				app->gameplay->checkPoints[0].collider = app->col->AddCollider({ app->gameplay->checkPoints[0].position.x * app->map->data.tileWidth, app->gameplay->checkPoints[0].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
+				app->scene->checkPoints[0].activated = false;
+				app->scene->checkPoints[0].collider = app->col->AddCollider({ app->scene->checkPoints[0].position.x * app->map->data.tileWidth, app->scene->checkPoints[0].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
 			}
 
-			app->gameplay->checkPoints[1].position = { 33, 44 };
-			if (app->gameplay->checkPoints[1].activated == true)
+			app->scene->checkPoints[1].position = { 33, 44 };
+			if (app->scene->checkPoints[1].activated == true)
 			{
-				app->gameplay->checkPoints[1].activated = false;
-				app->gameplay->checkPoints[1].collider = app->col->AddCollider({ app->gameplay->checkPoints[1].position.x * app->map->data.tileWidth, app->gameplay->checkPoints[1].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
+				app->scene->checkPoints[1].activated = false;
+				app->scene->checkPoints[1].collider = app->col->AddCollider({ app->scene->checkPoints[1].position.x * app->map->data.tileWidth, app->scene->checkPoints[1].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
 			}
 
-			app->gameplay->coins[0].position = { 3, 84 };
-			app->gameplay->coins[0].activated = false;
-			app->gameplay->coins[1].position = { 43, 88 };
-			app->gameplay->coins[1].activated = false;
-			app->gameplay->coins[2].position = { 85, 95 };
-			app->gameplay->coins[2].activated = false;
-			app->gameplay->coins[3].position = { 86, 81 };
-			app->gameplay->coins[3].activated = false;
-			app->gameplay->coins[4].position = { 97, 62 };
-			app->gameplay->coins[4].activated = false;
-			app->gameplay->coins[5].position = { 68, 50 };
-			app->gameplay->coins[5].activated = false;
-			app->gameplay->coins[6].position = { 16, 39 };
-			app->gameplay->coins[6].activated = false;
+			app->scene->coins[0].position = { 3, 84 };
+			app->scene->coins[0].activated = false;
+			app->scene->coins[1].position = { 43, 88 };
+			app->scene->coins[1].activated = false;
+			app->scene->coins[2].position = { 85, 95 };
+			app->scene->coins[2].activated = false;
+			app->scene->coins[3].position = { 86, 81 };
+			app->scene->coins[3].activated = false;
+			app->scene->coins[4].position = { 97, 62 };
+			app->scene->coins[4].activated = false;
+			app->scene->coins[5].position = { 68, 50 };
+			app->scene->coins[5].activated = false;
+			app->scene->coins[6].position = { 16, 39 };
+			app->scene->coins[6].activated = false;
 
-			app->gameplay->hearts.position = { 85, 74 };
-			if (app->gameplay->hearts.activated == true)
+			app->scene->hearts.position = { 85, 74 };
+			if (app->scene->hearts.activated == true)
 			{
-				app->gameplay->hearts.activated = false;
-				app->gameplay->hearts.collider = app->col->AddCollider({ app->gameplay->hearts.position.x * app->map->data.tileWidth, app->gameplay->hearts.position.y * app->map->data.tileHeight, app->map->data.tileWidth, app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_HEART, this);
+				app->scene->hearts.activated = false;
+				app->scene->hearts.collider = app->col->AddCollider({ app->scene->hearts.position.x * app->map->data.tileWidth, app->scene->hearts.position.y * app->map->data.tileHeight, app->map->data.tileWidth, app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_HEART, this);
 			}
 
 			score = 0;
@@ -601,8 +601,8 @@ void Player::ChangeMap(int mapNum)
 		if (externMap != map || currentMap != map)
 		{
 			app->map->Load("devmap.tmx");
-			app->tex->UnLoad(app->gameplay->img);
-			app->gameplay->img = app->tex->Load("Assets/Textures/background.png");
+			app->tex->UnLoad(app->scene->img);
+			app->scene->img = app->tex->Load("Assets/Textures/background.png");
 		}
 		spawnY = 94;
 		if (changingSavedMap == false)
@@ -619,59 +619,59 @@ void Player::ChangeMap(int mapNum)
 		doubleJump = false;
 		speedY = 1.6f;
 
-		app->gameplay->checkPoints[0].position = { 76, 88 };
-		app->gameplay->checkPoints[0].activated = false;
+		app->scene->checkPoints[0].position = { 76, 88 };
+		app->scene->checkPoints[0].activated = false;
 		if (externMap != map || currentMap != map)
 		{
-			app->col->DeleteCollider(app->gameplay->checkPoints[0].collider);
-			app->gameplay->checkPoints[0].collider = app->col->AddCollider({ app->gameplay->checkPoints[0].position.x * app->map->data.tileWidth, app->gameplay->checkPoints[0].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
+			app->col->DeleteCollider(app->scene->checkPoints[0].collider);
+			app->scene->checkPoints[0].collider = app->col->AddCollider({ app->scene->checkPoints[0].position.x * app->map->data.tileWidth, app->scene->checkPoints[0].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
 		}
 
-		app->gameplay->checkPoints[1].position = { 33, 44 };
-		app->gameplay->checkPoints[1].activated = false;
+		app->scene->checkPoints[1].position = { 33, 44 };
+		app->scene->checkPoints[1].activated = false;
 		if (externMap != map || currentMap != map)
 		{
-			app->col->DeleteCollider(app->gameplay->checkPoints[1].collider);
-			app->gameplay->checkPoints[1].collider = app->col->AddCollider({ app->gameplay->checkPoints[1].position.x * app->map->data.tileWidth, app->gameplay->checkPoints[1].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
+			app->col->DeleteCollider(app->scene->checkPoints[1].collider);
+			app->scene->checkPoints[1].collider = app->col->AddCollider({ app->scene->checkPoints[1].position.x * app->map->data.tileWidth, app->scene->checkPoints[1].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
 		}
 
 		for (int i = 0; i < maxScore; i++)
 		{
-			if(app->gameplay->coins[i].activated == true)
-				app->gameplay->coins[i].collider = app->col->AddCollider({ app->gameplay->coins[i].position.x * app->map->data.tileWidth, app->gameplay->coins[i].position.y * app->map->data.tileHeight, app->map->data.tileWidth, app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_COIN, this);
+			if(app->scene->coins[i].activated == true)
+				app->scene->coins[i].collider = app->col->AddCollider({ app->scene->coins[i].position.x * app->map->data.tileWidth, app->scene->coins[i].position.y * app->map->data.tileHeight, app->map->data.tileWidth, app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_COIN, this);
 		}
 
-		app->gameplay->coins[0].position = { 3, 84 };
-		app->gameplay->coins[0].activated = false;
-		app->gameplay->coins[1].position = { 43, 88 };
-		app->gameplay->coins[1].activated = false;
-		app->gameplay->coins[2].position = { 85, 95 };
-		app->gameplay->coins[2].activated = false;
-		app->gameplay->coins[3].position = { 86, 81 };
-		app->gameplay->coins[3].activated = false;
-		app->gameplay->coins[4].position = { 97, 62 };
-		app->gameplay->coins[4].activated = false;
-		app->gameplay->coins[5].position = { 68, 50 };
-		app->gameplay->coins[5].activated = false;
-		app->gameplay->coins[6].position = { 16, 39 };
-		app->gameplay->coins[6].activated = false;
+		app->scene->coins[0].position = { 3, 84 };
+		app->scene->coins[0].activated = false;
+		app->scene->coins[1].position = { 43, 88 };
+		app->scene->coins[1].activated = false;
+		app->scene->coins[2].position = { 85, 95 };
+		app->scene->coins[2].activated = false;
+		app->scene->coins[3].position = { 86, 81 };
+		app->scene->coins[3].activated = false;
+		app->scene->coins[4].position = { 97, 62 };
+		app->scene->coins[4].activated = false;
+		app->scene->coins[5].position = { 68, 50 };
+		app->scene->coins[5].activated = false;
+		app->scene->coins[6].position = { 16, 39 };
+		app->scene->coins[6].activated = false;
 
 		if (externMap != map || currentMap != map)
 		{
 			for (int i = 0; i < maxScore; i++)
-				app->gameplay->coins[i].collider = app->col->AddCollider({ app->gameplay->coins[i].position.x * app->map->data.tileWidth, app->gameplay->coins[i].position.y * app->map->data.tileHeight, app->map->data.tileWidth, app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_COIN, this);
+				app->scene->coins[i].collider = app->col->AddCollider({ app->scene->coins[i].position.x * app->map->data.tileWidth, app->scene->coins[i].position.y * app->map->data.tileHeight, app->map->data.tileWidth, app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_COIN, this);
 		}
 
-		app->gameplay->hearts.position = { 85, 74 };
-		app->gameplay->hearts.activated = false;
-		app->col->DeleteCollider(app->gameplay->hearts.collider);
-		app->gameplay->hearts.collider = app->col->AddCollider({ app->gameplay->hearts.position.x * app->map->data.tileWidth, app->gameplay->hearts.position.y * app->map->data.tileHeight, app->map->data.tileWidth, app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_HEART, this);
+		app->scene->hearts.position = { 85, 74 };
+		app->scene->hearts.activated = false;
+		app->col->DeleteCollider(app->scene->hearts.collider);
+		app->scene->hearts.collider = app->col->AddCollider({ app->scene->hearts.position.x * app->map->data.tileWidth, app->scene->hearts.position.y * app->map->data.tileHeight, app->map->data.tileWidth, app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_HEART, this);
 
 		if (externMap != map || currentMap != map)
 		{
 			app->entities->DestroyAll();
-			app->gameplay->FlyEnemies.Clear();
-			app->gameplay->FloorEnemies.Clear();
+			app->scene->FlyEnemies.Clear();
+			app->scene->FloorEnemies.Clear();
 			ListItem<ObjectLayer*>* obLay;
 			for (obLay = app->map->data.obj_layers.start; obLay; obLay = obLay->next)
 			{
@@ -692,8 +692,8 @@ void Player::ChangeMap(int mapNum)
 		if (externMap != map || currentMap != map)
 		{
 			app->map->Load("devmap2.tmx");
-			app->tex->UnLoad(app->gameplay->img);
-			app->gameplay->img = app->tex->Load("Assets/Textures/background2.png");
+			app->tex->UnLoad(app->scene->img);
+			app->scene->img = app->tex->Load("Assets/Textures/background2.png");
 		}
 
 		spawnY = 95;
@@ -711,60 +711,59 @@ void Player::ChangeMap(int mapNum)
 		doubleJump = false;
 		speedY = 1.6f;
 
-		app->gameplay->checkPoints[0].position = {81, 44};
-		app->gameplay->checkPoints[0].activated = false;
+		app->scene->checkPoints[0].position = {81, 44};
+		app->scene->checkPoints[0].activated = false;
 		if (externMap != map || currentMap != map)
 		{
-			app->col->DeleteCollider(app->gameplay->checkPoints[0].collider);
-			app->gameplay->checkPoints[0].collider = app->col->AddCollider({ app->gameplay->checkPoints[0].position.x * app->map->data.tileWidth, app->gameplay->checkPoints[0].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
+			app->col->DeleteCollider(app->scene->checkPoints[0].collider);
+			app->scene->checkPoints[0].collider = app->col->AddCollider({ app->scene->checkPoints[0].position.x * app->map->data.tileWidth, app->scene->checkPoints[0].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
 		}
 
-		app->gameplay->checkPoints[1].position = { 0, 0 };
-		app->gameplay->checkPoints[1].activated = false;
+		app->scene->checkPoints[1].position = { 0, 0 };
+		app->scene->checkPoints[1].activated = false;
 		if (externMap != map || currentMap != map)
 		{
-			app->col->DeleteCollider(app->gameplay->checkPoints[1].collider);
-			app->gameplay->checkPoints[1].collider = app->col->AddCollider({ app->gameplay->checkPoints[1].position.x * app->map->data.tileWidth, app->gameplay->checkPoints[1].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
+			app->col->DeleteCollider(app->scene->checkPoints[1].collider);
+			app->scene->checkPoints[1].collider = app->col->AddCollider({ app->scene->checkPoints[1].position.x * app->map->data.tileWidth, app->scene->checkPoints[1].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
 		}
 
 		for (int i = 0; i < maxScore; i++)
 		{
-			if (app->gameplay->coins[i].activated == true)
-				app->gameplay->coins[i].collider = app->col->AddCollider({ app->gameplay->coins[i].position.x * app->map->data.tileWidth, app->gameplay->coins[i].position.y * app->map->data.tileHeight, app->map->data.tileWidth, app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_COIN, this);
+			if (app->scene->coins[i].activated == true)
+				app->scene->coins[i].collider = app->col->AddCollider({ app->scene->coins[i].position.x * app->map->data.tileWidth, app->scene->coins[i].position.y * app->map->data.tileHeight, app->map->data.tileWidth, app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_COIN, this);
 		}
 
-		app->gameplay->coins[0].position = {34, 93};
-		app->gameplay->coins[0].activated = false;
-		app->gameplay->coins[1].position = {91, 72};
-		app->gameplay->coins[1].activated = false;
-		app->gameplay->coins[2].position = {81, 56};
-		app->gameplay->coins[2].activated = false;
-		app->gameplay->coins[3].position = {82, 24};
-		app->gameplay->coins[3].activated = false;
-		app->gameplay->coins[4].position = {70, 13};
-		app->gameplay->coins[4].activated = false;
-		app->gameplay->coins[5].position = {51, 2};
-		app->gameplay->coins[5].activated = false;
-		app->gameplay->coins[6].position = {36, 9};
-		app->gameplay->coins[6].activated = false;
+		app->scene->coins[0].position = {34, 93};
+		app->scene->coins[0].activated = false;
+		app->scene->coins[1].position = {91, 72};
+		app->scene->coins[1].activated = false;
+		app->scene->coins[2].position = {81, 56};
+		app->scene->coins[2].activated = false;
+		app->scene->coins[3].position = {82, 24};
+		app->scene->coins[3].activated = false;
+		app->scene->coins[4].position = {70, 13};
+		app->scene->coins[4].activated = false;
+		app->scene->coins[5].position = {51, 2};
+		app->scene->coins[5].activated = false;
+		app->scene->coins[6].position = {36, 9};
+		app->scene->coins[6].activated = false;
 
 		if (externMap != map || currentMap != map)
 		{
 			for (int i = 0; i < maxScore; i++)
-				app->gameplay->coins[i].collider = app->col->AddCollider({ app->gameplay->coins[i].position.x * app->map->data.tileWidth, app->gameplay->coins[i].position.y * app->map->data.tileHeight, app->map->data.tileWidth, app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_COIN, this);
+				app->scene->coins[i].collider = app->col->AddCollider({ app->scene->coins[i].position.x * app->map->data.tileWidth, app->scene->coins[i].position.y * app->map->data.tileHeight, app->map->data.tileWidth, app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_COIN, this);
 		}
 
-		app->gameplay->hearts.position = {78, 42};
-		app->gameplay->hearts.activated = false;
-		app->col->DeleteCollider(app->gameplay->hearts.collider);
-		app->gameplay->hearts.collider = app->col->AddCollider({ app->gameplay->hearts.position.x * app->map->data.tileWidth, app->gameplay->hearts.position.y * app->map->data.tileHeight, app->map->data.tileWidth, app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_HEART, this);
+		app->scene->hearts.position = {78, 42};
+		app->scene->hearts.activated = false;
+		app->col->DeleteCollider(app->scene->hearts.collider);
+		app->scene->hearts.collider = app->col->AddCollider({ app->scene->hearts.position.x * app->map->data.tileWidth, app->scene->hearts.position.y * app->map->data.tileHeight, app->map->data.tileWidth, app->map->data.tileHeight }, COLLIDER_TYPE::COLLIDER_HEART, this);
 
 		if (externMap != map || currentMap != map)
 		{
 			app->entities->DestroyAll();
-			//we clear the lists to load only the ones that are on the level that we are changing to
-			app->gameplay->FlyEnemies.Clear();
-			app->gameplay->FloorEnemies.Clear();
+			app->scene->FlyEnemies.Clear();
+			app->scene->FloorEnemies.Clear();
 			ListItem<ObjectLayer*>* obLay2;
 			for (obLay2 = app->map->data.obj_layers.start; obLay2; obLay2 = obLay2->next)
 			{
@@ -949,15 +948,15 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 			for (int i = 0; i < 2; i++)
 			{
 				// last && condition prevents saving if there's a further checkpoint already activated
-				if (c2->rect.x == app->gameplay->checkPoints[i].position.x * app->map->data.tileWidth && c2->rect.y == app->gameplay->checkPoints[i].position.y * app->map->data.tileHeight + 16 && app->gameplay->checkPoints[i].activated == false && ((i == 0 && app->gameplay->checkPoints[i + 1].activated == false) || i == 1))
+				if (c2->rect.x == app->scene->checkPoints[i].position.x * app->map->data.tileWidth && c2->rect.y == app->scene->checkPoints[i].position.y * app->map->data.tileHeight + 16 && app->scene->checkPoints[i].activated == false && ((i == 0 && app->scene->checkPoints[i + 1].activated == false) || i == 1))
 				{
-					app->gameplay->checkPoints[i].activated = true;
+					app->scene->checkPoints[i].activated = true;
 					app->SaveGameRequest();
 
-					app->gameplay->saveTexBlending.rect = { 0, 0, 224, 83 };
+					app->scene->saveTexBlending.rect = { 0, 0, 224, 83 };
 					//if (app->scene->saveTexBlending.loaded == false) app->scene->saveTex = app->tex->Load("Assets/textures/save_load.png");
-					app->gameplay->saveTexBlending.alpha = 255;
-					app->gameplay->saveTexBlending.loaded = true;
+					app->scene->saveTexBlending.alpha = 255;
+					app->scene->saveTexBlending.loaded = true;
 				}
 			}
 		}
@@ -968,11 +967,11 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 			for (int i = 0; i < 7; i++)
 			{
 				// last && condition prevents saving if there's a further checkpoint already activated
-				if (c2->rect.x == app->gameplay->coins[i].position.x * app->map->data.tileWidth && c2->rect.y == app->gameplay->coins[i].position.y * app->map->data.tileHeight && app->gameplay->coins[i].activated == false)
+				if (c2->rect.x == app->scene->coins[i].position.x * app->map->data.tileWidth && c2->rect.y == app->scene->coins[i].position.y * app->map->data.tileHeight && app->scene->coins[i].activated == false)
 				{
 					score++;
-					app->gameplay->coins[i].activated = true;
-					app->col->DeleteCollider(app->gameplay->coins[i].collider);
+					app->scene->coins[i].activated = true;
+					app->col->DeleteCollider(app->scene->coins[i].collider);
 				}
 			}
 		}
@@ -981,11 +980,11 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		{
 
 			// last && condition prevents saving if there's a further checkpoint already activated
-			if (app->gameplay->hearts.activated == false)
+			if (app->scene->hearts.activated == false)
 			{
 				lifes++;
-				app->gameplay->hearts.activated = true;
-				app->col->DeleteCollider(app->gameplay->hearts.collider);
+				app->scene->hearts.activated = true;
+				app->col->DeleteCollider(app->scene->hearts.collider);
 			}
 		}
 
