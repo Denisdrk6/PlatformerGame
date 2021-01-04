@@ -5,7 +5,7 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "SceneIntro.h"
-#include "Scene.h"
+#include "SceneGameplay.h"
 #include "SceneWin.h"
 #include "Map.h"
 #include "Player.h"
@@ -33,7 +33,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render();
 	tex = new Textures();
 	audio = new Audio();
-	scene = new Scene();
+	gameplay = new SceneGameplay();
 	map = new Map();
 	player = new Player();
 	col = new Collisions();
@@ -52,7 +52,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(intro);
-	AddModule(scene);
+	AddModule(gameplay);
 	AddModule(winScene);
 	AddModule(fonts);
 	AddModule(map);
@@ -88,7 +88,7 @@ App::~App()
 void App::AddModule(Module* module)
 {
 	bool initialState = true;
-	if (module == map || module == scene || module == audio || module == col || module == player || module == winScene) initialState = false;
+	if (module == map || module == gameplay || module == audio || module == col || module == player || module == winScene) initialState = false;
 	module->Init(initialState);
 	modules.Add(module);
 }
@@ -302,7 +302,7 @@ bool App::PreUpdate()
 			continue;
 		}
 
-		if(pauseMenu == false || (pauseMenu == true && (item->data->name == "input" || item->data->name == "renderer" || item->data->name == "scene")))
+		if(pauseMenu == false || (pauseMenu == true && (item->data->name == "input" || item->data->name == "renderer" || item->data->name == "SceneGameplay")))
 			ret = item->data->PreUpdate();
 	}
 
@@ -325,7 +325,7 @@ bool App::DoUpdate()
 			continue;
 		}
 
-      	else if (pauseMenu == false || (pauseMenu == true && (item->data->name == "input" || item->data->name == "renderer" || item->data->name == "scene")))
+      	else if (pauseMenu == false || (pauseMenu == true && (item->data->name == "input" || item->data->name == "renderer" || item->data->name == "gameplay")))
 			ret = item->data->Update(DeltaTime);
 	}
 
@@ -347,7 +347,7 @@ bool App::PostUpdate()
 			continue;
 		}
 
-		if (pauseMenu == false || (pauseMenu == true && (item->data->name == "input" || item->data->name == "renderer" || item->data->name == "scene")))
+		if (pauseMenu == false || (pauseMenu == true && (item->data->name == "input" || item->data->name == "renderer" || item->data->name == "SceneGameplay")))
 			ret = item->data->PostUpdate();
 	}
 
