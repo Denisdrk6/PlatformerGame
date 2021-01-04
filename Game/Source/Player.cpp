@@ -560,8 +560,6 @@ bool Player::PostUpdate()
 
 			if (loadingBalls.loaded == true) 
 				loadingBalls.alpha += alphaModifier;
-
-			
 		}
 
 		ret = true;

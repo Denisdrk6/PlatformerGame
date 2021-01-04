@@ -133,18 +133,19 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-
-	if (timer < 60)
+	if (app->pauseMenu == false)
 	{
-		timer++;
+		if (timer < 60)
+		{
+			timer++;
 
+		}
+		if (timer == 60)
+		{
+			score = score + 1;
+			timer = 0;
+		}
 	}
-	if (timer == 60)
-	{
-		score = score + 1;
-		timer = 0;
-	}
-	
 
 
     // L02: DONE 3: Request Load / Save when pressing L/S
@@ -286,48 +287,50 @@ bool Scene::Update(float dt)
 
 	// Draw extras (coins, hearts, flags, iglu)
 	
-
-	for (int i = 0; i < 7; i++) 
+	if (app->pauseMenu == false)
 	{
-		switch (coins[i].activated)
+		for (int i = 0; i < 7; i++)
+		{
+			switch (coins[i].activated)
+			{
+			case false:
+				app->render->DrawTexture(coinsTex, coins[i].position.x * app->map->data.tileWidth, coins[i].position.y * app->map->data.tileHeight, &rotateCoin.GetCurrentFrame(), 1);
+
+				break;
+			case true:
+				break;
+			}
+		}
+
+		switch (hearts.activated)
 		{
 		case false:
-			app->render->DrawTexture(coinsTex, coins[i].position.x* app->map->data.tileWidth, coins[i].position.y * app->map->data.tileHeight, &rotateCoin.GetCurrentFrame(), 1);
+			app->render->DrawTexture(heartsTex, hearts.position.x * app->map->data.tileWidth, hearts.position.y * app->map->data.tileHeight, NULL, 1);
 
 			break;
 		case true:
 			break;
 		}
-	}
 
-	switch (hearts.activated)
-	{
-	case false:
-		app->render->DrawTexture(heartsTex, hearts.position.x * app->map->data.tileWidth, hearts.position.y * app->map->data.tileHeight, NULL, 1);
-
-		break;
-	case true:
-		break;
-	}
-
-	for (int i = 0; i < 2; i++)
-	{
-		switch (checkPoints[i].activated)
+		for (int i = 0; i < 2; i++)
 		{
-		case false:
-			if (checkPoints[i].position.x == 0 && checkPoints[i].position.y == 0)
+			switch (checkPoints[i].activated)
+			{
+			case false:
+				if (checkPoints[i].position.x == 0 && checkPoints[i].position.y == 0)
+					break;
+				else app->render->DrawTexture(flags, checkPoints[i].position.x * app->map->data.tileWidth, checkPoints[i].position.y * app->map->data.tileHeight + 14, &redCheckPoint.GetCurrentFrame(), 2);
 				break;
-			else app->render->DrawTexture(flags, checkPoints[i].position.x * app->map->data.tileWidth, checkPoints[i].position.y * app->map->data.tileHeight + 14, &redCheckPoint.GetCurrentFrame(), 2);
-			break;
-		case true:
-			if (checkPoints[i].position.x == 0 && checkPoints[i].position.y == 0)
+			case true:
+				if (checkPoints[i].position.x == 0 && checkPoints[i].position.y == 0)
+					break;
+				else app->render->DrawTexture(flags, checkPoints[i].position.x * app->map->data.tileWidth, checkPoints[i].position.y * app->map->data.tileHeight + 14, &greenCheckPoint.GetCurrentFrame(), 2);
 				break;
-			else app->render->DrawTexture(flags, checkPoints[i].position.x * app->map->data.tileWidth, checkPoints[i].position.y * app->map->data.tileHeight + 14, &greenCheckPoint.GetCurrentFrame(), 2);
-			break;
+			}
 		}
-	}
 
-	app->render->DrawTexture(coinsTex, app->render->camera.x * -1 + 135, app->render->camera.y * -1 + 15, &rotateCoin.GetCurrentFrame(), 1);
+		app->render->DrawTexture(coinsTex, app->render->camera.x * -1 + 135, app->render->camera.y * -1 + 15, &rotateCoin.GetCurrentFrame(), 1);
+	}
 
 	//Draw save or load textures
 	if (saveTexBlending.loaded == true)
@@ -388,11 +391,20 @@ bool Scene::PostUpdate()
 {
 	bool ret = true;
 
-	//timer
-	sprintf_s(scoreText, 10, "%d", score);
-	app->fonts->BlitText(550, 15, scoreFont, scoreText);
+	if (app->pauseMenu == false)
+	{
+		//timer
+		sprintf_s(scoreText, 10, "%d", score);
+		app->fonts->BlitText(550, 15, scoreFont, scoreText);
+	}
 
-
+	if (app->pauseMenu == true && app->player->active == true)
+	{
+		SDL_Rect rect = { 0, 0, app->win->screenSurface->w, app->win->screenSurface->h };
+		SDL_SetRenderDrawColor(app->render->renderer, 255, 255, 255, 100);
+		SDL_RenderFillRect(app->render->renderer, &rect);
+		app->render->DrawTexture(app->player->pause, app->win->screenSurface->w / 3 + app->render->camera.x * -1, app->win->screenSurface->h / 5 + app->render->camera.y * -1);
+	}
 	
 	return ret;
 }

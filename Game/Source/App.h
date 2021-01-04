@@ -115,10 +115,12 @@ public:
 	int fpsN;
 	int fpsA;
 	int lastMs;
-	bool pauseMenu = false;
 	uint16_t framerate = 1000 / 45;
 	
 	float dt;
+
+	bool pauseMenu = false;
+	int keyPresses = 0;
 
 private:
 
