@@ -66,7 +66,7 @@ FloorEnemy::FloorEnemy(iPoint pos) : Entity(EntityType::FLOOR_ENEMY)
 	lJumpAnim.speed = 0.025f;
 
 	col = app->col->AddCollider({ position.x,position.y,36,64 }, COLLIDER_ENEMY, app->entities);
-
+	Current_animation = &rIdleAnim;
 	//Load position and save it
 	initialPosition = position = pos;
 
@@ -152,11 +152,31 @@ void FloorEnemy::Update(float dt)
 		position.y += vel.y * dt;
 
 		if (position.x > app->player->position.x) {
-			flip = SDL_FLIP_HORIZONTAL;
+			//flip = SDL_FLIP_HORIZONTAL;
+			Current_animation = &lIdleAnim;
+
+			if (vel.x != 0) {
+				Current_animation = &lWalkAnim;
+			}
+
 		}
 		else if (position.x < app->player->position.x) {
-			flip = SDL_FLIP_NONE;
+			Current_animation = &rIdleAnim;
+
+			if (vel.x != 0) {
+				Current_animation = &rWalkAnim;
+			}
 		}
+
+		if (falling == true) {
+			if (position.x < app->player->position.x) {
+				Current_animation = &rJumpAnim;
+			}
+			else if (position.x > app->player->position.x) {
+				Current_animation = &lJumpAnim;
+			}
+		}
+
 
 		Draw();
 		col->SetPos(position.x, position.y);
@@ -228,9 +248,6 @@ void FloorEnemy::HandeInput()
 
 void FloorEnemy::Draw()
 {
-
-	Current_animation = &rIdleAnim;
-
 	app->render->DrawTexture(sprite, position.x, position.y, &Current_animation->GetCurrentFrame(), 1, 1.0f, NULL, NULL, NULL);
 }
 
@@ -254,6 +271,6 @@ void FloorEnemy::OnCollision(Collider* c1, Collider* c2)
 		//if (offset < -7) offset = -7;
 		//SDL_Rect nextCollision = { c1->rect.x, c1->rect.y + vel.y, c1->rect.w, c1->rect.h };
 		vel.y = 0;
-
+		falling = false;
 	}
 }
