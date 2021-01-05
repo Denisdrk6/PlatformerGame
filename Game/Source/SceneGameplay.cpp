@@ -417,6 +417,7 @@ bool SceneGameplay::Unload()
 	app->player->active = false;
 	app->map->active = false;
 	app->col->active = false;
+	app->entities->DestroyAll();
 
 	return true;
 }

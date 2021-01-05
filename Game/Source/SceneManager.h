@@ -3,10 +3,7 @@
 
 #include "Module.h"
 #include "Scene.h"
-
-#include "SceneIntro.h"
 #include "SceneGameplay.h"
-#include "SceneWin.h"
 
 class GuiButton;
 
@@ -43,13 +40,14 @@ public:
 	bool CleanUp();
 
 	/*SceneIntro* intro = nullptr;
-	SceneGameplay* gameplay = nullptr;
 	SceneWin* win = nullptr;*/
 
-	SceneGameplay* gameplay = new SceneGameplay();
+	SceneGameplay* gameplay;
 
 	Scene* current;
 	Scene* next;
+
+	bool onTransition;
 
 private:
 
@@ -59,7 +57,6 @@ private:
 	Map* map;
 
 	// Required variables to manage screen transitions (fade-in, fade-out)
-	bool onTransition;
 	bool fadeOutCompleted;
 	float transitionAlpha;
 };

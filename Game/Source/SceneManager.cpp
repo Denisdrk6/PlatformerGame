@@ -1,5 +1,9 @@
 #include "SceneManager.h"
 
+#include "SceneGameplay.h"
+#include "SceneIntro.h"
+#include "SceneWin.h"
+
 #include "App.h"
 #include "Map.h"
 #include "Pathfinding.h"
@@ -15,8 +19,8 @@
 
 #include "SDL/include/SDL.h"
 
-#define FADEOUT_TRANSITION_SPEED	2.0f
-#define FADEIN_TRANSITION_SPEED		2.0f
+#define FADEOUT_TRANSITION_SPEED	1.0f
+#define FADEIN_TRANSITION_SPEED		1.0f
 
 SceneManager::SceneManager(Input* input, Render* render, Textures* tex) : Module()
 {
@@ -31,10 +35,6 @@ SceneManager::SceneManager(Input* input, Render* render, Textures* tex) : Module
 	this->input = input;
 	this->render = render;
 	this->tex = tex;
-
-	/*intro = new SceneIntro();
-	gameplay = new SceneGameplay();
-	win = new SceneWin();*/
 }
 
 // Destructor
@@ -54,9 +54,12 @@ bool SceneManager::Awake()
 bool SceneManager::Start()
 {
 	current = new SceneIntro();
-	//current->currentScene = SceneType::INTRO;
-	current->Load(tex);
 	current->Start();
+	gameplay = new SceneGameplay();
+	//current->intro = new SceneIntro();
+	current->currentScene = SceneType::INTRO;
+	current->Load(tex);
+	//current->intro->Start();
 
 	next = nullptr;
 
@@ -106,19 +109,12 @@ bool SceneManager::Update(float dt)
 		//if (input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) render->camera.x -= 1;
 		//if (input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) render->camera.x += 1;
 
-		current->Update(input, dt);
-		/*if (current->currentScene == SceneType::INTRO)
-		{
-			ret = intro->Update(dt);
-		}
 		if (current->currentScene == SceneType::GAMEPLAY)
 		{
-			ret = gameplay->Update(dt);
+			ret = gameplay->Update(input, dt);
 		}
-		if (current->currentScene == SceneType::WIN)
-		{
-			ret = win->Update(dt);
-		}*/
+
+		else ret = current->Update(input, dt);
 	}
 	else
 	{
@@ -128,7 +124,7 @@ bool SceneManager::Update(float dt)
 
 			// NOTE: Due to float internal representation, condition jumps on 1.0f instead of 1.05f
 			// For that reason we compare against 1.01f, to avoid last frame loading stop
-			if (transitionAlpha > 1.01f)
+			if (transitionAlpha > 1.01f && next != nullptr)
 			{
 				transitionAlpha = 1.0f;
 
@@ -143,6 +139,12 @@ bool SceneManager::Update(float dt)
 				fadeOutCompleted = true;
 
 				current->Start();
+			}
+
+			else if (transitionAlpha > 1.01f && next == nullptr)
+			{
+				current->Unload();	// Unload current screen
+				fadeOutCompleted = true;
 			}
 		}
 		else  // Transition fade out logic
@@ -160,12 +162,6 @@ bool SceneManager::Update(float dt)
 
 	// Draw current scene
 	current->Draw(render);
-
-	// Draw full screen rectangle in front of everything
-	if (onTransition)
-	{
-		render->DrawRectangle({ 0, 0, 1280, 720 }, { 0, 0, 0, (unsigned char)(255.0f * transitionAlpha) });
-	}
 
 	// L12b: Debug pathfinding
 	/*
@@ -192,20 +188,20 @@ bool SceneManager::Update(float dt)
 		switch (current->nextScene)
 		{
 			case SceneType::INTRO:
-				//intro = new SceneIntro();
-				//current->currentScene = SceneType::INTRO;
+				current->currentScene = SceneType::INTRO;
 				next = new SceneIntro();
 				break;
 
-			case SceneType::GAMEPLAY: 
-				//gameplay = new SceneGameplay();
-				//current->currentScene = SceneType::GAMEPLAY;
-				next = new SceneGameplay();
+			case SceneType::GAMEPLAY:
+				current->currentScene = SceneType::GAMEPLAY;
+				current->nextScene = SceneType::WIN;
+				gameplay->Start();
+				next = nullptr;
 				break;
 
 			case SceneType::WIN:
-				//win = new SceneWin();
-				//current->currentScene = SceneType::WIN;
+				gameplay->Unload();
+				current->currentScene = SceneType::WIN;
 				next = new SceneWin();
 				break;
 
@@ -215,8 +211,8 @@ bool SceneManager::Update(float dt)
 		current->transitionRequired = false;
 	}
 
-	if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) return false;
-	return true;
+	//if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) return false;
+	return ret;
 }
 
 // Called each loop iteration
@@ -224,7 +220,19 @@ bool SceneManager::PostUpdate()
 {
 	bool ret = true;
 
-	ret = current->PostUpdate();
+	//ret = current->PostUpdate();
+	if (current->currentScene == SceneType::GAMEPLAY)
+	{
+		ret = gameplay->PostUpdate();
+	}
+
+	else ret = current->PostUpdate();
+
+	// Draw full screen rectangle in front of everything
+	if (onTransition)
+	{
+		render->DrawRectangle({ 0, 0, 1280, 720 }, { 0, 0, 0, (unsigned char)(255.0f * transitionAlpha) }, true, false);
+	}
 
 	return ret;
 }

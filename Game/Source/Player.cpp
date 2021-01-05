@@ -992,7 +992,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_FINISH)
 		{
 			//app->fade->Fade(this, (Module*)app->winScene, 90);
-			app->sceneManager->current->transitionRequired;
+			app->sceneManager->current->transitionRequired = true;
 		}
 	}
 }

@@ -219,7 +219,7 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 	return ret;
 }*/
 
-bool Render::DrawRectangle(const SDL_Rect& rect, SDL_Color color, bool filled) const
+bool Render::DrawRectangle(const SDL_Rect& rect, SDL_Color color, bool filled, bool useCamera) const
 {
 	bool ret = true;
 
@@ -227,6 +227,14 @@ bool Render::DrawRectangle(const SDL_Rect& rect, SDL_Color color, bool filled) c
 	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 
 	SDL_Rect rec(rect);
+
+	if (useCamera)
+	{
+		rec.x = (int)(camera.x + rect.x * app->win->GetScale());
+		rec.y = (int)(camera.y + rect.y * app->win->GetScale());
+		rec.w *= app->win->GetScale();
+		rec.h *= app->win->GetScale();
+	}
 
 	int result = (filled) ? SDL_RenderFillRect(renderer, &rec) : SDL_RenderDrawRect(renderer, &rec);
 

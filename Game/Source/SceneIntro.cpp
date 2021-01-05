@@ -1,5 +1,7 @@
 #include "SceneManager.h"
 
+#include "SceneIntro.h"
+
 #include "App.h"
 #include "Textures.h"
 #include "Render.h"
@@ -66,7 +68,6 @@ bool SceneIntro::Update(Input* input, float dt)
 		//app->fade->Fade(this, (Module*)app->gameplay, 60);
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-
 		ret = false;
 
 	
@@ -118,6 +119,7 @@ bool SceneIntro::Unload()
 	app->map->active = true;
 	app->col->active = true;
 	app->render->camera.y = -77.5 * 32;
+	app->tex->UnLoad(opening);
 
 	return true;
 }

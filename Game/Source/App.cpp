@@ -305,7 +305,7 @@ bool App::PreUpdate()
 			continue;
 		}
 
-		if(pauseMenu == false || (pauseMenu == true && (item->data->name == "input" || item->data->name == "renderer" || item->data->name == "gameplay")))
+		if(pauseMenu == false || (pauseMenu == true && (item->data->name == "input" || item->data->name == "renderer" || item->data->name == "scenemanager")))
 			ret = item->data->PreUpdate();
 	}
 
@@ -328,7 +328,7 @@ bool App::DoUpdate()
 			continue;
 		}
 
-      	else if (pauseMenu == false || (pauseMenu == true && (item->data->name == "input" || item->data->name == "renderer" || item->data->name == "gameplay")))
+      	else if (pauseMenu == false || (pauseMenu == true && (item->data->name == "input" || item->data->name == "renderer" || item->data->name == "scenemanager")))
 			ret = item->data->Update(DeltaTime);
 	}
 
@@ -350,7 +350,7 @@ bool App::PostUpdate()
 			continue;
 		}
 
-		if (pauseMenu == false || (pauseMenu == true && (item->data->name == "input" || item->data->name == "renderer" || item->data->name == "gameplay")))
+		if (pauseMenu == false || (pauseMenu == true && (item->data->name == "input" || item->data->name == "renderer" || item->data->name == "scenemanager")))
 			ret = item->data->PostUpdate();
 	}
 

@@ -1,11 +1,16 @@
 #ifndef __SCENE_H__
 #define __SCENE_H__
 
+/*#include "SceneIntro.h"
+#include "SceneGameplay.h"
+#include "SceneWin.h"*/
+
 #include "SString.h"
 
 class Input;
 class Render;
 class Textures;
+//class SceneGameplay;
 
 class GuiControl;
 
@@ -75,7 +80,12 @@ public:
 
     bool transitionRequired;
     SceneType nextScene;
+    SceneType currentScene;
     //SceneType currentScene;
+
+    //SceneIntro* intro;
+    //SceneGameplay* gameplay;
+    //SceneWin* win;
 };
 
 #endif // __SCENE_H__
