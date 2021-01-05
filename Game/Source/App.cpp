@@ -91,7 +91,7 @@ App::~App()
 void App::AddModule(Module* module)
 {
 	bool initialState = true;
-	if (module == map || module == audio || module == col || module == player) initialState = false;
+	if (module == map || module == col || module == player) initialState = false;
 	module->Init(initialState);
 	modules.Add(module);
 }

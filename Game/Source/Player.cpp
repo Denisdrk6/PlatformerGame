@@ -135,6 +135,8 @@ bool Player::Start()
 	pause = app->tex->Load("Assets/Screens/pause.png");
 	currentAnimation = &rIdleAnim;
 
+	hurtFx = app->audio->LoadFx("Assets/Audio/Fx/hurt_sound.wav");
+
 	position.x = 3 * 32; //app->map->data.tileWidth;
 	position.y = 94 * 32; //app->map->data.tileHeight;
 	/*app->render->camera.x = 0;
@@ -468,7 +470,7 @@ bool Player::PostUpdate()
 	{
 		SDL_Rect rect = currentAnimation->GetCurrentFrame();
 		app->render->DrawTexture(texture, position.x, position.y, &rect, 2);
-		app->fonts->BlitText(10, 10, scoreFont, scoreText);
+		if(lifes > 0) app->fonts->BlitText(10, 10, scoreFont, scoreText);
 
 		if(textureHurt.loaded == true)
 		{
@@ -846,7 +848,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				{
 					lifes--;
 					lifeTaken = true;
-					app->audio->PlayFx(1);
+					app->audio->PlayFx(hurtFx);
 				}
 				lifeWait = SDL_GetTicks();
 				waiting = true;
@@ -870,7 +872,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 					waiting = false;
 					LOG("lifes: %d", lifes);
 					lifeWait = SDL_GetTicks();
-					app->audio->PlayFx(1);
+					app->audio->PlayFx(hurtFx);
 
 					if (lifes != 0)
 					{

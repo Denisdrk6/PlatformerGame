@@ -96,6 +96,8 @@ public:
 	
 	bool playerCol = false;
 
+	//int hurtFx = 0;
+
 private:
 	SDL_Texture* heartsTex;
 	SDL_Texture* coinsTex;

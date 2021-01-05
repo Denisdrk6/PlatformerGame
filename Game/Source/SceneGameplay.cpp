@@ -74,7 +74,7 @@ bool SceneGameplay::Start()
 
 
 		app->audio->PlayMusic("Assets/Audio/Music/friends.ogg");
-		app->audio->LoadFx("Assets/Audio/Fx/hurt_sound.wav");
+		//hurtFx = app->audio->LoadFx("Assets/Audio/Fx/hurt_sound.wav");
 
 		//WARNING: might be called when we change maps
 		checkPoints[0].position = { 76, 88 };
@@ -392,7 +392,7 @@ bool SceneGameplay::PostUpdate()
 {
 	bool ret = true;
 
-	if (app->pauseMenu == false)
+	if (app->pauseMenu == false && app->player->lifes > 0)
 	{
 		//timer
 		sprintf_s(scoreText, 10, "%d", totalTime);

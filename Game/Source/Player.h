@@ -133,6 +133,9 @@ public:
 	int scoreFont;
 	char scoreText[10] = { "\0" };
 	int	maxScore = 7;
+
+	//Audio fx
+	int hurtFx = 0;
 };
 
 #endif //!__MODULE_PLAYER_H__

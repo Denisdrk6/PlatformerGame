@@ -266,6 +266,7 @@ void FloorEnemy::OnCollision(Collider* c1, Collider* c2)
 			lives = 0;
 		}
 	}
+
 	if (c1->type == COLLIDER_TYPE::COLLIDER_ENEMY && c2->type == COLLIDER_TYPE::COLLIDER_FLOOR)
 	{
 		//int offset = -2 - (120 / (1 / app->dt));

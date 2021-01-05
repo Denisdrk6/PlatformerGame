@@ -14,6 +14,7 @@
 
 Audio::Audio() : Module()
 {
+	active = true;
 	music = NULL;
 	name.Create("audio");
 }
