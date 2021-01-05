@@ -12,7 +12,7 @@ FlyEnemy::FlyEnemy(iPoint pos) : Entity(EntityType::FLY_ENEMY)
 {
 	//load graphics
 	sprite = app->tex->Load("Assets/enemies/flying_enemy.png");
-
+	debug_tex = app->tex->Load("Assets/maps/pathRect.png");
 	//Load animations
 	idle.PushBack({ 0 , 51 , 46 , 45 });
 	idle.PushBack({ 55, 51 , 46 , 45 });
@@ -143,6 +143,9 @@ void FlyEnemy::Draw()
 	Current_animation = &idle;
 
 	app->render->DrawTexture(sprite, position.x, position.y, &Current_animation->GetCurrentFrame(), 1, 1.0f, NULL, NULL, NULL);
+
+	if (app->col->debug)
+		blit_path();
 }
 
 void FlyEnemy::HandeInput()
@@ -219,4 +222,16 @@ void FlyEnemy::OnCollision(Collider* c1, Collider* c2)
 	}
 
 	
+}
+
+void FlyEnemy::blit_path()
+{
+	const DynArray<Path>* path = app->pathfinding->GetLastPath();
+
+	for (uint i = 0; i < path->Count(); ++i)
+	{
+		iPoint pos = app->map->MapToWorld(path->At(i)->PosX, path->At(i)->PosY);
+		//if (debug_tex != nullptr)
+		app->render->DrawTexture(debug_tex, pos.x, pos.y);
+	}
 }

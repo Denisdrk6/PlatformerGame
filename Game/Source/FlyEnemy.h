@@ -19,6 +19,7 @@ public:
 	void Load(pugi::xml_node&);
 	void Save(pugi::xml_node&) const;
 	void OnCollision(Collider* c1, Collider* c2);
+	void blit_path();
 
 	Animation* Current_animation;
 
@@ -51,8 +52,7 @@ private:
 		IN_MAX
 	};
 	inputs Currentinput;
-
-
+	SDL_Texture* debug_tex;
 	float private_dt;
 };
 
