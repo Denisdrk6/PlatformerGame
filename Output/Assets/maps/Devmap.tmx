@@ -40063,7 +40063,7 @@
   <object id="240" name="FloorEnemy" x="2439.33" y="625.667" width="45" height="43"/>
   <object id="241" name="FloorEnemy" x="2440.67" y="2814.33" width="38" height="32"/>
   <object id="242" name="FlyEnemy" x="2552.33" y="2350.5" width="57.3333" height="47"/>
-  <object id="243" name="FloorEnemy" x="1664" y="734" width="38" height="32"/>
+  <object id="243" name="FloorEnemy" x="1622" y="730.667" width="38" height="32"/>
   <object id="244" name="FlyEnemy" x="505.333" y="1118.5" width="57.3333" height="47"/>
   <object id="245" name="FlyEnemy" x="2913.33" y="2810.5" width="57.3333" height="47"/>
   <object id="246" name="FlyEnemy" x="3044.18" y="1829.65" width="57.3333" height="47"/>

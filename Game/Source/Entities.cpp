@@ -6,7 +6,6 @@
 #include "SceneManager.h"
 #include "Map.h"
 #include "Collisions.h"
-#include "Audio.h"
 #include "Fonts.h"
 
 Entities::Entities() {
@@ -20,6 +19,8 @@ bool Entities::Awake(pugi::xml_node& config) {
 
 	cycles = config.attribute("cycles_in_second").as_int();
 	updateMsCycle = 1000.0f * (1 / (float)cycles);
+
+	enemyDeathFx = app->audio->LoadFx("Assets/Audio/Fx/enemy_death.wav");
 
 	return ret;
 }

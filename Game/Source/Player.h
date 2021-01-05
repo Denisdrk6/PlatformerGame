@@ -136,6 +136,7 @@ public:
 
 	//Audio fx
 	int hurtFx = 0;
+	int coinsFx = 0;
 };
 
 #endif //!__MODULE_PLAYER_H__

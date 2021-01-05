@@ -264,6 +264,7 @@ void FloorEnemy::OnCollision(Collider* c1, Collider* c2)
 		if ((app->player->CheckTunneling(nextCollision, c1->rect) == true || c1->rect.y - (c2->rect.h + c2->rect.y) >= offset) && app->player->speedY >= app->player->maxNegativeSpeedY)
 		{
 			lives = 0;
+			app->audio->PlayFx(app->entities->enemyDeathFx);
 		}
 	}
 

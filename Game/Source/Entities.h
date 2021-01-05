@@ -5,6 +5,7 @@
 #include "Point.h"
 #include "List.h"
 #include "Render.h"
+#include "Audio.h"
 
 struct Collider;
 struct ObjectLayer;
@@ -62,6 +63,8 @@ public:
 	void DestroyEntity(Entity* entity);
 	void DestroyAll();
 
+	int enemyDeathFx = 0;
+
 private:
 
 	void UpdateEntities(float dt, bool do_logic);
@@ -70,8 +73,6 @@ private:
 
 	float accumulatedTime;
 	float updateMsCycle;
-
-
 
 	bool doLogic = false;
 };

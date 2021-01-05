@@ -136,6 +136,7 @@ bool Player::Start()
 	currentAnimation = &rIdleAnim;
 
 	hurtFx = app->audio->LoadFx("Assets/Audio/Fx/hurt_sound.wav");
+	coinsFx = app->audio->LoadFx("Assets/Audio/Fx/coins.wav");
 
 	position.x = 3 * 32; //app->map->data.tileWidth;
 	position.y = 94 * 32; //app->map->data.tileHeight;
@@ -977,6 +978,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				if (c2->rect.x == app->sceneManager->gameplay->coins[i].position.x * app->map->data.tileWidth && c2->rect.y == app->sceneManager->gameplay->coins[i].position.y * app->map->data.tileHeight && app->sceneManager->gameplay->coins[i].activated == false)
 				{
 					score++;
+					app->audio->PlayFx(coinsFx);
 					app->sceneManager->gameplay->coins[i].activated = true;
 					app->col->DeleteCollider(app->sceneManager->gameplay->coins[i].collider);
 				}

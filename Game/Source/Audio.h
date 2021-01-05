@@ -36,7 +36,7 @@ public:
 
 private:
 
-	int musicVolume = 40;
+	int musicVolume = 5;
 
 	_Mix_Music* music;
 	List<Mix_Chunk *> fx;
