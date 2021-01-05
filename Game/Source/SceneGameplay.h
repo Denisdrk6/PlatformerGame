@@ -89,11 +89,12 @@ public:
 	List<FloorEnemy*> FloorEnemies;
 
 	char scoreText[10] = { "\0" };
-	int score = 0;
+	int totalTime = 0;
 	int hiscore = 0;
 	int scoreFont = -1;
 	int timer=0;
 	
+	bool playerCol = false;
 
 private:
 	SDL_Texture* heartsTex;
@@ -105,7 +106,6 @@ private:
 	Animation greenCheckPoint;
 
 	int currentCheckpoint = 0;
-	bool playerCol = false;
 
 protected:
 };

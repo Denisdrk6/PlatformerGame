@@ -142,10 +142,11 @@ void FlyEnemy::Draw()
 {
 	Current_animation = &idle;
 
-	app->render->DrawTexture(sprite, position.x, position.y, &Current_animation->GetCurrentFrame(), 1, 1.0f, NULL, NULL, NULL);
+	if (app->player->lifes > 0)
+		app->render->DrawTexture(sprite, position.x, position.y, &Current_animation->GetCurrentFrame(), 1, 1.0f, NULL, NULL, NULL);
 
 	if (app->col->debug)
-		blit_path();
+		blitPath();
 }
 
 void FlyEnemy::HandeInput()
@@ -224,7 +225,7 @@ void FlyEnemy::OnCollision(Collider* c1, Collider* c2)
 	
 }
 
-void FlyEnemy::blit_path()
+void FlyEnemy::blitPath()
 {
 	const DynArray<Path>* path = app->pathfinding->GetLastPath();
 

@@ -119,7 +119,7 @@ void FloorEnemy::Reset()
 	if (col != nullptr) {
 		app->col->DeleteCollider(col);
 	}
-	col = app->col->AddCollider({ position.x,position.y,36,64 }, COLLIDER_ENEMY, app->entities);
+	col = app->col->AddCollider({ position.x,position.y,36,55 }, COLLIDER_ENEMY, app->entities);
 	dead = false;
 }
 
@@ -248,7 +248,8 @@ void FloorEnemy::HandeInput()
 
 void FloorEnemy::Draw()
 {
-	app->render->DrawTexture(sprite, position.x, position.y, &Current_animation->GetCurrentFrame(), 1, 1.0f, NULL, NULL, NULL);
+	if(app->player->lifes > 0)
+		app->render->DrawTexture(sprite, position.x, position.y, &Current_animation->GetCurrentFrame(), 1, 1.0f, NULL, NULL, NULL);
 }
 
 void FloorEnemy::OnCollision(Collider* c1, Collider* c2)

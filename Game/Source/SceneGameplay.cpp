@@ -143,7 +143,7 @@ bool SceneGameplay::Update(Input* input, float dt)
 		}
 		if (timer == 60)
 		{
-			score = score + 1;
+			totalTime = totalTime + 1;
 			timer = 0;
 		}
 	}
@@ -395,7 +395,7 @@ bool SceneGameplay::PostUpdate()
 	if (app->pauseMenu == false)
 	{
 		//timer
-		sprintf_s(scoreText, 10, "%d", score);
+		sprintf_s(scoreText, 10, "%d", totalTime);
 		app->fonts->BlitText(550, 15, scoreFont, scoreText);
 	}
 

@@ -19,7 +19,7 @@ public:
 	void Load(pugi::xml_node&);
 	void Save(pugi::xml_node&) const;
 	void OnCollision(Collider* c1, Collider* c2);
-	void blit_path();
+	void blitPath();
 
 	Animation* Current_animation;
 

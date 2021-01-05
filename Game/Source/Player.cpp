@@ -584,6 +584,8 @@ void Player::ChangeMap(int mapNum)
 {
 	int externMap = map;
 	map = mapNum;
+	collider->type = COLLIDER_PLAYER;
+	app->sceneManager->gameplay->playerCol = false;
 
 	if(externMap != map || currentMap != map)
 	{
@@ -598,6 +600,8 @@ void Player::ChangeMap(int mapNum)
 	{
 	case 1:
 		lifes = 3;
+		app->sceneManager->gameplay->totalTime = 0;
+		app->sceneManager->gameplay->timer = 0;
 
 		if (externMap != map || currentMap != map)
 		{
