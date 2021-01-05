@@ -65,7 +65,7 @@ FloorEnemy::FloorEnemy(iPoint pos) : Entity(EntityType::FLOOR_ENEMY)
 	lJumpAnim.PushBack({ 2, 296, 36, 52 });
 	lJumpAnim.speed = 0.025f;
 
-	col = app->col->AddCollider({ position.x,position.y,36,64 }, COLLIDER_ENEMY, app->entities);
+	col = app->col->AddCollider({ position.x,position.y,36,55 }, COLLIDER_ENEMY, app->entities);
 	Current_animation = &rIdleAnim;
 	//Load position and save it
 	initialPosition = position = pos;

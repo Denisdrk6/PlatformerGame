@@ -25,7 +25,7 @@ FlyEnemy::FlyEnemy(iPoint pos) : Entity(EntityType::FLY_ENEMY)
 
 
 	//add collider
-	col = app->col->AddCollider({ position.x, position.y, 36,36 }, COLLIDER_ENEMY, app->entities);
+	col = app->col->AddCollider({ position.x, position.y, 46,45 }, COLLIDER_ENEMY, app->entities);
 
 	//save positions
 	initialPosition = position = pos;
