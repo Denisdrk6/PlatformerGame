@@ -6,10 +6,12 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type)
 {
 	GuiControl* control = nullptr;
 
+	SDL_Rect bounds = { 0, 0, 0, 0 };
+
 	switch (type)
 	{
 		// Create the corresponding GuiControl type
-		//case GuiControlType::BUTTON: control = new GuiButton(1234);  break;
+		//case GuiControlType::BUTTON: control = new GuiButton((uint32)1, bounds, (const char*)' ');  break;
 		default: break;
 	}
 

@@ -89,7 +89,7 @@ void Map::Draw()
 			}
 		}
 
-		else if (layer->data->name != "Colisions" && layer->data->name != "Navigation")
+		else
 		{
 			for (int y = 0; y < data.height; ++y)
 			{

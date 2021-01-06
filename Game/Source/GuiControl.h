@@ -70,9 +70,9 @@ public:
         observer = module;
     }
 
-    void NotifyObserver()
+    bool NotifyObserver()
     {
-        observer->OnGuiMouseClickEvent(this);
+        return observer->OnGuiMouseClickEvent(this);
     }
 
 public:

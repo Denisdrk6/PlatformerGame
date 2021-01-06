@@ -12,6 +12,8 @@ GuiCheckBox::~GuiCheckBox()
 
 bool GuiCheckBox::Update(Input* input, float dt)
 {
+    bool ret = true;
+
     if (state != GuiControlState::DISABLED)
     {
         int mouseX, mouseY;
@@ -32,13 +34,13 @@ bool GuiCheckBox::Update(Input* input, float dt)
             if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
             {
                 checked = !checked;
-                NotifyObserver();
+                ret = NotifyObserver();
             }
         }
         else state = GuiControlState::NORMAL;
     }
 
-    return false;
+    return ret;
 }
 
 bool GuiCheckBox::Draw(Render* render)
@@ -48,17 +50,17 @@ bool GuiCheckBox::Draw(Render* render)
     {
     case GuiControlState::DISABLED:
     {
-        if (checked) render->DrawRectangle(bounds, { 100, 100, 100, 255 });
-        else render->DrawRectangle(bounds, { 100, 100, 100, 255 });
+        if (checked) render->DrawRectangle(bounds, { 100, 0, 100, 100 });
+        else render->DrawRectangle(bounds, { 0, 0, 0, 100 });
     } break;
     case GuiControlState::NORMAL: 
     {
-        if (checked) render->DrawRectangle(bounds, { 0, 255, 0, 255 });
-        else render->DrawRectangle(bounds, { 0, 255, 0, 255 });
+        if (checked) render->DrawRectangle(bounds, { 255, 255, 255, 125 });
+        else render->DrawRectangle(bounds, { 0, 255, 0, 0 });
     } break;
-    case GuiControlState::FOCUSED: render->DrawRectangle(bounds, { 255, 255, 0, 255 });
+    case GuiControlState::FOCUSED: render->DrawRectangle(bounds, { 255, 255, 255, 50 });
         break;
-    case GuiControlState::PRESSED: render->DrawRectangle(bounds, { 0, 255, 255, 255 });
+    case GuiControlState::PRESSED: render->DrawRectangle(bounds, { 0, 0, 255, 100 });
         break;
     case GuiControlState::SELECTED: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
         break;

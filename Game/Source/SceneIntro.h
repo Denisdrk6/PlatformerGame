@@ -5,6 +5,9 @@
 #include "Animation.h"
 #include "Scene.h"
 
+#include "GuiButton.h"
+#include "GuiCheckBox.h"
+
 struct SDL_Texture;
 
 class BlendTexture
@@ -39,14 +42,33 @@ public:
 
 	bool Unload();
 
+	// Declare on mouse click event
+	bool OnGuiMouseClickEvent(GuiControl* control);
+
 public:
 	// The scene sprite sheet loaded into an SDL_Texture
 	BlendTexture bgTexture;
 	SDL_Texture* opening = nullptr;
+	SDL_Texture* creditsScreen = nullptr;
+	SDL_Texture* SettingsScreen = nullptr;
+
 	int waitTime = 500;
 	int initTime = 0;
 	int alphaModifier = 4;
-	
+
+	bool credits = false;
+	bool settings = false;
+
+	GuiButton* btnStart;
+	GuiButton* btnContinue;
+	GuiButton* btnSettings;
+	GuiButton* btnCredits;
+	GuiButton* btnExit;
+
+	GuiButton* btnCreditsBack;
+
+	GuiCheckBox* btnFullScreen;
+	GuiCheckBox* btnVSync;
 };
 
 #endif

@@ -8,6 +8,7 @@
 //#include "SceneGameplay.h"
 //#include "SceneWin.h"
 #include "SceneManager.h"
+#include "GuiManager.h"
 #include "Map.h"
 #include "Player.h"
 #include "FadeToBlack.h"
@@ -427,28 +428,41 @@ bool App::LoadGame()
 
 	if (result != NULL)
 	{
-		LOG("Loading new Game State from %s...", SAVE_STATE_FILENAME);
+		savedGameExists = true;
 
-		root = data.child("game_state");
-
-		ListItem<Module*>* item = modules.start;
-		ret = true;
-		while (item != NULL && ret == true)
+		//Checks if we asked to Load for continue button
+		if (sceneManager->fileAsked == false)
 		{
-			ret = item->data->Load(root.child(item->data->name.GetString()));
-			//if (item->data->name.GetString() == "player" ) int externMap = app->player->map;
-			LOG("Name: %s", item->data->name.GetString());
-			item = item->next;
+			LOG("Loading new Game State from %s...", SAVE_STATE_FILENAME);
+
+			root = data.child("game_state");
+
+			ListItem<Module*>* item = modules.start;
+			ret = true;
+			while (item != NULL && ret == true)
+			{
+				ret = item->data->Load(root.child(item->data->name.GetString()));
+				//if (item->data->name.GetString() == "player" ) int externMap = app->player->map;
+				LOG("Name: %s", item->data->name.GetString());
+				item = item->next;
+			}
+
+			data.reset();
+			if (ret == true)
+				LOG("...finished loading");
+			else
+				LOG("...loading process interrupted with error on module %s", (item != NULL) ? item->data->name.GetString() : "unknown");
 		}
 
-		data.reset();
-		if (ret == true)
-			LOG("...finished loading");
-		else
-			LOG("...loading process interrupted with error on module %s", (item != NULL) ? item->data->name.GetString() : "unknown");
+		else sceneManager->fileAsked = false;
 	}
+
 	else
+	{
 		LOG("Could not parse game state xml file %s. pugi error: %s", SAVE_STATE_FILENAME, result.description());
+		savedGameExists = false;
+		sceneManager->fileAsked = false;
+	}
 
 	loadGameRequested = false;
 	return ret;
@@ -464,7 +478,7 @@ bool App::SaveGame() const
 	pugi::xml_document data;
 	pugi::xml_node root;
 
-	if(data.empty() == false)
+	if (data.empty() == false)
 		data.reset();
 
 	root = data.append_child("game_state");

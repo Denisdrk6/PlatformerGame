@@ -49,6 +49,8 @@ public:
 
 	bool onTransition;
 
+	bool fileAsked = false;
+
 private:
 
 	Input* input;

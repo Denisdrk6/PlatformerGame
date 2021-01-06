@@ -49,14 +49,14 @@ bool SceneWin::Start()
 	return ret;
 }
 
-bool SceneWin::Update(float dt)
+bool SceneWin::Update(Input* input, float dt)
 {
 	bool ret = true;
 
 	/*if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 		app->fade->Fade(this, (Module*)app->scene, 60);*/
 
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
 	return ret;

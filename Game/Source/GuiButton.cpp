@@ -12,6 +12,8 @@ GuiButton::~GuiButton()
 
 bool GuiButton::Update(Input* input, float dt)
 {
+    bool ret = true;
+
     if (state != GuiControlState::DISABLED)
     {
         int mouseX, mouseY;
@@ -31,13 +33,13 @@ bool GuiButton::Update(Input* input, float dt)
             // If mouse button pressed -> Generate event!
             if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
             {
-                NotifyObserver();
+                ret = NotifyObserver();
             }
         }
         else state = GuiControlState::NORMAL;
     }
 
-    return false;
+    return ret;
 }
 
 bool GuiButton::Draw(Render* render)
@@ -45,13 +47,13 @@ bool GuiButton::Draw(Render* render)
     // Draw the right button depending on state
     switch (state)
     {
-    case GuiControlState::DISABLED: render->DrawRectangle(bounds, { 100, 100, 100, 255 });
+    case GuiControlState::DISABLED: render->DrawRectangle(bounds, { 0, 0, 0, 100 });
         break;
-    case GuiControlState::NORMAL: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
+    case GuiControlState::NORMAL: render->DrawRectangle(bounds, { 0, 255, 0, 0 });
         break;
-    case GuiControlState::FOCUSED: render->DrawRectangle(bounds, { 255, 255, 0, 255 });
+    case GuiControlState::FOCUSED: render->DrawRectangle(bounds, { 0, 0, 255, 50 });
         break;
-    case GuiControlState::PRESSED: render->DrawRectangle(bounds, { 0, 255, 255, 255 });
+    case GuiControlState::PRESSED: render->DrawRectangle(bounds, { 0, 0, 255, 100 });
         break;
     case GuiControlState::SELECTED: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
         break;

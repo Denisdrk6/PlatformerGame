@@ -134,6 +134,13 @@ bool SceneGameplay::PreUpdate()
 // Called each loop iteration
 bool SceneGameplay::Update(Input* input, float dt)
 {
+	//If we prees continue button on title screen
+	if (toLoad == true)
+	{
+		app->LoadGameRequest();
+		toLoad = false;
+	}
+
 	if (app->pauseMenu == false)
 	{
 		if (timer < 60)

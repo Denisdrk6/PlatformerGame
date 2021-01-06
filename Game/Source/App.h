@@ -122,6 +122,8 @@ public:
 	float dt;
 
 	bool pauseMenu = false;
+	
+	mutable bool savedGameExists = false;
 
 private:
 

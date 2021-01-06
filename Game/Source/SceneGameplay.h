@@ -96,6 +96,8 @@ public:
 	
 	bool playerCol = false;
 
+	bool toLoad = false;
+
 	//int hurtFx = 0;
 
 private:
