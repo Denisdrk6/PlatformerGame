@@ -187,7 +187,7 @@ void FlyEnemy::HandeInput()
 	}
 }
 
-bool FlyEnemy::ChasePlayer(fPoint player)
+bool FlyEnemy::ChasePlayer(iPoint player)
 {
 	player.x = (int)player.x;
 	player.y = (int)player.y;

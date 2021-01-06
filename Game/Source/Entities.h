@@ -18,7 +18,7 @@ public:
 		PLAYER = 0,
 		FLOOR_ENEMY,
 		FLY_ENEMY,
-		//particle,
+		particle,
 		UNKNOWN
 	};
 

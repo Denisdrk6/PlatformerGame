@@ -188,7 +188,7 @@ void FloorEnemy::Update(float dt)
 	}
 }
 
-bool FloorEnemy::ChasePlayer(fPoint player)
+bool FloorEnemy::ChasePlayer(iPoint player)
 {
 	player.x = (int)player.x;
 	player.y = (int)player.y;

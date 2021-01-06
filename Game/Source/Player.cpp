@@ -133,6 +133,7 @@ bool Player::Start()
 	loadingScreen.texture = app->tex->Load("Assets/Screens/transition.png");
 	loadingBalls.texture = app->tex->Load("Assets/Screens/loading.png");
 	pause = app->tex->Load("Assets/Screens/pause.png");
+	weapon_pointer = app->tex->Load("Assets/textures/mira.png");
 	currentAnimation = &rIdleAnim;
 
 	hurtFx = app->audio->LoadFx("Assets/Audio/Fx/hurt_sound.wav");
@@ -454,10 +455,26 @@ bool Player::Update(float dt)
 
 	collider->SetPos(position.x, position.y);
 	sprintf_s(scoreText, 10, "%i/%i",score, maxScore);
+	DrawPointer();
 
 	return ret;
 }
+void Player::DrawPointer() {
+	int x;
+	int y;
 
+	app->input->GetMousePosition(x, y);
+	iPoint p = app->render->ScreenToWorld(x, y);
+
+	app->render->DrawTexture(weapon_pointer, p.x - 16, p.y - 16);
+
+	if (app->input->GetMouseButtonDown(1) == KEY_DOWN) {
+		Particle* shoot;
+		shoot = (Particle*)app->entities->CreateEntity(Entity::EntityType::particle, position, p.x, p.y);
+		bullets.Add(shoot);
+		//app->audio->PlayFx(shotsound, 0);
+	}
+}
 bool Player::EqualFrames(SDL_Rect frame1, SDL_Rect frame2)
 {
 	return (frame1.x == frame2.x && frame1.y == frame2.y && frame1.w == frame2.w && frame1.h == frame2.h);
@@ -889,7 +906,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 
 		if (c1->type == COLLIDER_TYPE::COLLIDER_PLAYER && c2->type == COLLIDER_TYPE::COLLIDER_WALL)
 		{
-			fPoint relativePosition = position;
+			iPoint relativePosition = position;
 			// Checks if we are colliding a wall from below
 			if (c1->rect.y <= c2->rect.y + c2->rect.h && c1->rect.y >= c2->rect.y + c2->rect.h - 10 && groundCol == false && speedY > 0 && wallCol == false)
 			{

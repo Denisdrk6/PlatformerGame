@@ -5,6 +5,7 @@
 #include "Animation.h"
 #include "Point.h"
 #include "SceneGameplay.h"
+#include "Particles.h"
 
 struct SDL_Texture;
 struct Collider;
@@ -56,9 +57,11 @@ public:
 	bool CheckTunneling(SDL_Rect r1, SDL_Rect r2);
 	void Death();
 
+	void DrawPointer();
+
 public:
 	// Position of the player in the map
-	fPoint position;
+	iPoint position;
 
 	// The speed in which we move the player (pixels per frame)
 	float speedX = 1.5f;
@@ -137,6 +140,9 @@ public:
 	//Audio fx
 	int hurtFx = 0;
 	int coinsFx = 0;
+	List<Particle*> bullets;
+	SDL_Texture* weapon_pointer;
+	
 };
 
 #endif //!__MODULE_PLAYER_H__

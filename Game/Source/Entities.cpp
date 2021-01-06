@@ -7,6 +7,7 @@
 #include "Map.h"
 #include "Collisions.h"
 #include "Fonts.h"
+#include "Particles.h"
 
 Entities::Entities() {
 	name.Create("entities");
@@ -134,7 +135,7 @@ Entity* Entities::CreateEntity(Entity::EntityType type, iPoint pos, int dest_X, 
 	switch (type) {
 	case Entity::EntityType::FLY_ENEMY:				ret = new FlyEnemy(pos);			break;
 	case Entity::EntityType::FLOOR_ENEMY:			ret = new FloorEnemy(pos);		break;
-		//case Entity::EntityType::particle:				ret = new Particle(pos, dest_X, dest_Y); break;
+	case Entity::EntityType::particle:				ret = new Particle(pos, dest_X, dest_Y); break;
 	}
 
 	if (ret != nullptr) {
@@ -172,21 +173,27 @@ void Entities::OnCollision(Collider* c1, Collider* c2) {
 	if (c1->type == COLLIDER_PLAYER) {
 		app->player->OnCollision(c1, c2);
 	}
-
-	ListItem<FlyEnemy*>* flyEnemy;
-	for (flyEnemy = app->sceneManager->gameplay->FlyEnemies.start; flyEnemy; flyEnemy = flyEnemy->next) {
-		if (flyEnemy->data->col->rect.x == c1->rect.x && flyEnemy->data->col->rect.y == c1->rect.y && flyEnemy->data->col->rect.w == c1->rect.w && flyEnemy->data->col->rect.h == c1->rect.h) {
-			flyEnemy->data->OnCollision(c1, c2);
+	
+		ListItem<Particle*>* particle;
+		for (particle = app->player->bullets.start; particle; particle = particle->next) {
+			if (particle->data->col->rect.x == c1->rect.x && particle->data->col->rect.y == c1->rect.y && particle->data->col->rect.w == c1->rect.w && particle->data->col->rect.h == c1->rect.h) {
+				particle->data->OnCollision(c1, c2);
+			}
 		}
-	}
-
-	ListItem<FloorEnemy*>* floorEnemy;
-	for (floorEnemy = app->sceneManager->gameplay->FloorEnemies.start; floorEnemy; floorEnemy = floorEnemy->next) {
-		if (floorEnemy->data->col->rect.x == c1->rect.x && floorEnemy->data->col->rect.y == c1->rect.y && floorEnemy->data->col->rect.w == c1->rect.w && floorEnemy->data->col->rect.h == c1->rect.h) {
-			floorEnemy->data->OnCollision(c1, c2);
+		ListItem<FlyEnemy*>* flyEnemy;
+		for (flyEnemy = app->sceneManager->gameplay->FlyEnemies.start; flyEnemy; flyEnemy = flyEnemy->next) {
+			if (flyEnemy->data->col->rect.x == c1->rect.x && flyEnemy->data->col->rect.y == c1->rect.y && flyEnemy->data->col->rect.w == c1->rect.w && flyEnemy->data->col->rect.h == c1->rect.h) {
+				flyEnemy->data->OnCollision(c1, c2);
+			}
 		}
-	}
 
+		ListItem<FloorEnemy*>* floorEnemy;
+		for (floorEnemy = app->sceneManager->gameplay->FloorEnemies.start; floorEnemy; floorEnemy = floorEnemy->next) {
+			if (floorEnemy->data->col->rect.x == c1->rect.x && floorEnemy->data->col->rect.y == c1->rect.y && floorEnemy->data->col->rect.w == c1->rect.w && floorEnemy->data->col->rect.h == c1->rect.h) {
+				floorEnemy->data->OnCollision(c1, c2);
+			}
+		}
+	
 }
 
 void Entities::LoadFromObjectLayer(ObjectLayer* layer) {

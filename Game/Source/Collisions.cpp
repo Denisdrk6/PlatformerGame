@@ -132,6 +132,12 @@ Collisions::Collisions()
 	matrix[COLLIDER_ENEMY][COLLIDER_FLOOR] = true;
 	matrix[COLLIDER_ENEMY][COLLIDER_WALL] = true;
 	matrix[COLLIDER_ENEMY][COLLIDER_DEAD] = false;
+	matrix[COLLIDER_ENEMY][COLLIDER_SHOT] = true;
+
+	matrix[COLLIDER_SHOT][COLLIDER_PLAYER] = false;
+	matrix[COLLIDER_SHOT][COLLIDER_FLOOR] = true;
+	matrix[COLLIDER_SHOT][COLLIDER_WALL] = true;
+	matrix[COLLIDER_SHOT][COLLIDER_ENEMY] = true;
 
 	name.Create("map");
 }
@@ -415,6 +421,9 @@ void Collisions::DebugDraw()
 			app->render->DrawRectangle(colliders[i]->rect, { 30, 20, 80, alpha });
 			break;
 		case COLLIDER_DEAD:
+			app->render->DrawRectangle(colliders[i]->rect, { 255, 0, 0, alpha });
+			break;
+		case COLLIDER_SHOT:
 			app->render->DrawRectangle(colliders[i]->rect, { 255, 0, 0, alpha });
 			break;
 		case COLLIDER_GODMODE:
