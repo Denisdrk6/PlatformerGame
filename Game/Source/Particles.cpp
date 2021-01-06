@@ -123,7 +123,8 @@ void Particle::Draw() {
 		}
 	}
 
-	app->render->DrawTexture(sprite, position.x, position.y, &idle.GetCurrentFrame(), 1.0f, angle);
+	//app->render->DrawTexture(sprite, position.x, position.y, &idle.GetCurrentFrame(), 1.0f, angle);
+	app->render->DrawTexture(sprite, position.x, position.y, &idle.GetCurrentFrame(), 1, 1.0f, NULL, NULL, NULL);
 }
 
 void Particle::OnCollision(Collider* c1, Collider* c2) {

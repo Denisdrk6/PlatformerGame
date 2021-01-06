@@ -223,7 +223,10 @@ void FlyEnemy::OnCollision(Collider* c1, Collider* c2)
 		}
 	}
 
-	
+	if (c1->type == COLLIDER_TYPE::COLLIDER_ENEMY && c2->type == COLLIDER_TYPE::COLLIDER_SHOT)
+	{
+		lives = 0;
+	}
 }
 
 void FlyEnemy::blitPath()

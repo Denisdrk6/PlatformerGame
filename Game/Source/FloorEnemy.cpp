@@ -276,4 +276,9 @@ void FloorEnemy::OnCollision(Collider* c1, Collider* c2)
 		vel.y = 0;
 		falling = false;
 	}
+
+	if (c1->type == COLLIDER_TYPE::COLLIDER_ENEMY && c2->type == COLLIDER_TYPE::COLLIDER_SHOT)
+	{
+		lives = 0;
+	}
 }
