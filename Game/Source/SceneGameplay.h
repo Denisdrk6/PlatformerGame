@@ -7,6 +7,8 @@
 #include "Point.h"
 #include "Scene.h"
 
+#include "GuiButton.h"
+
 struct SDL_Texture;
 class Collider;
 struct FlyEnemy;
@@ -73,8 +75,13 @@ public:
 	// Called before quitting
 	bool Unload();
 
+	// Declare on mouse click event
+	bool OnGuiMouseClickEvent(GuiControl* control);
+
 	BlendedTexture saveTexBlending;
 	BlendedTexture loadTexBlending;
+
+	SDL_Texture* pause = nullptr;
 
 	CheckPoint checkPoints[2];
 
@@ -108,6 +115,11 @@ private:
 	Animation rotateCoin;
 	Animation redCheckPoint;
 	Animation greenCheckPoint;
+
+	GuiButton* btnResume;
+	GuiButton* btnSettings;
+	GuiButton* btnExit;
+	GuiButton* btnTitle;
 
 	int currentCheckpoint = 0;
 

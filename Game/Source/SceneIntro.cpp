@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 
 #include "SceneIntro.h"
+#include "GuiManager.h"
 
 #include "App.h"
 #include "Textures.h"
@@ -97,11 +98,11 @@ bool SceneIntro::Update(Input* input, float dt)
 
 	if (credits == false)
 	{
-		ret = btnStart->Update(input, dt);
-		ret = btnContinue->Update(input, dt);
-		ret = btnSettings->Update(input, dt);
-		ret = btnCredits->Update(input, dt);
-		ret = btnExit->Update(input, dt);
+		ret = btnStart->Update(input, dt, false, app->render);
+		ret = btnContinue->Update(input, dt, false, app->render);
+		ret = btnSettings->Update(input, dt, false, app->render);
+		ret = btnCredits->Update(input, dt, false, app->render);
+		ret = btnExit->Update(input, dt, false, app->render);
 
 		if (settings == true && ret == true)
 		{
@@ -111,7 +112,7 @@ bool SceneIntro::Update(Input* input, float dt)
 	}
 
 	else
-		ret = btnCreditsBack->Update(input, dt);
+		ret = btnCreditsBack->Update(input, dt, false, app->render);
 
 	// Alpha speed is the same for all fps
 	if(alphaModifier >= 0) alphaModifier = (int)(120 / (1/dt));

@@ -189,10 +189,8 @@ bool App::Update()
 {
 	bool ret = true;
 
-	if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-	{
-		pauseMenu = !pauseMenu;
-	}
+	if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && pauseMenu == false)
+		pauseMenu = true;
 
 	PrepareUpdate();
 

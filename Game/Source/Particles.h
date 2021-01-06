@@ -16,10 +16,10 @@ public:
 
 private:
 	iPoint destination;
-	int player_y;
+	int playerY;
 
-	int diferential_y;
-	int diferential_x;
+	int diferentialY;
+	int diferentialX;
 
 	Animation idle;
 

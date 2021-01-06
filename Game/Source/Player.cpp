@@ -132,7 +132,6 @@ bool Player::Start()
 	deadScreen.texture = app->tex->Load("Assets/Screens/dead.png");
 	loadingScreen.texture = app->tex->Load("Assets/Screens/transition.png");
 	loadingBalls.texture = app->tex->Load("Assets/Screens/loading.png");
-	pause = app->tex->Load("Assets/Screens/pause.png");
 	weapon_pointer = app->tex->Load("Assets/textures/mira.png");
 	currentAnimation = &rIdleAnim;
 

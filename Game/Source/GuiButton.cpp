@@ -1,5 +1,4 @@
 #include "GuiButton.h"
-
 GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
 {
     this->bounds = bounds;
@@ -10,7 +9,7 @@ GuiButton::~GuiButton()
 {
 }
 
-bool GuiButton::Update(Input* input, float dt)
+bool GuiButton::Update(Input* input, float dt, bool camera, Render* render)
 {
     bool ret = true;
 
@@ -18,6 +17,12 @@ bool GuiButton::Update(Input* input, float dt)
     {
         int mouseX, mouseY;
         input->GetMousePosition(mouseX, mouseY);
+
+        if (camera == true)
+        {
+            mouseX = mouseX + render->camera.x * -1;
+            mouseY = mouseY + render->camera.y * -1;
+        }
 
         // Check collision between mouse and button bounds
         if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) && 

@@ -68,6 +68,7 @@ bool SceneGameplay::Start()
 		saveTexBlending.texture = app->tex->Load("Assets/textures/save_load.png");
 		loadTexBlending.texture = app->tex->Load("Assets/Textures/Save_load.png");
 		
+		pause = app->tex->Load("Assets/Screens/pause.png");
 
 		char lookupTable[] = { "0123456789" };
 		scoreFont = app->fonts->Load("Assets/Fonts/timer_font.png", lookupTable, 1);
@@ -120,6 +121,18 @@ bool SceneGameplay::Start()
 				app->entities->LoadFromObjectLayer(obLay->data);
 			}
 		}
+
+		btnResume = new GuiButton(9, { 72, 78, 230, 60 }, "RESUME");
+		btnResume->SetObserver(this);
+
+		btnSettings = new GuiButton(10, { 72, 166, 230, 60 }, "SETTINGS");
+		btnSettings->SetObserver(this);
+
+		btnExit = new GuiButton(11, { 72, 250, 230, 60 }, "EXIT");
+		btnExit->SetObserver(this);
+
+		btnTitle = new GuiButton(12, { 72, 349, 230, 118 }, "TITLE");
+		btnTitle->SetObserver(this);
 	}
 
 	return true;
@@ -134,6 +147,16 @@ bool SceneGameplay::PreUpdate()
 // Called each loop iteration
 bool SceneGameplay::Update(Input* input, float dt)
 {
+	bool ret = true;
+
+	if (app->pauseMenu == true)
+	{
+		ret = btnResume->Update(input, dt, true, app->render);
+		ret = btnSettings->Update(input, dt, true, app->render);
+		ret = btnExit->Update(input, dt, true, app->render);
+		if(ret == true) ret = btnTitle->Update(input, dt, true, app->render);
+	}
+
 	//If we prees continue button on title screen
 	if (toLoad == true)
 	{
@@ -391,7 +414,7 @@ bool SceneGameplay::Update(Input* input, float dt)
 	app->win->SetTitle(title.GetString());
 	/*sprintf_s(title, 256, "FPS: %i / Av.FPS: %.2f / Last Frame Ms: %02u (Frame Cap: %s) ",
 		frames_on_last_update, avg_fps, last_frame_ms, frame_cap_title.GetString());*/
-	return true;
+	return ret;
 }
 
 // Called each loop iteration
@@ -411,7 +434,20 @@ bool SceneGameplay::PostUpdate()
 		SDL_Rect rect = { 0, 0, app->win->screenSurface->w, app->win->screenSurface->h };
 		SDL_SetRenderDrawColor(app->render->renderer, 255, 255, 255, 100);
 		SDL_RenderFillRect(app->render->renderer, &rect);
-		app->render->DrawTexture(app->player->pause, app->win->screenSurface->w / 3 + app->render->camera.x * -1, app->win->screenSurface->h / 5 + app->render->camera.y * -1);
+		app->render->DrawTexture(pause, app->win->screenSurface->w / 3 + app->render->camera.x * -1, app->win->screenSurface->h / 5 + app->render->camera.y * -1);
+	}
+
+	if (app->pauseMenu == true)
+	{
+		btnResume->bounds = { app->win->screenSurface->w / 3 + app->render->camera.x * -1 + 72, app->win->screenSurface->h / 5 + app->render->camera.y * -1 + 78, 230, 60 };
+		btnSettings->bounds = { app->win->screenSurface->w / 3 + app->render->camera.x * -1 + 72, app->win->screenSurface->h / 5 + app->render->camera.y * -1 + 166, 230, 60 };
+		btnExit->bounds = { app->win->screenSurface->w / 3 + app->render->camera.x * -1 + 72, app->win->screenSurface->h / 5 + app->render->camera.y * -1 + 250, 230, 60 };
+		btnTitle->bounds = { app->win->screenSurface->w / 3 + app->render->camera.x * -1 + 72, app->win->screenSurface->h / 5 + app->render->camera.y * -1 + 349, 230, 118 };
+
+		btnResume->Draw(app->render);
+		btnSettings->Draw(app->render);
+		btnExit->Draw(app->render);
+		btnTitle->Draw(app->render);
 	}
 	
 	return ret;
@@ -425,6 +461,58 @@ bool SceneGameplay::Unload()
 	app->map->active = false;
 	app->col->active = false;
 	app->entities->DestroyAll();
+
+	return true;
+}
+
+bool SceneGameplay::OnGuiMouseClickEvent(GuiControl* control)
+{
+	switch (control->type)
+	{
+	case GuiControlType::BUTTON:
+	{
+		if (control->id == 9)
+			app->pauseMenu = false;
+
+		/*else if (control->id == 2)
+		{
+			TransitionToScene(SceneType::GAMEPLAY);
+			app->sceneManager->gameplay->toLoad = true;
+		}
+
+		else if (control->id == 3) settings = !settings;
+
+		else if (control->id == 4)
+		{
+			credits = true;
+
+			btnStart->state = GuiControlState::NORMAL;
+			btnContinue->state = GuiControlState::NORMAL;
+			btnSettings->state = GuiControlState::NORMAL;
+			btnCredits->state = GuiControlState::NORMAL;
+			btnExit->state = GuiControlState::NORMAL;
+		}*/
+
+		else if (control->id == 11) return false; // TODO: Exit request
+
+		//else if (control->id == 6) credits = false;
+
+		break;
+	}
+
+	/*case GuiControlType::CHECKBOX:
+
+		if (control->id == 7)
+		{
+			if (btnFullScreen->checked == true) SDL_SetWindowFullscreen(app->win->window, SDL_WINDOW_FULLSCREEN);
+
+			else SDL_SetWindowFullscreen(app->win->window, SDL_WINDOW_MAXIMIZED);
+		}
+
+		break;*/
+
+	default: break;
+	}
 
 	return true;
 }
