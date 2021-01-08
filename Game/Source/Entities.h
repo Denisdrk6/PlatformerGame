@@ -63,7 +63,7 @@ public:
 	void DestroyEntity(Entity* entity);
 	void DestroyAll();
 
-	int enemyDeathFx = 0;
+	int deadFx = 0;
 
 private:
 

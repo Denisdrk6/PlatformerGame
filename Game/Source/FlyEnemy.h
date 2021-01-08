@@ -32,7 +32,6 @@ public:
 	bool hitted = false;
 	bool dead = false;
 	bool falling = false;
-	int deadFx = 0;
 
 	iPoint initialPosition;
 	iPoint vel;

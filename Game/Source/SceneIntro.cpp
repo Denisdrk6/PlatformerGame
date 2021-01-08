@@ -42,7 +42,7 @@ bool SceneIntro::Start()
 	opening = app->tex->Load("Assets/Screens/title.png");
 
 	creditsScreen = app->tex->Load("Assets/Screens/credits.png");
-	SettingsScreen = app->tex->Load("Assets/Screens/settings.png");
+	settingsScreen = app->tex->Load("Assets/Screens/settings.png");
 	
 	app->player->score = 0;
 	if (app->player->lifes != 3) app->player->lifes = 3;
@@ -85,9 +85,21 @@ bool SceneIntro::Start()
 	btnFullScreen->SetObserver(this);
 
 	btnVSync = new GuiCheckBox(8, { 302, 621, 30, 30 }, "VSYNC");
-	btnVSync->state = GuiControlState::NORMAL;
+	btnVSync->state = GuiControlState::DISABLED;
 	btnVSync->checked = false;
 	btnVSync->SetObserver(this);
+
+	sldMusic = new GuiSlider(9, { 37, 526, 157, 30 }, "MUSIC");
+	sldMusic->state = GuiControlState::NORMAL;
+	sldMusic->maxValue = app->audio->maxMusicValue;
+	sldMusic->minValue = 0;
+	sldMusic->SetObserver(this);
+
+	sldFx = new GuiSlider(10, { 37, 621, 157, 30 }, "MUSIC");
+	sldFx->state = GuiControlState::NORMAL;
+	sldFx->maxValue = app->audio->maxFxValue;
+	sldFx->minValue = 0;
+	sldFx->SetObserver(this);
 
 	return ret;
 }
@@ -98,21 +110,23 @@ bool SceneIntro::Update(Input* input, float dt)
 
 	if (credits == false)
 	{
-		ret = btnStart->Update(input, dt, false, app->render);
-		ret = btnContinue->Update(input, dt, false, app->render);
-		ret = btnSettings->Update(input, dt, false, app->render);
-		ret = btnCredits->Update(input, dt, false, app->render);
-		ret = btnExit->Update(input, dt, false, app->render);
+		ret = btnStart->Update(input, dt, true, app->render);
+		ret = btnContinue->Update(input, dt, true, app->render);
+		ret = btnSettings->Update(input, dt, true, app->render);
+		ret = btnCredits->Update(input, dt, true, app->render);
+		ret = btnExit->Update(input, dt, true, app->render);
 
 		if (settings == true && ret == true)
 		{
-			ret = btnFullScreen->Update(input, dt);
-			ret = btnVSync->Update(input, dt);
+			ret = btnFullScreen->Update(input, dt, true, app->render);
+			ret = btnVSync->Update(input, dt, true, app->render);
+			ret = sldMusic->Update(input, dt, true, app->render);
+			ret = sldFx->Update(input, dt, true, app->render);
 		}
 	}
 
 	else
-		ret = btnCreditsBack->Update(input, dt, false, app->render);
+		ret = btnCreditsBack->Update(input, dt, true, app->render);
 
 	// Alpha speed is the same for all fps
 	if(alphaModifier >= 0) alphaModifier = (int)(120 / (1/dt));
@@ -167,9 +181,20 @@ bool SceneIntro::PostUpdate()
 
 	else
 	{
+		btnStart->bounds = { app->render->camera.x * -1 + 153, app->render->camera.y * -1 + 194, 331, 76 };
+		btnContinue->bounds = { app->render->camera.x * -1 + 819, app->render->camera.y * -1 + 194, 331, 76 };
+		btnSettings->bounds = { app->render->camera.x * -1 + 153, app->render->camera.y * -1 + 361, 331, 76 };
+		btnCredits->bounds = { app->render->camera.x * -1 + 819, app->render->camera.y * -1 + 361, 331, 76 };
+		btnExit->bounds = { app->render->camera.x * -1 + 567, app->render->camera.y * -1 + 437, 147, 76 };
+		btnFullScreen->bounds = { app->render->camera.x * -1 + 302, app->render->camera.y * -1 + 526, 30, 30 };
+		btnVSync->bounds = { app->render->camera.x * -1 + 302, app->render->camera.y * -1 + 621, 30, 30 };
+		sldMusic->bounds = { app->render->camera.x * -1 + 37, app->render->camera.y * -1 + 526, 157, 30 };
+		sldFx->bounds = { app->render->camera.x * -1 + 37, app->render->camera.y * -1 + 621, 157, 30 };
+		btnCreditsBack->bounds = { app->render->camera.x * -1 + 32, app->render->camera.y * -1 + 163, 141, 340 };
+
 		if (credits == false)
 		{
-			app->render->DrawTexture(opening, 0, 0, NULL, 1);
+			app->render->DrawTexture(opening, app->render->camera.x * -1, app->render->camera.y * -1, NULL, 1);
 
 			btnStart->Draw(app->render);
 			btnContinue->Draw(app->render);
@@ -179,16 +204,18 @@ bool SceneIntro::PostUpdate()
 
 			if (settings == true)
 			{
-				app->render->DrawTexture(SettingsScreen, 0, 452, NULL, 1);
+				app->render->DrawTexture(settingsScreen, app->render->camera.x * -1, app->render->camera.y * -1 + 452, NULL, 1);
 
 				btnFullScreen->Draw(app->render);
 				btnVSync->Draw(app->render);
+				sldMusic->Draw(true, app->render, app->input);
+				sldFx->Draw(true, app->render, app->input);
 			}
 		}
 
 		else
 		{
-			app->render->DrawTexture(creditsScreen, 0, 0, NULL, 1);
+			app->render->DrawTexture(creditsScreen, app->render->camera.x * -1, app->render->camera.y * -1, NULL, 1);
 
 			btnCreditsBack->Draw(app->render);
 		}
@@ -213,48 +240,62 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 {
 	switch (control->type)
 	{
-	case GuiControlType::BUTTON:
-	{
-		if (control->id == 1) TransitionToScene(SceneType::GAMEPLAY);
-
-		else if (control->id == 2)
+		case GuiControlType::BUTTON:
 		{
-			TransitionToScene(SceneType::GAMEPLAY);
-			app->sceneManager->gameplay->toLoad = true;
+			if (control->id == 1) TransitionToScene(SceneType::GAMEPLAY);
+
+			else if (control->id == 2)
+			{
+				TransitionToScene(SceneType::GAMEPLAY);
+				app->sceneManager->gameplay->toLoad = true;
+			}
+
+			else if (control->id == 3) settings = !settings;
+
+			else if (control->id == 4)
+			{
+				credits = true;
+
+				btnStart->state = GuiControlState::NORMAL;
+				btnContinue->state = GuiControlState::NORMAL;
+				btnSettings->state = GuiControlState::NORMAL;
+				btnCredits->state = GuiControlState::NORMAL;
+				btnExit->state = GuiControlState::NORMAL;
+			}
+
+			else if (control->id == 5) return false; // TODO: Exit request
+
+			else if (control->id == 6) credits = false;
+
+			break;
 		}
 
-		else if (control->id == 3) settings = !settings;
-
-		else if (control->id == 4)
+		case GuiControlType::CHECKBOX:
 		{
-			credits = true;
+			if (control->id == 7)
+			{
+				if (btnFullScreen->checked == true)
+					SDL_SetWindowFullscreen(app->win->window, SDL_WINDOW_FULLSCREEN);
 
-			btnStart->state = GuiControlState::NORMAL;
-			btnContinue->state = GuiControlState::NORMAL;
-			btnSettings->state = GuiControlState::NORMAL;
-			btnCredits->state = GuiControlState::NORMAL;
-			btnExit->state = GuiControlState::NORMAL;
+				else
+					SDL_SetWindowFullscreen(app->win->window, SDL_WINDOW_MAXIMIZED);
+			}
+
+			break;
 		}
 
-		else if (control->id == 5) return false; // TODO: Exit request
-
-		else if (control->id == 6) credits = false;
-
-		break;
-	}
-
-	case GuiControlType::CHECKBOX:
-
-		if (control->id == 7)
+		case GuiControlType::SLIDER:
 		{
-			if (btnFullScreen->checked == true) SDL_SetWindowFullscreen(app->win->window, SDL_WINDOW_FULLSCREEN);
+			if (control->id == 9)
+				app->audio->MusicVolumeControl(sldMusic->GetValue());
 
-			else SDL_SetWindowFullscreen(app->win->window, SDL_WINDOW_MAXIMIZED);
+			if (control->id == 10)
+				app->audio->FxVolumeControl(sldFx->GetValue());
+
+			break;
 		}
 
-		break;
-
-	default: break;
+		default: break;
 	}
 
 	return true;

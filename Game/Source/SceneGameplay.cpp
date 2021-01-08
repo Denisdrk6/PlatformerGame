@@ -57,24 +57,28 @@ bool SceneGameplay::Awake()
 // Called before the first frame
 bool SceneGameplay::Start()
 {
-	if (active == true)
+	if (active == true && created == false)
 	{
-		app->map->Load("devmap.tmx");
-		img = app->tex->Load("Assets/Textures/background.png");
-		heartsTex = app->tex->Load("Assets/Textures/heart.png");
-		coinsTex = app->tex->Load("Assets/Textures/coins.png");
-		flags = app->tex->Load("Assets/Textures/check_points.png");
-		iglu = app->tex->Load("Assets/Textures/iglu_icon.png");
-		saveTexBlending.texture = app->tex->Load("Assets/textures/save_load.png");
-		loadTexBlending.texture = app->tex->Load("Assets/Textures/Save_load.png");
-		
-		pause = app->tex->Load("Assets/Screens/pause.png");
+		if (created == false)
+		{
+			app->map->Load("devmap.tmx");
+			img = app->tex->Load("Assets/Textures/background.png");
+			heartsTex = app->tex->Load("Assets/Textures/heart.png");
+			coinsTex = app->tex->Load("Assets/Textures/coins.png");
+			flags = app->tex->Load("Assets/Textures/check_points.png");
+			iglu = app->tex->Load("Assets/Textures/iglu_icon.png");
+			saveTexBlending.texture = app->tex->Load("Assets/textures/save_load.png");
+			loadTexBlending.texture = app->tex->Load("Assets/Textures/Save_load.png");
+			settingsScreen = app->tex->Load("Assets/Screens/settings.png");
 
-		char lookupTable[] = { "0123456789" };
-		scoreFont = app->fonts->Load("Assets/Fonts/timer_font.png", lookupTable, 1);
+			pause = app->tex->Load("Assets/Screens/pause.png");
+
+			char lookupTable[] = { "0123456789" };
+			scoreFont = app->fonts->Load("Assets/Fonts/timer_font.png", lookupTable, 1);
 
 
-		app->audio->PlayMusic("Assets/Audio/Music/friends.ogg");
+			app->audio->PlayMusic("Assets/Audio/Music/friends.ogg");
+		}
 		//hurtFx = app->audio->LoadFx("Assets/Audio/Fx/hurt_sound.wav");
 
 		//WARNING: might be called when we change maps
@@ -122,18 +126,45 @@ bool SceneGameplay::Start()
 			}
 		}
 
-		btnResume = new GuiButton(9, { 72, 78, 230, 60 }, "RESUME");
+		btnResume = new GuiButton(11, { 72, 78, 230, 60 }, "RESUME");
 		btnResume->SetObserver(this);
 
-		btnSettings = new GuiButton(10, { 72, 166, 230, 60 }, "SETTINGS");
+		btnSettings = new GuiButton(12, { 72, 166, 230, 60 }, "SETTINGS");
 		btnSettings->SetObserver(this);
 
-		btnExit = new GuiButton(11, { 72, 250, 230, 60 }, "EXIT");
+		btnExit = new GuiButton(13, { 72, 250, 230, 60 }, "EXIT");
 		btnExit->SetObserver(this);
 
-		btnTitle = new GuiButton(12, { 72, 349, 230, 118 }, "TITLE");
+		btnTitle = new GuiButton(14, { 72, 349, 230, 118 }, "TITLE");
+		btnTitle->state = GuiControlState::DISABLED;
 		btnTitle->SetObserver(this);
+
+		btnFullScreen = new GuiCheckBox(15, { 302, 526, 30, 30 }, "FULL SCREEN");
+		btnFullScreen->state = GuiControlState::NORMAL;
+		btnFullScreen->checked = false;
+		btnFullScreen->SetObserver(this);
+
+		btnVSync = new GuiCheckBox(16, { 302, 621, 30, 30 }, "VSYNC");
+		btnVSync->state = GuiControlState::DISABLED;
+		btnVSync->checked = false;
+		btnVSync->SetObserver(this);
+
+		sldMusic = new GuiSlider(17, { 37, 526, 157, 30 }, "MUSIC");
+		sldMusic->state = GuiControlState::NORMAL;
+		sldMusic->maxValue = app->audio->maxMusicValue;
+		sldMusic->minValue = 0;
+		sldMusic->SetObserver(this);
+
+		sldFx = new GuiSlider(18, { 37, 621, 157, 30 }, "MUSIC");
+		sldFx->state = GuiControlState::NORMAL;
+		sldFx->maxValue = app->audio->maxFxValue;
+		sldFx->minValue = 0;
+		sldFx->SetObserver(this);
+
+		created = true;
 	}
+
+	else if (created == true) app->pauseMenu = false;
 
 	return true;
 }
@@ -154,7 +185,14 @@ bool SceneGameplay::Update(Input* input, float dt)
 		ret = btnResume->Update(input, dt, true, app->render);
 		ret = btnSettings->Update(input, dt, true, app->render);
 		ret = btnExit->Update(input, dt, true, app->render);
-		if(ret == true) ret = btnTitle->Update(input, dt, true, app->render);
+		//if(ret == true) ret = btnTitle->Update(input, dt, true, app->render);
+		if (settings == true && ret == true)
+		{
+			ret = btnFullScreen->Update(input, dt, true, app->render);
+			ret = btnVSync->Update(input, dt, true, app->render);
+			ret = sldMusic->Update(input, dt, true, app->render);
+			ret = sldFx->Update(input, dt, true, app->render);
+		}
 	}
 
 	//If we prees continue button on title screen
@@ -202,9 +240,9 @@ bool SceneGameplay::Update(Input* input, float dt)
 		saveTexBlending.loaded = true;
 	}
 
-	if (input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN) app->audio->VolumeControl(4);
+	if (input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN) app->audio->MusicVolumeControl(4);
 
-	if (input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN) app->audio->VolumeControl(-4);
+	if (input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN) app->audio->MusicVolumeControl(-4);
 
 	if (app->player->collider->type == COLLIDER_GODMODE)
 	{
@@ -448,6 +486,21 @@ bool SceneGameplay::PostUpdate()
 		btnSettings->Draw(app->render);
 		btnExit->Draw(app->render);
 		btnTitle->Draw(app->render);
+
+		if (settings == true)
+		{
+			btnFullScreen->bounds = { app->render->camera.x * -1 + 291, app->render->camera.y * -1 + app->win->screenSurface->h / 3 + 74, 30, 30 };
+			btnVSync->bounds = { app->render->camera.x * -1 + 291, app->render->camera.y * -1 + app->win->screenSurface->h / 3 + 169, 30, 30 };
+			sldMusic->bounds = { app->render->camera.x * -1 + 26, app->render->camera.y * -1 + app->win->screenSurface->h / 3 + 74, 157, 30 };
+			sldFx->bounds = { app->render->camera.x * -1 + 26, app->render->camera.y * -1 + app->win->screenSurface->h / 3 + 169, 157, 30 };
+
+			app->render->DrawTexture(settingsScreen, app->render->camera.x * -1 - 11, app->render->camera.y * -1 + app->win->screenSurface->h / 3, NULL, 1);
+
+			btnFullScreen->Draw(app->render);
+			btnVSync->Draw(app->render);
+			sldMusic->Draw(true, app->render, app->input);
+			sldFx->Draw(true, app->render, app->input);
+		}
 	}
 	
 	return ret;
@@ -460,7 +513,7 @@ bool SceneGameplay::Unload()
 	app->player->active = false;
 	app->map->active = false;
 	app->col->active = false;
-	app->entities->DestroyAll();
+	//app->entities->DestroyAll();
 
 	return true;
 }
@@ -471,45 +524,51 @@ bool SceneGameplay::OnGuiMouseClickEvent(GuiControl* control)
 	{
 	case GuiControlType::BUTTON:
 	{
-		if (control->id == 9)
-			app->pauseMenu = false;
-
-		/*else if (control->id == 2)
+		if (control->id == 11)
 		{
-			TransitionToScene(SceneType::GAMEPLAY);
-			app->sceneManager->gameplay->toLoad = true;
+			app->pauseMenu = false;
+			//settings = false;
 		}
 
-		else if (control->id == 3) settings = !settings;
+		else if (control->id == 12) settings = !settings;
 
-		else if (control->id == 4)
+		else if (control->id == 13) return false; // TODO: Exit request
+
+		/*else if (control->id == 14)
 		{
-			credits = true;
-
-			btnStart->state = GuiControlState::NORMAL;
-			btnContinue->state = GuiControlState::NORMAL;
-			btnSettings->state = GuiControlState::NORMAL;
-			btnCredits->state = GuiControlState::NORMAL;
-			btnExit->state = GuiControlState::NORMAL;
+			//TransitionToScene(SceneType::INTRO);
+			//transitionRequired = true;
+			app->sceneManager->current->TransitionToScene(SceneType::INTRO);
+			Unload();
 		}*/
-
-		else if (control->id == 11) return false; // TODO: Exit request
-
-		//else if (control->id == 6) credits = false;
 
 		break;
 	}
 
-	/*case GuiControlType::CHECKBOX:
-
-		if (control->id == 7)
+	case GuiControlType::CHECKBOX:
+	{
+		if (control->id == 15)
 		{
-			if (btnFullScreen->checked == true) SDL_SetWindowFullscreen(app->win->window, SDL_WINDOW_FULLSCREEN);
+			if (btnFullScreen->checked == true)
+				SDL_SetWindowFullscreen(app->win->window, SDL_WINDOW_FULLSCREEN);
 
-			else SDL_SetWindowFullscreen(app->win->window, SDL_WINDOW_MAXIMIZED);
+			else
+				SDL_SetWindowFullscreen(app->win->window, SDL_WINDOW_MAXIMIZED);
 		}
 
-		break;*/
+		break;
+	}
+
+	case GuiControlType::SLIDER:
+	{
+		if (control->id == 17)
+			app->audio->MusicVolumeControl(sldMusic->GetValue());
+
+		if (control->id == 18)
+			app->audio->FxVolumeControl(sldFx->GetValue());
+
+		break;
+	}
 
 	default: break;
 	}

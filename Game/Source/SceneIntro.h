@@ -7,6 +7,7 @@
 
 #include "GuiButton.h"
 #include "GuiCheckBox.h"
+#include "GuiSlider.h"
 
 struct SDL_Texture;
 
@@ -50,7 +51,7 @@ public:
 	BlendTexture bgTexture;
 	SDL_Texture* opening = nullptr;
 	SDL_Texture* creditsScreen = nullptr;
-	SDL_Texture* SettingsScreen = nullptr;
+	SDL_Texture* settingsScreen = nullptr;
 
 	int waitTime = 500;
 	int initTime = 0;
@@ -69,6 +70,9 @@ public:
 
 	GuiCheckBox* btnFullScreen;
 	GuiCheckBox* btnVSync;
+
+	GuiSlider* sldMusic;
+	GuiSlider* sldFx;
 };
 
 #endif

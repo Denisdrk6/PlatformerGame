@@ -8,6 +8,8 @@
 #include "Scene.h"
 
 #include "GuiButton.h"
+#include "GuiCheckBox.h"
+#include "GuiSlider.h"
 
 struct SDL_Texture;
 class Collider;
@@ -82,6 +84,7 @@ public:
 	BlendedTexture loadTexBlending;
 
 	SDL_Texture* pause = nullptr;
+	SDL_Texture* settingsScreen = nullptr;
 
 	CheckPoint checkPoints[2];
 
@@ -104,6 +107,9 @@ public:
 	bool playerCol = false;
 
 	bool toLoad = false;
+	bool settings = false;
+
+	bool created = false;
 
 	//int hurtFx = 0;
 
@@ -120,6 +126,12 @@ private:
 	GuiButton* btnSettings;
 	GuiButton* btnExit;
 	GuiButton* btnTitle;
+
+	GuiCheckBox* btnFullScreen;
+	GuiCheckBox* btnVSync;
+
+	GuiSlider* sldMusic;
+	GuiSlider* sldFx;
 
 	int currentCheckpoint = 0;
 

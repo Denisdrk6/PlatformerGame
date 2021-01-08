@@ -14,7 +14,6 @@ FloorEnemy::FloorEnemy(iPoint pos) : Entity(EntityType::FLOOR_ENEMY)
 {
 	//Load Sprite
 	sprite = app->tex->Load("Assets/enemies/floor_enemy.png");
-	deadFx = app->audio->LoadFx("Assets/audio/Fx/enemy_death.wav");
 
 	//Load Animations
 	rIdleAnim.PushBack({ 1*2, 2*2, 17*2, 26*2 });
@@ -116,7 +115,7 @@ void FloorEnemy::Reset()
 	position = initialPosition;
 	vel.x = 0;
 	vel.y = 0;
-	lives = 5;
+	lives = 1;
 	if (col != nullptr) {
 		app->col->DeleteCollider(col);
 	}
@@ -132,58 +131,62 @@ void FloorEnemy::Update(float dt)
 		if (lives == 0)
 		{
 			dead = true;
-			app->audio->PlayFx(deadFx);
+			app->audio->PlayFx(app->entities->deadFx);
 
 			app->col->DeleteCollider(col);
-			app->sceneManager->gameplay->FloorEnemies.Del(app->sceneManager->gameplay->FloorEnemies.At(app->sceneManager->gameplay->FloorEnemies.Find(this)));
+			col = nullptr;
+			//app->sceneManager->gameplay->FloorEnemies.Del(app->sceneManager->gameplay->FloorEnemies.At(app->sceneManager->gameplay->FloorEnemies.Find(this)));
 		}
 
-		HandeInput();
-
-		switch (CurrentState)
+		else
 		{
-		case FloorEnemy::NONE:
-			//nothing
-			break;
-		case FloorEnemy::MOVE:
-			position.x += vel.x * dt;
-			break;
-		default:
-			break;
-		}
+			HandeInput();
 
-		position.y += vel.y * dt;
-
-		if (position.x > app->player->position.x) {
-			//flip = SDL_FLIP_HORIZONTAL;
-			Current_animation = &lIdleAnim;
-
-			if (vel.x != 0) {
-				Current_animation = &lWalkAnim;
+			switch (CurrentState)
+			{
+			case FloorEnemy::NONE:
+				//nothing
+				break;
+			case FloorEnemy::MOVE:
+				position.x += vel.x * dt;
+				break;
+			default:
+				break;
 			}
 
-		}
-		else if (position.x < app->player->position.x) {
-			Current_animation = &rIdleAnim;
+			position.y += vel.y * dt;
 
-			if (vel.x != 0) {
-				Current_animation = &rWalkAnim;
+			if (position.x > app->player->position.x) {
+				//flip = SDL_FLIP_HORIZONTAL;
+				Current_animation = &lIdleAnim;
+
+				if (vel.x != 0) {
+					Current_animation = &lWalkAnim;
+				}
+
 			}
-		}
+			else if (position.x < app->player->position.x) {
+				Current_animation = &rIdleAnim;
 
-		if (falling == true) {
-			if (position.x < app->player->position.x) {
-				Current_animation = &rJumpAnim;
+				if (vel.x != 0) {
+					Current_animation = &rWalkAnim;
+				}
 			}
-			else if (position.x > app->player->position.x) {
-				Current_animation = &lJumpAnim;
+
+			if (falling == true) {
+				if (position.x < app->player->position.x) {
+					Current_animation = &rJumpAnim;
+				}
+				else if (position.x > app->player->position.x) {
+					Current_animation = &lJumpAnim;
+				}
 			}
+
+
+			Draw();
+			col->SetPos(position.x, position.y);
+			falling = true;
 		}
-
-
-		Draw();
-		col->SetPos(position.x, position.y);
-		falling = true;
 	}
 	else if (dead == true) {
 		Current_animation = &death;
@@ -267,7 +270,6 @@ void FloorEnemy::OnCollision(Collider* c1, Collider* c2)
 		if ((app->player->CheckTunneling(nextCollision, c1->rect) == true || c1->rect.y - (c2->rect.h + c2->rect.y) >= offset) && app->player->speedY >= app->player->maxNegativeSpeedY)
 		{
 			lives = 0;
-			app->audio->PlayFx(app->entities->enemyDeathFx);
 		}
 	}
 

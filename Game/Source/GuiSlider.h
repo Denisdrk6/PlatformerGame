@@ -13,8 +13,13 @@ public:
     GuiSlider(uint32 id, SDL_Rect bounds, const char *text);
     virtual ~GuiSlider();
 
-    bool Update(Input* input, float dt);
-    bool Draw(Render* render);
+    bool Update(Input* input, float dt, bool camera, Render* render);
+    bool Draw(bool camera, Render* render, Input* input);
+
+    int GetValue();
+
+    int minValue;
+    int maxValue;
 
 private:
 
@@ -22,9 +27,6 @@ private:
     // Maybe some animation properties for state change?
     SDL_Rect slider;
     int value;
-
-    int minValue;
-    int maxValue;
 
     int mouseX, mouseY;
 

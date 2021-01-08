@@ -13,7 +13,6 @@ FlyEnemy::FlyEnemy(iPoint pos) : Entity(EntityType::FLY_ENEMY)
 	//load graphics
 	sprite = app->tex->Load("Assets/enemies/flying_enemy.png");
 	debug_tex = app->tex->Load("Assets/maps/pathRect.png");
-	deadFx = app->audio->LoadFx("Assets/audio/Fx/enemy_death.wav");
 
 	//Load animations
 	idle.PushBack({ 0 , 51 , 46 , 45 });
@@ -75,14 +74,14 @@ void FlyEnemy::Reset()
 	position = initialPosition;
 	vel.x = 0;
 	vel.y = 0;
-	lives = 5;
+	lives = 1;
 	if (col != nullptr)
 	{
 		app->col->DeleteCollider(col);
 	}
 	dead = false;
 	falling = false;
-	col = app->col->AddCollider({ position.x,position.y,32,32 }, COLLIDER_ENEMY, app->entities);
+	col = app->col->AddCollider({ initialPosition.x,initialPosition.y,32,32 }, COLLIDER_ENEMY, app->entities);
 }
 
 void FlyEnemy::Update(float dt)
@@ -94,39 +93,43 @@ void FlyEnemy::Update(float dt)
 		if (lives == 0)
 		{
 			dead = true;
-			app->audio->PlayFx(deadFx);
+			app->audio->PlayFx(app->entities->deadFx);
 
 			app->col->DeleteCollider(col);
-			app->sceneManager->gameplay->FlyEnemies.Del(app->sceneManager->gameplay->FlyEnemies.At(app->sceneManager->gameplay->FlyEnemies.Find(this)));
+			col = nullptr;
+			//app->sceneManager->gameplay->FlyEnemies.Del(app->sceneManager->gameplay->FlyEnemies.At(app->sceneManager->gameplay->FlyEnemies.Find(this)));
 			falling = true;
 		}
 
-		HandeInput();
-
-		switch (CurrentState)
+		else
 		{
-		case FlyEnemy::NONE:
-			//nothing
-			break;
-		case FlyEnemy::MOVE:
-			position.x += vel.x * dt;//adjust values later * 80;
-			position.y += vel.y * dt;//adjust values later
-			break;
-		default:
-			break;
-		}
+			HandeInput();
+
+			switch (CurrentState)
+			{
+			case FlyEnemy::NONE:
+				//nothing
+				break;
+			case FlyEnemy::MOVE:
+				position.x += vel.x * dt;//adjust values later * 80;
+				position.y += vel.y * dt;//adjust values later
+				break;
+			default:
+				break;
+			}
 
 
-		//FLip texture
-		if (position.x > app->player->position.x) {
-			flip = SDL_FLIP_HORIZONTAL;
-		}
-		else if (position.x < app->player->position.x) {
-			flip = SDL_FLIP_NONE;
-		}
+			//FLip texture
+			if (position.x > app->player->position.x) {
+				flip = SDL_FLIP_HORIZONTAL;
+			}
+			else if (position.x < app->player->position.x) {
+				flip = SDL_FLIP_NONE;
+			}
 
-		Draw();
-		col->SetPos(position.x, position.y);
+			Draw();
+			col->SetPos(position.x, position.y);
+		}
 	}
 
 	else if (dead == true) {
@@ -223,7 +226,6 @@ void FlyEnemy::OnCollision(Collider* c1, Collider* c2)
 		if ((app->player->CheckTunneling(nextCollision, c1->rect) == true || c1->rect.y - (c2->rect.h + c2->rect.y) >= offset) && app->player->speedY >= app->player->maxNegativeSpeedY)
 		{
 			lives = 0;
-			app->audio->PlayFx(app->entities->enemyDeathFx);
 		}
 	}
 
@@ -235,12 +237,15 @@ void FlyEnemy::OnCollision(Collider* c1, Collider* c2)
 
 void FlyEnemy::blitPath()
 {
-	const DynArray<Path>* path = app->pathfinding->GetLastPath();
-
-	for (uint i = 0; i < path->Count(); ++i)
+	if (col != nullptr)
 	{
-		iPoint pos = app->map->MapToWorld(path->At(i)->PosX, path->At(i)->PosY);
-		//if (debug_tex != nullptr)
-		app->render->DrawTexture(debug_tex, pos.x, pos.y);
+		const DynArray<Path>* path = app->pathfinding->GetLastPath();
+
+		for (uint i = 0; i < path->Count(); ++i)
+		{
+			iPoint pos = app->map->MapToWorld(path->At(i)->PosX, path->At(i)->PosY);
+			//if (debug_tex != nullptr)
+			app->render->DrawTexture(debug_tex, pos.x, pos.y);
+		}
 	}
 }

@@ -247,6 +247,7 @@ void Player::Death() {
 		}
 	}
 }
+
 bool Player::Update(float dt)
 {
 	if (lifes == 0)

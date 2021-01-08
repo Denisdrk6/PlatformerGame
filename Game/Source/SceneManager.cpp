@@ -69,7 +69,7 @@ bool SceneManager::Start()
 // Called each loop iteration
 bool SceneManager::PreUpdate()
 {
-	
+
 	// L12b: Debug pathfing
 	static iPoint origin;
 	static bool originSelected = false;
@@ -179,7 +179,7 @@ bool SceneManager::Update(float dt)
 	}
 	*/
 
-	if (current->transitionRequired)
+	if (current->transitionRequired || gameplay->transitionRequired)
 	{
 		onTransition = true;
 		fadeOutCompleted = false;

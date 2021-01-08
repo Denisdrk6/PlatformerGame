@@ -157,7 +157,7 @@ unsigned int Audio::LoadFx(const char* path)
 	}
 	else
 	{
-		Mix_VolumeChunk(chunk, musicVolume);
+		Mix_VolumeChunk(chunk, fxVolume);
 		fx.Add(chunk);
 		ret = fx.Count();
 	}
@@ -181,8 +181,10 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 	return ret;
 }
 
-void Audio::VolumeControl(int volume)
+void Audio::MusicVolumeControl(int volume)
 {
+	musicVolume = volume;
+
 	if (volume < 0)
 	{
 		if (musicVolume <= 0)
@@ -192,14 +194,7 @@ void Audio::VolumeControl(int volume)
 		}
 		else
 		{
-			musicVolume += volume;
 			Mix_VolumeMusic(musicVolume);
-			ListItem<Mix_Chunk*>* effects = fx.start;
-			while (effects != NULL)
-			{
-				Mix_VolumeChunk(effects->data, musicVolume);
-				effects = effects->next;
-			}
 
 			LOG("Music volume: %i", musicVolume);
 		}
@@ -215,16 +210,56 @@ void Audio::VolumeControl(int volume)
 		}
 		else
 		{
-			musicVolume += volume;
 			Mix_VolumeMusic(musicVolume);
+
+			LOG("Music volume: %i", musicVolume);
+		}
+	}
+}
+
+void Audio::FxVolumeControl(int volume)
+{
+	fxVolume = volume;
+
+	if (volume < 0)
+	{
+		if (fxVolume <= 0)
+		{
+			fxVolume = 0;
+			LOG("Min music volume reached");
+		}
+		else
+		{
+			fxVolume = volume;
 			ListItem<Mix_Chunk*>* effects = fx.start;
 			while (effects != NULL)
 			{
-				Mix_VolumeChunk(effects->data, musicVolume);
+				Mix_VolumeChunk(effects->data, fxVolume);
 				effects = effects->next;
 			}
 
-			LOG("Music volume: %i", musicVolume);
+			LOG("Music volume: %i", fxVolume);
+		}
+
+	}
+
+	if (volume > 0)
+	{
+		if (fxVolume >= 125)
+		{
+			fxVolume = 128;
+			LOG("Max music volume reached");
+		}
+		else
+		{
+			ListItem<Mix_Chunk*>* effects = fx.start;
+			while (effects != NULL)
+			{
+				Mix_VolumeChunk(effects->data, fxVolume);
+				effects = effects->next;
+			}
+
+			LOG("Music volume: %i", fxVolume);
 		}
 	}
 }
