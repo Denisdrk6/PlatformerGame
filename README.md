@@ -7,22 +7,48 @@
 
 ## Key Features
 
- - This game features player movement, jumping and double jumping.
+   This game features player movement, jumping and double jumping.
  
-   You will have some enemies on your way home, jump on their heads to calm them.
+   You will have some enemies on your way home, jump on their heads or throw them a snow ball to calm them.
    
    There're some coins and hearts along the way, for a full 100% run you will end with 14 coins and 5 hearts. 
  
-   There's also a selection of debugging keys enabling God mode, seeing the colisions/logic of the game,
+   There's also a selection of debugging keys enabling God mode, seeing the colisions/logic of the game,and starting from the first/second level.
    
    As well as saving and loading the game's state.
- 
+   
+   Or even restarting the current level
+   
+   
+## Menu Navigation
+
+
+# Main Title Menu
+
+- Start: Start game from level 1
+- Continue: Restart the game from last save
+- Settings: Opens Settings menu
+- Credits: Shows the Credits screen
+
+
+# Settings Menu
+
+- Fullscreen On/Off
+- Music Volume Control: Slider
+- Fx Volume Control: Slider
+
+# Credits Screen
+
+- Back button: Returns to main title screen
 ## Controls
 
  - A & D for player movement, left and right.
  - Space for jumping/double jumping.
- - '+' & '-' to control music volume.
+ - Left click to throw deadly snow balls.
+ - F1 & F2 start level 1/2.
+ - F3 restart current level.
  - F5 & F6 saves and loads the game state.
+ - F7 teleport between checkpoints in the level.
  - F9 Lets you see the coliders/logic in-game.
  - F10 enables God Mode.
  - F11 Enable/Disable 30 FPS.
@@ -30,9 +56,9 @@
 
 ## Developers
 
- - [Denis Deconinck Soriano](https://github.com/Denisdrk6) - Programmer
- - [Marc Ramos Gomez](https://github.com/Ramsubito) - Programmer
- - [Pol Pallares Mur](https://github.com/Zeta115) - Designer
+ - [Denis Deconinck Soriano](https://github.com/Denisdrk6) - Main Programmer
+ - [Marc Ramos Gomez](https://github.com/Ramsubito) - Main IA Manager
+ - [Pol Pallares Mur](https://github.com/Zeta115) - Main Designer
  
 ## Screenshots
 ![Screenshot1](https://github.com/Denisdrk6/PlatformerGame/blob/master/Screenshots/Screenshot1.png)
@@ -42,6 +68,7 @@
 ![Screenshot5](https://github.com/Denisdrk6/PlatformerGame/blob/master/Screenshots/Screenshot5.png)
 ![Screenshot6](https://github.com/Denisdrk6/PlatformerGame/blob/master/Screenshots/Screenshot6.png)
 ![Screenshot7](https://github.com/Denisdrk6/PlatformerGame/blob/master/Screenshots/Screenshot7.png)
+
 ## License
 
 This project is licensed under an unmodified MIT license, which is an OSI-certified license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
