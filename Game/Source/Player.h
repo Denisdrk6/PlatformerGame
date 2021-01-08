@@ -139,6 +139,9 @@ public:
 	//Audio fx
 	int hurtFx = 0;
 	int coinsFx = 0;
+	int deadFx = 0;
+	int shootFx = 0;
+
 	List<Particle*> bullets;
 	SDL_Texture* weapon_pointer;
 	

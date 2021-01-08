@@ -42,7 +42,7 @@ private:
 	bool dead = false;
 	bool hitted = false;
 	bool falling = true;
-
+	int deadFx = 0;
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
 
 	float private_dt;

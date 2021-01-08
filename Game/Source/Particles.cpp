@@ -4,13 +4,14 @@
 #include "Player.h"
 #include "Collisions.h"
 #include "App.h"
+#include "Window.h"
 
 #define SPEED 500
 
 Particle::Particle(iPoint pos, int x, int y) : Entity(EntityType::particle)
 {
 	sprite = app->tex->Load("Assets/textures/bullet.png");
-
+	
 	idle.PushBack({ 57,57,36,36 });
 	idle.PushBack({ 57,57,36,36 });
 	idle.speed = 7.0f;
@@ -41,7 +42,10 @@ void Particle::Update(float dt)
 	{
 		lives = 0;
 	}
-
+	if (position.x >= app->win->width*app->map->data.tileWidth|| position.y >= app->win->height * app->map->data.tileHeight)
+	{
+		lives = 0;
+	}
 	if (lives == 0)
 	{
 		app->entities->DestroyEntity(this);

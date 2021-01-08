@@ -20,7 +20,6 @@ private:
 
 	int diferentialY;
 	int diferentialX;
-
 	Animation idle;
 
 };

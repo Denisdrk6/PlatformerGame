@@ -134,9 +134,10 @@ bool Player::Start()
 	loadingBalls.texture = app->tex->Load("Assets/Screens/loading.png");
 	weapon_pointer = app->tex->Load("Assets/textures/mira.png");
 	currentAnimation = &rIdleAnim;
-
+	shootFx = app->audio->LoadFx("Assets/audio/Fx/shoot.wav");
 	hurtFx = app->audio->LoadFx("Assets/Audio/Fx/hurt_sound.wav");
 	coinsFx = app->audio->LoadFx("Assets/Audio/Fx/coins.wav");
+	deadFx = app->audio->LoadFx("Assets/Audio/Fx/death_screen.wav");
 
 	position.x = 3 * 32; //app->map->data.tileWidth;
 	position.y = 94 * 32; //app->map->data.tileHeight;
@@ -161,6 +162,7 @@ void Player::Death() {
 		position.x = 0;
 		position.y = 0;
 		rDeadAnim.speed = 0.04f;
+		app->audio->PlayFx(deadFx);
 	}
 
 	else
@@ -471,6 +473,7 @@ void Player::DrawPointer() {
 		Particle* shoot;
 		shoot = (Particle*)app->entities->CreateEntity(Entity::EntityType::particle, position, p.x, p.y);
 		bullets.Add(shoot);
+		app->audio->PlayFx(shootFx);
 		//app->audio->PlayFx(shotsound, 0);
 	}
 }

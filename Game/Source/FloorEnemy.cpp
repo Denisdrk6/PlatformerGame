@@ -14,6 +14,7 @@ FloorEnemy::FloorEnemy(iPoint pos) : Entity(EntityType::FLOOR_ENEMY)
 {
 	//Load Sprite
 	sprite = app->tex->Load("Assets/enemies/floor_enemy.png");
+	deadFx = app->audio->LoadFx("Assets/audio/Fx/enemy_death.wav");
 
 	//Load Animations
 	rIdleAnim.PushBack({ 1*2, 2*2, 17*2, 26*2 });
@@ -131,6 +132,8 @@ void FloorEnemy::Update(float dt)
 		if (lives == 0)
 		{
 			dead = true;
+			app->audio->PlayFx(deadFx);
+
 			app->col->DeleteCollider(col);
 			app->sceneManager->gameplay->FloorEnemies.Del(app->sceneManager->gameplay->FloorEnemies.At(app->sceneManager->gameplay->FloorEnemies.Find(this)));
 		}

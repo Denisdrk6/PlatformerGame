@@ -13,6 +13,8 @@ FlyEnemy::FlyEnemy(iPoint pos) : Entity(EntityType::FLY_ENEMY)
 	//load graphics
 	sprite = app->tex->Load("Assets/enemies/flying_enemy.png");
 	debug_tex = app->tex->Load("Assets/maps/pathRect.png");
+	deadFx = app->audio->LoadFx("Assets/audio/Fx/enemy_death.wav");
+
 	//Load animations
 	idle.PushBack({ 0 , 51 , 46 , 45 });
 	idle.PushBack({ 55, 51 , 46 , 45 });
@@ -92,6 +94,8 @@ void FlyEnemy::Update(float dt)
 		if (lives == 0)
 		{
 			dead = true;
+			app->audio->PlayFx(deadFx);
+
 			app->col->DeleteCollider(col);
 			app->sceneManager->gameplay->FlyEnemies.Del(app->sceneManager->gameplay->FlyEnemies.At(app->sceneManager->gameplay->FlyEnemies.Find(this)));
 			falling = true;
