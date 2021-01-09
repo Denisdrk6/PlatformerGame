@@ -109,15 +109,24 @@ bool SceneManager::Update(float dt)
 		//if (input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) render->camera.x -= 1;
 		//if (input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) render->camera.x += 1;
 
-		if (current->currentScene == SceneType::GAMEPLAY)
+		if (current->currentScene != SceneType::GAMEPLAY || (onTransition == true && fadeOutCompleted == false))
+			ret = current->Update(input, dt);
+
+		else if (current->currentScene == SceneType::GAMEPLAY)
+			ret = gameplay->Update(input, dt);
+	}
+
+	else
+	{
+
+		if (current->currentScene != SceneType::GAMEPLAY || (current->currentScene == SceneType::GAMEPLAY && fadeOutCompleted == false))
+			ret = current->Update(input, dt);
+
+		else if (current->currentScene == SceneType::GAMEPLAY && fadeOutCompleted == true)
 		{
 			ret = gameplay->Update(input, dt);
 		}
 
-		else ret = current->Update(input, dt);
-	}
-	else
-	{
 		if (!fadeOutCompleted)
 		{
 			transitionAlpha += (FADEOUT_TRANSITION_SPEED * dt);
@@ -145,8 +154,10 @@ bool SceneManager::Update(float dt)
 			{
 				current->Unload();	// Unload current screen
 				fadeOutCompleted = true;
+				transitionAlpha = 1.0f;
 			}
 		}
+
 		else  // Transition fade out logic
 		{
 			transitionAlpha -= (FADEIN_TRANSITION_SPEED * dt);
@@ -221,12 +232,14 @@ bool SceneManager::PostUpdate()
 	bool ret = true;
 
 	//ret = current->PostUpdate();
-	if (current->currentScene == SceneType::GAMEPLAY)
-	{
-		ret = gameplay->PostUpdate();
-	}
 
-	else ret = current->PostUpdate();
+	if (current->currentScene != SceneType::GAMEPLAY || (onTransition == true && fadeOutCompleted == false))
+		ret = current->PostUpdate();
+
+	else if (current->currentScene == SceneType::GAMEPLAY)
+		ret = gameplay->PostUpdate();
+
+	
 
 	// Draw full screen rectangle in front of everything
 	if (onTransition)

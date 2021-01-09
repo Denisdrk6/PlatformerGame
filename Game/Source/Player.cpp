@@ -133,6 +133,7 @@ bool Player::Start()
 	loadingScreen.texture = app->tex->Load("Assets/Screens/transition.png");
 	loadingBalls.texture = app->tex->Load("Assets/Screens/loading.png");
 	weapon_pointer = app->tex->Load("Assets/textures/mira.png");
+	shot = app->tex->Load("Assets/textures/bullet.png");
 	currentAnimation = &rIdleAnim;
 	shootFx = app->audio->LoadFx("Assets/audio/Fx/shoot.wav");
 	hurtFx = app->audio->LoadFx("Assets/Audio/Fx/hurt_sound.wav");
@@ -173,7 +174,7 @@ void Player::Death() {
 
 			ChangeMap(1);
 
-			spawnY = 95;
+			spawnY = 94;
 			if (changingSavedMap == false)
 			{
 				position.x = 3 * 32;

@@ -57,28 +57,25 @@ bool SceneGameplay::Awake()
 // Called before the first frame
 bool SceneGameplay::Start()
 {
-	if (active == true && created == false)
+	if (active == true)
 	{
-		if (created == false)
-		{
-			app->map->Load("devmap.tmx");
-			img = app->tex->Load("Assets/Textures/background.png");
-			heartsTex = app->tex->Load("Assets/Textures/heart.png");
-			coinsTex = app->tex->Load("Assets/Textures/coins.png");
-			flags = app->tex->Load("Assets/Textures/check_points.png");
-			iglu = app->tex->Load("Assets/Textures/iglu_icon.png");
-			saveTexBlending.texture = app->tex->Load("Assets/textures/save_load.png");
-			loadTexBlending.texture = app->tex->Load("Assets/Textures/Save_load.png");
-			settingsScreen = app->tex->Load("Assets/Screens/settings.png");
+		app->map->Load("devmap.tmx");
+		img = app->tex->Load("Assets/Textures/background.png");
+		heartsTex = app->tex->Load("Assets/Textures/heart.png");
+		coinsTex = app->tex->Load("Assets/Textures/coins.png");
+		flags = app->tex->Load("Assets/Textures/check_points.png");
+		iglu = app->tex->Load("Assets/Textures/iglu_icon.png");
+		saveTexBlending.texture = app->tex->Load("Assets/textures/save_load.png");
+		loadTexBlending.texture = app->tex->Load("Assets/Textures/Save_load.png");
+		settingsScreen = app->tex->Load("Assets/Screens/settings.png");
 
-			pause = app->tex->Load("Assets/Screens/pause.png");
+		pause = app->tex->Load("Assets/Screens/pause.png");
 
-			char lookupTable[] = { "0123456789" };
-			scoreFont = app->fonts->Load("Assets/Fonts/timer_font.png", lookupTable, 1);
+		char lookupTable[] = { "0123456789" };
+		scoreFont = app->fonts->Load("Assets/Fonts/timer_font.png", lookupTable, 1);
 
 
-			app->audio->PlayMusic("Assets/Audio/Music/friends.ogg");
-		}
+		app->audio->PlayMusic("Assets/Audio/Music/friends.ogg");
 		//hurtFx = app->audio->LoadFx("Assets/Audio/Fx/hurt_sound.wav");
 
 		//WARNING: might be called when we change maps
@@ -160,11 +157,9 @@ bool SceneGameplay::Start()
 		sldFx->maxValue = app->audio->maxFxValue;
 		sldFx->minValue = 0;
 		sldFx->SetObserver(this);
-
-		created = true;
 	}
 
-	else if (created == true) app->pauseMenu = false;
+	app->pauseMenu = false;
 
 	return true;
 }

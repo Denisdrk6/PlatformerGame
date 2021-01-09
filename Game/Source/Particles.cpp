@@ -10,7 +10,7 @@
 
 Particle::Particle(iPoint pos, int x, int y) : Entity(EntityType::particle)
 {
-	sprite = app->tex->Load("Assets/textures/bullet.png");
+	sprite = app->player->shot;
 	
 	idle.PushBack({ 57,57,36,36 });
 	idle.PushBack({ 57,57,36,36 });

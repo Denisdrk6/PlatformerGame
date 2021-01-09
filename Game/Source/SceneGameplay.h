@@ -109,8 +109,6 @@ public:
 	bool toLoad = false;
 	bool settings = false;
 
-	bool created = false;
-
 	//int hurtFx = 0;
 
 private:
