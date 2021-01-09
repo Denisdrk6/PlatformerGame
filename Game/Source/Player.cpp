@@ -806,6 +806,9 @@ bool Player::Save(pugi::xml_node& data)const
 
 	player.append_attribute("x") = position.x;
 	player.append_attribute("y") = position.y;
+	player.append_attribute("coins") = score;
+	player.append_attribute("points") = app->sceneManager->gameplay->points;
+	player.append_attribute("time") = app->sceneManager->gameplay->totalTime;
 
 	mapNum.append_attribute("num") = map;
 
@@ -816,7 +819,7 @@ bool Player::Load(pugi::xml_node& data)
 {
 	position.x = data.child("player").attribute("x").as_int();
 	position.y = data.child("player").attribute("y").as_float();
-
+	
 	currentMap = map;
 
 	map = data.child("map").attribute("num").as_int();
@@ -828,6 +831,10 @@ bool Player::Load(pugi::xml_node& data)
 		ChangeMap(map);
 		changingSavedMap = false;
 	}
+
+	score = data.child("player").attribute("coins").as_int();
+	app->sceneManager->gameplay->points = data.child("player").attribute("points").as_int();
+	app->sceneManager->gameplay->totalTime = data.child("player").attribute("time").as_int();
 
 	return true;
 }

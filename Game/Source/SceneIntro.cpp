@@ -241,7 +241,6 @@ bool SceneIntro::PostUpdate()
 bool SceneIntro::Unload()
 {
 	app->player->active = true;
-	app->audio->active = true;
 	app->map->active = true;
 	app->col->active = true;
 	app->render->camera.y = -77.5 * 32;
