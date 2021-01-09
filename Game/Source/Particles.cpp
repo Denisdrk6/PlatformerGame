@@ -72,9 +72,9 @@ void Particle::Update(float dt)
 
 		else if (diferentialY < 0)
 		{
-			int aux1_bis;
-			aux1_bis = diferentialY * -1;
-			float s = (float)aux1_bis / diferentialX;
+			int aux1;
+			aux1 = diferentialY * -1;
+			float s = (float)aux1 / diferentialX;
 
 			if (app->fpsCapped == true)
 			{
@@ -109,9 +109,9 @@ void Particle::Update(float dt)
 		}
 		else if (diferentialY < 0)
 		{
-			int aux1_bis;
-			aux1_bis = diferentialY * -1;
-			float s = (float)aux1_bis / diferentialX;
+			int aux2;
+			aux2 = diferentialY * -1;
+			float s = (float)aux2 / diferentialX;
 
 			if (app->fpsCapped == true)
 			{
@@ -131,46 +131,6 @@ void Particle::Update(float dt)
 
 void Particle::Draw()
 {
-
-	float angle = 0.0f;
-
-	if (diferentialX > 0)
-	{
-
-		if (diferentialY > 0)
-		{
-			float s = (float)diferentialY / diferentialX;
-			angle = s * 40;
-		}
-
-		else if (diferentialY < 0)
-		{
-			int aux1_bis;
-			aux1_bis = diferentialY * -1;
-			float s = (float)aux1_bis / diferentialX;
-			angle = s * -40;
-		}
-	}
-
-	else if (diferentialX < 0)
-	{
-
-		if (diferentialY > 0)
-		{
-			float s = (float)diferentialY / diferentialX;
-			angle = (s * 40) + 180;
-		}
-
-		else if (diferentialY < 0)
-		{
-			int aux1_bis;
-			aux1_bis = diferentialY * -1;
-			float s = (float)aux1_bis / diferentialX;
-			angle = (s * -40) + 180;
-		}
-	}
-
-	//app->render->DrawTexture(sprite, position.x, position.y, &idle.GetCurrentFrame(), 1.0f, angle);
 	app->render->DrawTexture(sprite, position.x, position.y, &idle.GetCurrentFrame(), 1, 1.0f, NULL, NULL, NULL);
 }
 

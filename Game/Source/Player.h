@@ -144,7 +144,7 @@ public:
 	int shootFx = 0;
 
 	List<Particle*> bullets;
-	SDL_Texture* weapon_pointer;
+	SDL_Texture* weaponPointer;
 	
 };
 

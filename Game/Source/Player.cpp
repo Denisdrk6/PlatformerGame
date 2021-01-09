@@ -118,7 +118,7 @@ bool Player::Start()
 	deadScreen.texture = app->tex->Load("Assets/Screens/dead.png");
 	loadingScreen.texture = app->tex->Load("Assets/Screens/transition.png");
 	loadingBalls.texture = app->tex->Load("Assets/Screens/loading.png");
-	weapon_pointer = app->tex->Load("Assets/textures/mira.png");
+	weaponPointer = app->tex->Load("Assets/textures/mira.png");
 	shot = app->tex->Load("Assets/textures/bullet.png");
 	currentAnimation = &rIdleAnim;
 	shootFx = app->audio->LoadFx("Assets/audio/Fx/shoot.wav");
@@ -450,7 +450,7 @@ void Player::DrawPointer() {
 	app->input->GetMousePosition(x, y);
 	iPoint p = app->render->ScreenToWorld(x, y);
 
-	app->render->DrawTexture(weapon_pointer, p.x - 16, p.y - 16);
+	app->render->DrawTexture(weaponPointer, p.x - 16, p.y - 16);
 
 	if (app->input->GetMouseButtonDown(1) == KEY_DOWN) {
 		Particle* shoot;
