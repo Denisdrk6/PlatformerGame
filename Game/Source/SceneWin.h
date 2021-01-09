@@ -43,6 +43,7 @@ public:
 	// The scene sprite sheet loaded into an SDL_Texture
 	//BlendTexture bgTexture;
 	SDL_Texture* bg;
+	int winFx = 0;
 };
 
 #endif

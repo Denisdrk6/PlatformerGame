@@ -32,6 +32,7 @@ bool SceneWin::Start()
 	bool ret = true;
 
 	bg = app->tex->Load("Assets/Screens/win.png");
+	winFx = app->audio->LoadFx("Assets/Audio/Fx/win.wav");
 
 	app->player->score = 0;
 	app->player->map = 1;
@@ -52,6 +53,7 @@ bool SceneWin::Start()
 bool SceneWin::Update(Input* input, float dt)
 {
 	bool ret = true;
+	app->audio->PlayFx(winFx);
 
 	/*if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 		app->fade->Fade(this, (Module*)app->scene, 60);*/
@@ -67,7 +69,6 @@ bool SceneWin::PostUpdate()
 {
 	// Draw everything ---
 	app->render->DrawTexture(bg, app->render->camera.x * -1, app->render->camera.y * -1, NULL, 1);
-
 	return true;
 }
 

@@ -125,6 +125,9 @@ bool Player::Start()
 	hurtFx = app->audio->LoadFx("Assets/Audio/Fx/hurt_sound.wav");
 	coinsFx = app->audio->LoadFx("Assets/Audio/Fx/coins.wav");
 	deadFx = app->audio->LoadFx("Assets/Audio/Fx/death_screen.wav");
+	heartsFx = app->audio->LoadFx("Assets/Audio/Fx/hearts.wav");
+	jumpFx = app->audio->LoadFx("Assets/Audio/Fx/jump.wav");
+
 
 	position.x = 3 * 32; //app->map->data.tileWidth;
 	position.y = 94 * 32; //app->map->data.tileHeight;
@@ -329,15 +332,18 @@ bool Player::Update(float dt)
 		// If sapce is pressed we trun of ground collision and turn on spacePressed var
 		groundCol = false;
 		spacePressed = true;
+
 	}
 
 	else if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_DOWN && collider->type != COLLIDER_GODMODE)
 	{
+		if (spacePressed == false && doubleJump == false)app->audio->PlayFx(jumpFx);
 		// Double jump mechanic: if player has already jumped once and not double jumped or if player has fallen from platform and has not jumped on air, double jump turns true
 		if ((spacePressed == true && doubleJump == false) || (spacePressed == false && doubleJump == false && speedY < 0))
 		{
 			doubleJump = true;
 			speedY = 1.45f * dt * speedMultiplier;
+			app->audio->PlayFx(jumpFx);
 		}
 	}
 
@@ -1009,6 +1015,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 			// last && condition prevents saving if there's a further checkpoint already activated
 			if (app->sceneManager->gameplay->hearts.activated == false)
 			{
+				app->audio->PlayFx(heartsFx);
 				lifes++;
 				app->sceneManager->gameplay->hearts.activated = true;
 				app->col->DeleteCollider(app->sceneManager->gameplay->hearts.collider);
