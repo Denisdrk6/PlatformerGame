@@ -11,6 +11,7 @@
 #include "Input.h"
 #include "Render.h"
 #include "Textures.h"
+#include "Audio.h"
 
 #include "GuiButton.h"
 
@@ -53,6 +54,9 @@ bool SceneManager::Awake()
 // Called before the first frame
 bool SceneManager::Start()
 {
+	hoverFx = app->audio->LoadFx("Assets/Audio/Fx/hover.wav");
+	clickFx = app->audio->LoadFx("Assets/Audio/Fx/click.wav");
+
 	current = new SceneIntro();
 	current->Start();
 	gameplay = new SceneGameplay();

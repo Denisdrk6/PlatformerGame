@@ -4,6 +4,7 @@
 #include "Input.h"
 #include "Render.h"
 #include "Scene.h"
+#include "Audio.h"
 
 #include "Point.h"
 #include "SString.h"

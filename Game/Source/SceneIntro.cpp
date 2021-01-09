@@ -108,39 +108,42 @@ bool SceneIntro::Update(Input* input, float dt)
 {
 	bool ret = true;
 
-	if (input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+	if (bgTexture.loaded == false)
 	{
-		btnStart->debugDraw = !btnStart->debugDraw;
-		btnContinue->debugDraw = !btnContinue->debugDraw;
-		btnSettings->debugDraw = !btnSettings->debugDraw;
-		btnCredits->debugDraw = !btnCredits->debugDraw;
-		btnExit->debugDraw = !btnExit->debugDraw;
-		btnFullScreen->debugDraw = !btnFullScreen->debugDraw;
-		btnVSync->debugDraw = !btnVSync->debugDraw;
-		sldMusic->debugDraw = !sldMusic->debugDraw;
-		sldFx->debugDraw = !sldFx->debugDraw;
-		btnCreditsBack->debugDraw = !btnCreditsBack->debugDraw;
-	}
-
-	if (credits == false)
-	{
-		ret = btnStart->Update(input, dt, true, app->render);
-		ret = btnContinue->Update(input, dt, true, app->render);
-		ret = btnSettings->Update(input, dt, true, app->render);
-		ret = btnCredits->Update(input, dt, true, app->render);
-		ret = btnExit->Update(input, dt, true, app->render);
-
-		if (settings == true && ret == true)
+		if (input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 		{
-			ret = btnFullScreen->Update(input, dt, true, app->render);
-			ret = btnVSync->Update(input, dt, true, app->render);
-			ret = sldMusic->Update(input, dt, true, app->render);
-			ret = sldFx->Update(input, dt, true, app->render);
+			btnStart->debugDraw = !btnStart->debugDraw;
+			btnContinue->debugDraw = !btnContinue->debugDraw;
+			btnSettings->debugDraw = !btnSettings->debugDraw;
+			btnCredits->debugDraw = !btnCredits->debugDraw;
+			btnExit->debugDraw = !btnExit->debugDraw;
+			btnFullScreen->debugDraw = !btnFullScreen->debugDraw;
+			btnVSync->debugDraw = !btnVSync->debugDraw;
+			sldMusic->debugDraw = !sldMusic->debugDraw;
+			sldFx->debugDraw = !sldFx->debugDraw;
+			btnCreditsBack->debugDraw = !btnCreditsBack->debugDraw;
 		}
-	}
 
-	else
-		ret = btnCreditsBack->Update(input, dt, true, app->render);
+		if (credits == false)
+		{
+			ret = btnStart->Update(input, dt, true, app->render, app->audio, app->sceneManager->hoverFx, app->sceneManager->clickFx);
+			ret = btnContinue->Update(input, dt, true, app->render, app->audio, app->sceneManager->hoverFx, app->sceneManager->clickFx);
+			ret = btnSettings->Update(input, dt, true, app->render, app->audio, app->sceneManager->hoverFx, app->sceneManager->clickFx);
+			ret = btnCredits->Update(input, dt, true, app->render, app->audio, app->sceneManager->hoverFx, app->sceneManager->clickFx);
+			ret = btnExit->Update(input, dt, true, app->render, app->audio, app->sceneManager->hoverFx, app->sceneManager->clickFx);
+
+			if (settings == true && ret == true)
+			{
+				ret = btnFullScreen->Update(input, dt, true, app->render, app->audio, app->sceneManager->hoverFx, app->sceneManager->clickFx);
+				ret = btnVSync->Update(input, dt, true, app->render, app->audio, app->sceneManager->hoverFx, app->sceneManager->clickFx);
+				ret = sldMusic->Update(input, dt, true, app->render, app->audio, app->sceneManager->hoverFx, app->sceneManager->clickFx);
+				ret = sldFx->Update(input, dt, true, app->render, app->audio, app->sceneManager->hoverFx, app->sceneManager->clickFx);
+			}
+		}
+
+		else
+			ret = btnCreditsBack->Update(input, dt, true, app->render, app->audio, app->sceneManager->hoverFx, app->sceneManager->clickFx);
+	}
 
 	// Alpha speed is the same for all fps
 	if(alphaModifier >= 0) alphaModifier = (int)(120 / (1/dt));
@@ -245,6 +248,7 @@ bool SceneIntro::Unload()
 	app->col->active = true;
 	app->render->camera.y = -77.5 * 32;
 	app->tex->UnLoad(opening);
+	bgTexture.alpha = 0;
 
 	return true;
 }

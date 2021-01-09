@@ -189,16 +189,16 @@ bool SceneGameplay::Update(Input* input, float dt)
 			sldFx->debugDraw = !sldFx->debugDraw;
 		}
 
-		ret = btnResume->Update(input, dt, true, app->render);
-		ret = btnSettings->Update(input, dt, true, app->render);
-		ret = btnExit->Update(input, dt, true, app->render);
+		ret = btnResume->Update(input, dt, true, app->render, app->audio, app->sceneManager->hoverFx, app->sceneManager->clickFx);
+		ret = btnSettings->Update(input, dt, true, app->render, app->audio, app->sceneManager->hoverFx, app->sceneManager->clickFx);
+		ret = btnExit->Update(input, dt, true, app->render, app->audio, app->sceneManager->hoverFx, app->sceneManager->clickFx);
 		//if(ret == true) ret = btnTitle->Update(input, dt, true, app->render);
 		if (settings == true && ret == true)
 		{
-			ret = btnFullScreen->Update(input, dt, true, app->render);
-			ret = btnVSync->Update(input, dt, true, app->render);
-			ret = sldMusic->Update(input, dt, true, app->render);
-			ret = sldFx->Update(input, dt, true, app->render);
+			ret = btnFullScreen->Update(input, dt, true, app->render, app->audio, app->sceneManager->hoverFx, app->sceneManager->clickFx);
+			ret = btnVSync->Update(input, dt, true, app->render, app->audio, app->sceneManager->hoverFx, app->sceneManager->clickFx);
+			ret = sldMusic->Update(input, dt, true, app->render, app->audio, app->sceneManager->hoverFx, app->sceneManager->clickFx);
+			ret = sldFx->Update(input, dt, true, app->render, app->audio, app->sceneManager->hoverFx, app->sceneManager->clickFx);
 		}
 	}
 
@@ -209,7 +209,7 @@ bool SceneGameplay::Update(Input* input, float dt)
 		toLoad = false;
 	}
 
-	if (app->pauseMenu == false)
+	if (app->pauseMenu == false && app->player->loadingScreen.loaded == false)
 	{
 		if (timer < 60)
 		{
@@ -522,6 +522,8 @@ bool SceneGameplay::Unload()
 	app->player->active = false;
 	app->map->active = false;
 	app->col->active = false;
+	app->audio->MusicVolumeControl(app->audio->musicVolume/2);
+	settings = false;
 	//app->entities->DestroyAll();
 
 	return true;

@@ -185,12 +185,13 @@ void Audio::MusicVolumeControl(int volume)
 {
 	musicVolume = volume;
 
-	if (volume < 0)
+	if (volume <= 0)
 	{
 		if (musicVolume <= 0)
 		{
 			musicVolume = 0;
 			LOG("Min music volume reached");
+			Mix_VolumeMusic(musicVolume);
 		}
 		else
 		{
@@ -207,6 +208,7 @@ void Audio::MusicVolumeControl(int volume)
 		{
 			musicVolume = 128;
 			LOG("Max music volume reached");
+			Mix_VolumeMusic(musicVolume);
 		}
 		else
 		{
@@ -226,7 +228,7 @@ void Audio::FxVolumeControl(int volume)
 		if (fxVolume <= 0)
 		{
 			fxVolume = 0;
-			LOG("Min music volume reached");
+			LOG("Min Fx volume reached");
 		}
 		else
 		{
@@ -238,7 +240,7 @@ void Audio::FxVolumeControl(int volume)
 				effects = effects->next;
 			}
 
-			LOG("Music volume: %i", fxVolume);
+			LOG("Fx volume: %i", fxVolume);
 		}
 
 	}
@@ -248,7 +250,7 @@ void Audio::FxVolumeControl(int volume)
 		if (fxVolume >= 125)
 		{
 			fxVolume = 128;
-			LOG("Max music volume reached");
+			LOG("Max Fx volume reached");
 		}
 		else
 		{
@@ -259,7 +261,7 @@ void Audio::FxVolumeControl(int volume)
 				effects = effects->next;
 			}
 
-			LOG("Music volume: %i", fxVolume);
+			LOG("Fx volume: %i", fxVolume);
 		}
 	}
 }

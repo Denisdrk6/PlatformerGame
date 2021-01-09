@@ -42,10 +42,13 @@ bool SceneWin::Start()
 	{
 		app->player->Disable();
 	}
+
 	if (app->col->active == true)
 	{
 		app->col->Disable();
 	}
+
+	app->audio->PlayFx(winFx);
 
 	return ret;
 }
@@ -53,7 +56,6 @@ bool SceneWin::Start()
 bool SceneWin::Update(Input* input, float dt)
 {
 	bool ret = true;
-	app->audio->PlayFx(winFx);
 
 	/*if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 		app->fade->Fade(this, (Module*)app->scene, 60);*/

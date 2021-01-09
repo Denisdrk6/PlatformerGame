@@ -51,6 +51,9 @@ public:
 
 	bool fileAsked = false;
 
+	int hoverFx = 0;
+	int clickFx = 0;
+
 private:
 
 	Input* input;

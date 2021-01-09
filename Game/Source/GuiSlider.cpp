@@ -16,7 +16,7 @@ GuiSlider::~GuiSlider()
 {
 }
 
-bool GuiSlider::Update(Input* input, float dt, bool camera, Render* render)
+bool GuiSlider::Update(Input* input, float dt, bool camera, Render* render, Audio* audio, int hover, int click)
 {
     bool ret = true;
 
@@ -34,6 +34,8 @@ bool GuiSlider::Update(Input* input, float dt, bool camera, Render* render)
         if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
             (mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
         {
+            if (state != GuiControlState::FOCUSED && state != GuiControlState::PRESSED) audio->PlayFx(hover);
+            
             state = GuiControlState::FOCUSED;
 
             if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
@@ -45,6 +47,7 @@ bool GuiSlider::Update(Input* input, float dt, bool camera, Render* render)
             if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
             {
                ret = NotifyObserver();
+               audio->PlayFx(click);
             }
         }
         else state = GuiControlState::NORMAL;

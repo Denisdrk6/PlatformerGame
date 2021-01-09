@@ -2,6 +2,7 @@
 #define __AUDIO_H__
 
 #include "Module.h"
+#include "List.h"
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
 
@@ -36,7 +37,7 @@ public:
 
 	void FxVolumeControl(int index);
 
-	int musicVolume = 5;
+	int musicVolume = 25;
 
 	int fxVolume = 120;
 
