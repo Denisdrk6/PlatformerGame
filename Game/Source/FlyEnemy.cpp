@@ -94,6 +94,7 @@ void FlyEnemy::Update(float dt)
 		{
 			dead = true;
 			app->audio->PlayFx(app->entities->deadFx);
+			app->sceneManager->gameplay->points += 100;
 
 			app->col->DeleteCollider(col);
 			col = nullptr;

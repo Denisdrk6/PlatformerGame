@@ -91,6 +91,7 @@ public:
 	Coin coins[7];
 	Heart hearts;
 
+	int points = 0;
 
 	SDL_Texture* flags;
 	SDL_Texture* img;

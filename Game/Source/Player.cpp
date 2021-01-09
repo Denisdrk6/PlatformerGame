@@ -76,20 +76,6 @@ Player::Player() : Module()
 	lFallAnim.PushBack({ 64, 36, 32, 32 });
 	lFallAnim.speed = 0.015f;
 
-
-	rShootAnim.PushBack({ 264,6,21,26});
-	rShootAnim.PushBack({ 296,7,22,25 });
-	rShootAnim.PushBack({ 330,5,20,27 });
-	rShootAnim.PushBack({ 360,5,21,27 });
-	rShootAnim.speed = 0.02f;
-
-
-	lShootAnim.PushBack({ 360,40,21,26 });
-	lShootAnim.PushBack({ 327,41,22,25 });
-	lShootAnim.PushBack({ 295,39,20,27 });
-	lShootAnim.PushBack({ 264,39,21,27 });
-	lShootAnim.speed = 0.02f;
-
 	loadingAnim.PushBack({ 0, 0, 370, 46 });
 	loadingAnim.PushBack({ 0, 47, 370, 46 });
 	loadingAnim.PushBack({ 0, 94, 370, 46 });
@@ -367,18 +353,6 @@ bool Player::Update(float dt)
 		if ((position.y + app->render->camera.y) >= app->win->screenSurface->h - (app->map->data.tileHeight * 9)) app->render->camera.y -= 1.45 * dt * speedMultiplier;
 	}
 	
-	if (app->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_DOWN)
-	{
-		if (currentAnimation == &rIdleAnim || currentAnimation == &rJumpAnim || currentAnimation == &rWalkAnim || currentAnimation == &rFallAnim)
-
-			currentAnimation == &rShootAnim;
-
-
-		else if (currentAnimation == &lIdleAnim || currentAnimation == &lJumpAnim || currentAnimation == &lWalkAnim || currentAnimation == &lFallAnim)
-
-			currentAnimation == &lShootAnim;
-	}
-	
 	 //If no right/left/up movement detected, set the current animation back to idle
 	if (app->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_IDLE
 		&& app->input->GetKey(SDL_SCANCODE_D) == KeyState::KEY_IDLE
@@ -458,6 +432,7 @@ bool Player::Update(float dt)
 
 	collider->SetPos(position.x, position.y);
 	sprintf_s(scoreText, 10, "%i/%i",score, maxScore);
+
 	DrawPointer();
 
 	return ret;
@@ -626,6 +601,7 @@ void Player::ChangeMap(int mapNum)
 		lifes = 3;
 		app->sceneManager->gameplay->totalTime = 0;
 		app->sceneManager->gameplay->timer = 0;
+		app->sceneManager->gameplay->points = 0;
 
 		if (externMap != map || currentMap != map)
 		{
@@ -871,6 +847,10 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 					lifes--;
 					lifeTaken = true;
 					app->audio->PlayFx(hurtFx);
+					if(app->sceneManager->gameplay->points > 200)app->sceneManager->gameplay->points -= 200;
+					else app->sceneManager->gameplay->points =0;
+						
+
 				}
 				lifeWait = SDL_GetTicks();
 				waiting = true;
@@ -1000,6 +980,8 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				{
 					score++;
 					app->audio->PlayFx(coinsFx);
+					app->sceneManager->gameplay->points +=50;
+
 					app->sceneManager->gameplay->coins[i].activated = true;
 					app->col->DeleteCollider(app->sceneManager->gameplay->coins[i].collider);
 				}

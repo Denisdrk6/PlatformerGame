@@ -132,7 +132,7 @@ void FloorEnemy::Update(float dt)
 		{
 			dead = true;
 			app->audio->PlayFx(app->entities->deadFx);
-
+			app->sceneManager->gameplay->points +=75;
 			app->col->DeleteCollider(col);
 			col = nullptr;
 			//app->sceneManager->gameplay->FloorEnemies.Del(app->sceneManager->gameplay->FloorEnemies.At(app->sceneManager->gameplay->FloorEnemies.Find(this)));

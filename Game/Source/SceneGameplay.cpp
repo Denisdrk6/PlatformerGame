@@ -460,6 +460,8 @@ bool SceneGameplay::PostUpdate()
 		//timer
 		sprintf_s(scoreText, 10, "%d", totalTime);
 		app->fonts->BlitText(550, 15, scoreFont, scoreText);
+		sprintf_s(scoreText, 10, "%d", points);
+		app->fonts->BlitText(10, 75, scoreFont, scoreText);
 	}
 
 	if (app->pauseMenu == true && app->player->active == true)
