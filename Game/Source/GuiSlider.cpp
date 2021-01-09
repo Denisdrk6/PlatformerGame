@@ -65,35 +65,72 @@ bool GuiSlider::Draw(bool camera, Render* render, Input* input)
     }
 
     // Draw the right button depending on state
-  
-    switch (state)
+    if (!debugDraw)
     {
-    case GuiControlState::DISABLED: render->DrawRectangle(bounds, { 0, 0, 0, 100 });
-        break;
-    case GuiControlState::NORMAL: render->DrawRectangle(bounds, { 0, 255, 0, 0 });
-        break;
-    case GuiControlState::FOCUSED: render->DrawRectangle(bounds, { 0, 0, 255, 50 });
-        break;
-    case GuiControlState::PRESSED:
-        render->DrawRectangle(bounds, { 0, 0, 255, 100 });
-        sliderRect = { bounds.x, bounds.y, mouseX - bounds.x, bounds.h };
-        innerRect.x = sliderRect.w + sliderRect.x;
-        innerRect.x -= innerRect.w / 2;
-        innerRect.y = sliderRect.y + sliderRect.h/4;
-        innerRect.h = sliderRect.h - sliderRect.h / 2;
-        innerRect.w = innerRect.h;
-        break;
-    case GuiControlState::SELECTED: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
-        break;
-    default:
-        break;
+        switch (state)
+        {
+        case GuiControlState::DISABLED: render->DrawRectangle(bounds, { 0, 0, 0, 100 });
+            break;
+        case GuiControlState::NORMAL: render->DrawRectangle(bounds, { 0, 255, 0, 0 });
+            break;
+        case GuiControlState::FOCUSED: render->DrawRectangle(bounds, { 0, 0, 255, 50 });
+            break;
+        case GuiControlState::PRESSED:
+            render->DrawRectangle(bounds, { 0, 0, 255, 100 });
+            sliderRect = { bounds.x, bounds.y, mouseX - bounds.x, bounds.h };
+            innerRect.x = sliderRect.w + sliderRect.x;
+            innerRect.x -= innerRect.w / 2;
+            innerRect.y = sliderRect.y + sliderRect.h / 4;
+            innerRect.h = sliderRect.h - sliderRect.h / 2;
+            innerRect.w = innerRect.h;
+            break;
+        case GuiControlState::SELECTED: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
+            break;
+        default:
+            break;
+        }
+    }
+
+    else
+    {
+        switch (state)
+        {
+        case GuiControlState::DISABLED: render->DrawRectangle(bounds, { 0, 0, 0, 255 });
+            break;
+        case GuiControlState::NORMAL: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
+            break;
+        case GuiControlState::FOCUSED: render->DrawRectangle(bounds, { 0, 0, 255, 255 });
+            break;
+        case GuiControlState::PRESSED:
+            render->DrawRectangle(bounds, { 255, 0, 255, 255 });
+            sliderRect = { bounds.x, bounds.y, mouseX - bounds.x, bounds.h };
+            innerRect.x = sliderRect.w + sliderRect.x;
+            innerRect.x -= innerRect.w / 2;
+            innerRect.y = sliderRect.y + sliderRect.h / 4;
+            innerRect.h = sliderRect.h - sliderRect.h / 2;
+            innerRect.w = innerRect.h;
+            break;
+        case GuiControlState::SELECTED: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
+            break;
+        default:
+            break;
+        }
     }
 
     if (state == GuiControlState::PRESSED)
         value = (int)((float)sliderRect.w / (float)((float)bounds.w / (float)maxValue));
 
-    render->DrawRectangle(sliderRect, { 0, 0, 255, 155 });
-    if (sliderRect.x == bounds.x) render->DrawRectangle(innerRect, { 0, 0, 255, 200 });
+    if (!debugDraw)
+    {
+        render->DrawRectangle(sliderRect, { 0, 0, 255, 155 });
+        if (sliderRect.x == bounds.x) render->DrawRectangle(innerRect, { 0, 0, 255, 200 });
+    }
+
+    else
+    {
+        render->DrawRectangle(sliderRect, { 0, 255, 255, 255 });
+        if (sliderRect.x == bounds.x) render->DrawRectangle(innerRect, { 255, 0, 255, 255 });
+    }
 
     return false;
 }

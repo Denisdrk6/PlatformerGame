@@ -50,20 +50,42 @@ bool GuiButton::Update(Input* input, float dt, bool camera, Render* render)
 bool GuiButton::Draw(Render* render)
 {
     // Draw the right button depending on state
-    switch (state)
+    if (!debugDraw)
     {
-    case GuiControlState::DISABLED: render->DrawRectangle(bounds, { 0, 0, 0, 100 });
-        break;
-    case GuiControlState::NORMAL: render->DrawRectangle(bounds, { 0, 255, 0, 0 });
-        break;
-    case GuiControlState::FOCUSED: render->DrawRectangle(bounds, { 0, 0, 255, 50 });
-        break;
-    case GuiControlState::PRESSED: render->DrawRectangle(bounds, { 0, 0, 255, 100 });
-        break;
-    case GuiControlState::SELECTED: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
-        break;
-    default:
-        break;
+        switch (state)
+        {
+        case GuiControlState::DISABLED: render->DrawRectangle(bounds, { 0, 0, 0, 100 });
+            break;
+        case GuiControlState::NORMAL: render->DrawRectangle(bounds, { 0, 255, 0, 0 });
+            break;
+        case GuiControlState::FOCUSED: render->DrawRectangle(bounds, { 0, 0, 255, 50 });
+            break;
+        case GuiControlState::PRESSED: render->DrawRectangle(bounds, { 0, 0, 255, 100 });
+            break;
+        case GuiControlState::SELECTED: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
+            break;
+        default:
+            break;
+        }
+    }
+
+    else
+    {
+        switch (state)
+        {
+        case GuiControlState::DISABLED: render->DrawRectangle(bounds, { 0, 0, 0, 255 });
+            break;
+        case GuiControlState::NORMAL: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
+            break;
+        case GuiControlState::FOCUSED: render->DrawRectangle(bounds, { 0, 0, 255, 255 });
+            break;
+        case GuiControlState::PRESSED: render->DrawRectangle(bounds, { 0, 255, 255, 255 });
+            break;
+        case GuiControlState::SELECTED: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
+            break;
+        default:
+            break;
+        }
     }
 
     return false;

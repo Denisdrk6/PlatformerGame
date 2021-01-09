@@ -108,6 +108,20 @@ bool SceneIntro::Update(Input* input, float dt)
 {
 	bool ret = true;
 
+	if (input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+	{
+		btnStart->debugDraw = !btnStart->debugDraw;
+		btnContinue->debugDraw = !btnContinue->debugDraw;
+		btnSettings->debugDraw = !btnSettings->debugDraw;
+		btnCredits->debugDraw = !btnCredits->debugDraw;
+		btnExit->debugDraw = !btnExit->debugDraw;
+		btnFullScreen->debugDraw = !btnFullScreen->debugDraw;
+		btnVSync->debugDraw = !btnVSync->debugDraw;
+		sldMusic->debugDraw = !sldMusic->debugDraw;
+		sldFx->debugDraw = !sldFx->debugDraw;
+		btnCreditsBack->debugDraw = !btnCreditsBack->debugDraw;
+	}
+
 	if (credits == false)
 	{
 		ret = btnStart->Update(input, dt, true, app->render);

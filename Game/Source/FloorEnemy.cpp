@@ -91,6 +91,7 @@ void FloorEnemy::Load(pugi::xml_node& load)
 
 	vel.x = vel.y = 0;
 
+	// in case anything goes wrong loading a dead enemy, transport it to -3000, -3000
 	if (position.x == 0 && position.y == 0)
 	{
 		position.x = -3000;

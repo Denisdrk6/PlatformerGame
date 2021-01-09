@@ -16,6 +16,8 @@ public:
     bool Update(Input* input, float dt, bool camera, Render* render);
     bool Draw(Render* render);
 
+    bool debugDraw = false;
+
 private:
 
     // Gui Button specific properties

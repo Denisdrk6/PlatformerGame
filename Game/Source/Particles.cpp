@@ -41,10 +41,12 @@ void Particle::Update(float dt)
 	{
 		lives = 0;
 	}
-	if (position.x >= app->win->width*app->map->data.tileWidth|| position.y >= app->win->height * app->map->data.tileHeight)
+
+	if (position.x >= app->map->data.width * app->map->data.tileWidth || position.x < 0 || position.y >= app->map->data.height * app->map->data.tileHeight || position.y < 0)
 	{
 		lives = 0;
 	}
+
 	if (lives == 0)
 	{
 		app->entities->DestroyEntity(this);

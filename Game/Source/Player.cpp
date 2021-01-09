@@ -430,6 +430,12 @@ bool Player::Update(float dt)
 		}
 	}
 
+	if (app->input->GetKey(SDL_SCANCODE_F4) == KeyState::KEY_DOWN)
+	{
+		lifes++;
+		app->sceneManager->gameplay->points += 100;
+	}
+
 	collider->SetPos(position.x, position.y);
 	sprintf_s(scoreText, 10, "%i/%i",score, maxScore);
 

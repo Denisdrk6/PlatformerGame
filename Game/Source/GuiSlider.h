@@ -21,6 +21,8 @@ public:
     int minValue;
     int maxValue;
 
+    bool debugDraw = false;
+
 private:
 
     // GuiSlider specific properties

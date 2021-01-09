@@ -18,6 +18,8 @@ public:
 
     bool checked;
 
+    bool debugDraw = false;
+
 private:
 
     // GuiCheckBox specific properties

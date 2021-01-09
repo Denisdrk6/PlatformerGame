@@ -177,6 +177,18 @@ bool SceneGameplay::Update(Input* input, float dt)
 
 	if (app->pauseMenu == true)
 	{
+		if (input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+		{
+			btnResume->debugDraw = !btnResume->debugDraw;
+			btnTitle->debugDraw = !btnTitle->debugDraw;
+			btnSettings->debugDraw = !btnSettings->debugDraw;
+			btnExit->debugDraw = !btnExit->debugDraw;
+			btnFullScreen->debugDraw = !btnFullScreen->debugDraw;
+			btnVSync->debugDraw = !btnVSync->debugDraw;
+			sldMusic->debugDraw = !sldMusic->debugDraw;
+			sldFx->debugDraw = !sldFx->debugDraw;
+		}
+
 		ret = btnResume->Update(input, dt, true, app->render);
 		ret = btnSettings->Update(input, dt, true, app->render);
 		ret = btnExit->Update(input, dt, true, app->render);

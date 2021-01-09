@@ -52,26 +52,54 @@ bool GuiCheckBox::Update(Input* input, float dt, bool camera, Render* render)
 bool GuiCheckBox::Draw(Render* render)
 {
     // Draw the right button depending on state
-    switch (state)
+    if (!debugDraw)
     {
-    case GuiControlState::DISABLED:
+        switch (state)
+        {
+        case GuiControlState::DISABLED:
+        {
+            if (checked) render->DrawRectangle(bounds, { 100, 0, 100, 100 });
+            else render->DrawRectangle(bounds, { 0, 0, 0, 100 });
+        } break;
+        case GuiControlState::NORMAL:
+        {
+            if (checked) render->DrawRectangle(bounds, { 255, 255, 255, 125 });
+            else render->DrawRectangle(bounds, { 0, 255, 0, 0 });
+        } break;
+        case GuiControlState::FOCUSED: render->DrawRectangle(bounds, { 255, 255, 255, 50 });
+            break;
+        case GuiControlState::PRESSED: render->DrawRectangle(bounds, { 0, 0, 255, 100 });
+            break;
+        case GuiControlState::SELECTED: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
+            break;
+        default:
+            break;
+        }
+    }
+
+    else
     {
-        if (checked) render->DrawRectangle(bounds, { 100, 0, 100, 100 });
-        else render->DrawRectangle(bounds, { 0, 0, 0, 100 });
-    } break;
-    case GuiControlState::NORMAL: 
-    {
-        if (checked) render->DrawRectangle(bounds, { 255, 255, 255, 125 });
-        else render->DrawRectangle(bounds, { 0, 255, 0, 0 });
-    } break;
-    case GuiControlState::FOCUSED: render->DrawRectangle(bounds, { 255, 255, 255, 50 });
-        break;
-    case GuiControlState::PRESSED: render->DrawRectangle(bounds, { 0, 0, 255, 100 });
-        break;
-    case GuiControlState::SELECTED: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
-        break;
-    default:
-        break;
+        switch (state)
+        {
+        case GuiControlState::DISABLED:
+        {
+            if (checked) render->DrawRectangle(bounds, { 100, 0, 100, 255 });
+            else render->DrawRectangle(bounds, { 0, 0, 0, 255 });
+        } break;
+        case GuiControlState::NORMAL:
+        {
+            if (checked) render->DrawRectangle(bounds, { 255, 255, 255, 255 });
+            else render->DrawRectangle(bounds, { 0, 255, 0, 255 });
+        } break;
+        case GuiControlState::FOCUSED: render->DrawRectangle(bounds, { 255, 255, 0, 255 });
+            break;
+        case GuiControlState::PRESSED: render->DrawRectangle(bounds, { 0, 0, 255, 255 });
+            break;
+        case GuiControlState::SELECTED: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
+            break;
+        default:
+            break;
+        }
     }
 
     return false;
