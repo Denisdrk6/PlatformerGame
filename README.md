@@ -58,6 +58,7 @@
  - F4 adds 1 life and 100 points.
  - F5 & F6 saves and loads the game state.
  - F7 teleport between checkpoints in the level.
+ - F8 lets you see the GUI bounds and states.
  - F9 Lets you see the coliders/logic in-game.
  - F10 enables God Mode.
  - F11 Enable/Disable 30 FPS.
