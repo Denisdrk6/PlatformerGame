@@ -127,7 +127,7 @@ bool Player::Start()
 	deadFx = app->audio->LoadFx("Assets/Audio/Fx/death_screen.wav");
 	heartsFx = app->audio->LoadFx("Assets/Audio/Fx/hearts.wav");
 	jumpFx = app->audio->LoadFx("Assets/Audio/Fx/jump.wav");
-
+	checkpointFx = app->audio->LoadFx("Assets/Audio/Fx/checkpoint.wav");
 
 	position.x = 3 * 32; //app->map->data.tileWidth;
 	position.y = 94 * 32; //app->map->data.tileHeight;
@@ -982,7 +982,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				{
 					app->sceneManager->gameplay->checkPoints[i].activated = true;
 					app->SaveGameRequest();
-
+					app->audio->PlayFx(checkpointFx);
 					app->sceneManager->gameplay->saveTexBlending.rect = { 0, 0, 224, 83 };
 					//if (app->scene->saveTexBlending.loaded == false) app->scene->saveTex = app->tex->Load("Assets/textures/save_load.png");
 					app->sceneManager->gameplay->saveTexBlending.alpha = 255;

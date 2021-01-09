@@ -8,51 +8,75 @@
 	<:anonymous />
 	<map />
 	<player>
-		<player x="770" y="227" coins="0" points="100" time="19" />
-		<map num="2" />
+		<player x="2385" y="2818" coins="2" points="550" time="26" />
+		<map num="1" />
 	</player>
 	<entities>
 		<Fly_Enemies>
 			<Fly_Enemy>
-				<position x="1109" y="2762" />
-				<initial_position x="1109" y="2762" />
+				<initial_position x="883" y="2391" />
 			</Fly_Enemy>
 			<Fly_Enemy>
-				<position x="2239" y="2707" />
-				<initial_position x="2239" y="2707" />
+				<initial_position x="1959" y="2638" />
 			</Fly_Enemy>
 			<Fly_Enemy>
-				<position x="2482" y="1781" />
-				<initial_position x="2482" y="1781" />
+				<position x="1390" y="1321" />
+				<initial_position x="1390" y="1321" />
 			</Fly_Enemy>
 			<Fly_Enemy>
-				<position x="2322" y="894" />
-				<initial_position x="2744" y="891" />
+				<position x="1183" y="512" />
+				<initial_position x="1183" y="512" />
 			</Fly_Enemy>
 			<Fly_Enemy>
-				<initial_position x="1199" y="121" />
+				<position x="2005" y="634" />
+				<initial_position x="2005" y="634" />
 			</Fly_Enemy>
 			<Fly_Enemy>
-				<position x="2636" y="2715" />
-				<initial_position x="2636" y="2715" />
+				<initial_position x="2552" y="2350" />
 			</Fly_Enemy>
 			<Fly_Enemy>
-				<position x="1793" y="211" />
-				<initial_position x="2075" y="197" />
+				<position x="505" y="1118" />
+				<initial_position x="505" y="1118" />
+			</Fly_Enemy>
+			<Fly_Enemy>
+				<position x="2913" y="2810" />
+				<initial_position x="2913" y="2810" />
+			</Fly_Enemy>
+			<Fly_Enemy>
+				<position x="3044" y="1829" />
+				<initial_position x="3044" y="1829" />
+			</Fly_Enemy>
+			<Fly_Enemy>
+				<position x="2095" y="1464" />
+				<initial_position x="2095" y="1464" />
+			</Fly_Enemy>
+			<Fly_Enemy>
+				<position x="3015" y="464" />
+				<initial_position x="3015" y="464" />
 			</Fly_Enemy>
 		</Fly_Enemies>
 		<Floor_Enemies>
 			<Floor_Enemy>
-				<position x="1816" y="2858" />
-				<initial_position x="1816" y="2833" />
+				<position x="2421" y="1706" />
+				<initial_position x="2421" y="1691" />
 			</Floor_Enemy>
 			<Floor_Enemy>
-				<position x="1894" y="714" />
-				<initial_position x="1892" y="692" />
+				<position x="2439" y="650" />
+				<initial_position x="2439" y="625" />
 			</Floor_Enemy>
 			<Floor_Enemy>
-				<position x="1723" y="714" />
-				<initial_position x="1553" y="692" />
+				<initial_position x="2440" y="2814" />
+			</Floor_Enemy>
+			<Floor_Enemy>
+				<position x="1622" y="746" />
+				<initial_position x="1622" y="730" />
+			</Floor_Enemy>
+			<Floor_Enemy>
+				<position x="691" y="682" />
+				<initial_position x="691" y="669" />
+			</Floor_Enemy>
+			<Floor_Enemy>
+				<initial_position x="773" y="3018" />
 			</Floor_Enemy>
 		</Floor_Enemies>
 	</entities>
@@ -60,6 +84,6 @@
 	<pathfinding />
 	<:anonymous />
 	<renderer>
-		<camera x="-66" y="0" />
+		<camera x="-1890" y="-2385" />
 	</renderer>
 </game_state>

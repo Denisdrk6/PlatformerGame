@@ -144,6 +144,7 @@ public:
 	int shootFx = 0;
 	int heartsFx = 0;
 	int jumpFx = 0;
+	int checkpointFx = 0;
 
 	List<Particle*> bullets;
 	SDL_Texture* weaponPointer;
