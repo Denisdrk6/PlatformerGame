@@ -11,7 +11,11 @@
  
    You will have some enemies on your way home, jump on their heads or throw them a snow ball to calm them.
    
-   There're some coins and hearts along the way, for a full 100% run you will end with 14 coins and 5 hearts. 
+   There're some coins and hearts along the way, for a full 100% run you will end with 14 coins, 5 hearts and 2175 points.
+   
+   Speedrunning the game should give you a timer of 120.
+   
+   The points system works as follows: Birds are worth 100 points, Ground monsters for 75 points, coins add 50 points and losing a heart -200 points.
  
    There's also a selection of debugging keys enabling God mode, seeing the colisions/logic of the game,and starting from the first/second level.
    
@@ -40,13 +44,18 @@
 # Credits Screen
 
 - Back button: Returns to main title screen
+
 ## Controls
 
  - A & D for player movement, left and right.
  - Space for jumping/double jumping.
  - Left click to throw deadly snow balls.
+ 
+ ## Debug keys (only for playtesting)
+ 
  - F1 & F2 start level 1/2.
  - F3 restart current level.
+ - F4 adds 1 life and 100 points.
  - F5 & F6 saves and loads the game state.
  - F7 teleport between checkpoints in the level.
  - F9 Lets you see the coliders/logic in-game.
