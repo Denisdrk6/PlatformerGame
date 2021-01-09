@@ -21,7 +21,7 @@ public:
 	void OnCollision(Collider* c1, Collider* c2);
 	void blitPath();
 
-	Animation* Current_animation;
+	Animation* CurrentAnimation;
 
 	Animation idle;
 	Animation hit;
@@ -36,7 +36,6 @@ public:
 	iPoint initialPosition;
 	iPoint vel;
 
-	int maxLives;
 private:
 	enum states {
 		NONE = 0,
@@ -52,8 +51,8 @@ private:
 		IN_MAX
 	};
 	inputs Currentinput;
-	SDL_Texture* debug_tex;
-	float private_dt;
+	SDL_Texture* debugTex;
+	float privateDt;
 };
 
 #endif

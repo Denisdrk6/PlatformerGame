@@ -847,11 +847,10 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 					lifes--;
 					lifeTaken = true;
 					app->audio->PlayFx(hurtFx);
-					if(app->sceneManager->gameplay->points > 200)app->sceneManager->gameplay->points -= 200;
-					else app->sceneManager->gameplay->points =0;
-						
-
+					if(app->sceneManager->gameplay->points > 200) app->sceneManager->gameplay->points -= 200;
+					else app->sceneManager->gameplay->points = 0;
 				}
+
 				lifeWait = SDL_GetTicks();
 				waiting = true;
 
@@ -875,6 +874,9 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 					LOG("lifes: %d", lifes);
 					lifeWait = SDL_GetTicks();
 					app->audio->PlayFx(hurtFx);
+
+					if (app->sceneManager->gameplay->points > 200) app->sceneManager->gameplay->points -= 200;
+					else app->sceneManager->gameplay->points = 0;
 
 					if (lifes != 0)
 					{

@@ -19,7 +19,6 @@ Particle::Particle(iPoint pos, int x, int y) : Entity(EntityType::particle)
 	diferentialY = y - pos.y;
 	diferentialX = x - pos.x;
 
-
 	destination.x = x + 33;
 	destination.y = y + 15;
 	position = pos;

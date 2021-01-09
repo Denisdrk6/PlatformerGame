@@ -12,7 +12,7 @@ FlyEnemy::FlyEnemy(iPoint pos) : Entity(EntityType::FLY_ENEMY)
 {
 	//load graphics
 	sprite = app->tex->Load("Assets/enemies/flying_enemy.png");
-	debug_tex = app->tex->Load("Assets/maps/pathRect.png");
+	debugTex = app->tex->Load("Assets/maps/pathRect.png");
 
 	//Load animations
 	idle.PushBack({ 0 , 51 , 46 , 45 });
@@ -23,8 +23,6 @@ FlyEnemy::FlyEnemy(iPoint pos) : Entity(EntityType::FLY_ENEMY)
 	idle.PushBack({ 266, 51 , 46 , 45 });
 	idle.speed = 0.05f;
 
-
-
 	//add collider
 	col = app->col->AddCollider({ position.x, position.y, 46,45 }, COLLIDER_ENEMY, app->entities);
 
@@ -32,7 +30,7 @@ FlyEnemy::FlyEnemy(iPoint pos) : Entity(EntityType::FLY_ENEMY)
 	initialPosition = position = pos;
 
 	//save lives
-	lives = maxLives = 8;
+	lives = 1;
 }
 
 FlyEnemy::~FlyEnemy()
@@ -42,6 +40,7 @@ FlyEnemy::~FlyEnemy()
 void FlyEnemy::Load(pugi::xml_node& load)
 {
 	//lives = load.attribute("lives").as_int();
+
 	position.x = load.child("position").attribute("x").as_int();
 	position.y = load.child("position").attribute("y").as_int();
 
@@ -49,18 +48,26 @@ void FlyEnemy::Load(pugi::xml_node& load)
 	initialPosition.y = load.child("initial_position").attribute("y").as_int();
 
 	vel.x = vel.y = 0;
+
+	if (position.x == 0 && position.y == 0)
+	{
+		position.x = -3000;
+		position.y = -3000;
+	}
 }
 
 void FlyEnemy::Save(pugi::xml_node& save) const
 {
 	//save.append_attribute("lives");
 	//save.attribute("lives").set_value(lives);
-
-	save.append_child("position");
-	save.child("position").append_attribute("x");
-	save.child("position").append_attribute("y");
-	save.child("position").attribute("x").set_value(position.x);
-	save.child("position").attribute("y").set_value(position.y);
+	if (lives != 0)
+	{
+		save.append_child("position");
+		save.child("position").append_attribute("x");
+		save.child("position").append_attribute("y");
+		save.child("position").attribute("x").set_value(position.x);
+		save.child("position").attribute("y").set_value(position.y);
+	}
 
 	save.append_child("initial_position");
 	save.child("initial_position").append_attribute("x");
@@ -89,7 +96,7 @@ void FlyEnemy::Update(float dt)
 
 	if (dead == false)
 	{
-		private_dt = dt;
+		privateDt = dt;
 		if (lives == 0)
 		{
 			dead = true;
@@ -141,17 +148,17 @@ void FlyEnemy::Update(float dt)
 				col->SetPos(position.x, position.y);
 			}
 		}
-		Current_animation = &death;
-		app->render->DrawTexture(sprite, position.x, position.y, &Current_animation->GetCurrentFrame(), 1, 1.0f, NULL, NULL, NULL);
+		CurrentAnimation = &death;
+		app->render->DrawTexture(sprite, position.x, position.y, &CurrentAnimation->GetCurrentFrame(), 1, 1.0f, NULL, NULL, NULL);
 	}
 }
 
 void FlyEnemy::Draw()
 {
-	Current_animation = &idle;
+	CurrentAnimation = &idle;
 
 	if (app->player->lifes > 0)
-		app->render->DrawTexture(sprite, position.x, position.y, &Current_animation->GetCurrentFrame(), 1, 1.0f, NULL, NULL, NULL);
+		app->render->DrawTexture(sprite, position.x, position.y, &CurrentAnimation->GetCurrentFrame(), 1, 1.0f, NULL, NULL, NULL);
 
 	if (app->col->debug)
 		blitPath();
@@ -246,7 +253,7 @@ void FlyEnemy::blitPath()
 		{
 			iPoint pos = app->map->MapToWorld(path->At(i)->PosX, path->At(i)->PosY);
 			//if (debug_tex != nullptr)
-			app->render->DrawTexture(debug_tex, pos.x, pos.y);
+			app->render->DrawTexture(debugTex, pos.x, pos.y);
 		}
 	}
 }

@@ -47,7 +47,7 @@ private:
 
 	float private_dt;
 	//---------------------------------
-	Animation* Current_animation;
+	Animation* CurrentAnimation;
 	Animation rIdleAnim;
 	Animation lIdleAnim;
 	Animation rWalkAnim;

@@ -66,11 +66,11 @@ FloorEnemy::FloorEnemy(iPoint pos) : Entity(EntityType::FLOOR_ENEMY)
 	lJumpAnim.speed = 0.025f;
 
 	col = app->col->AddCollider({ position.x,position.y,36,55 }, COLLIDER_ENEMY, app->entities);
-	Current_animation = &rIdleAnim;
+	CurrentAnimation = &rIdleAnim;
 	//Load position and save it
 	initialPosition = position = pos;
 
-	lives = 5;
+	lives = 1;
 }
 
 FloorEnemy::~FloorEnemy() {}
@@ -90,24 +90,33 @@ void FloorEnemy::Load(pugi::xml_node& load)
 	initialPosition.y = load.child("initial_position").attribute("y").as_int();
 
 	vel.x = vel.y = 0;
+
+	if (position.x == 0 && position.y == 0)
+	{
+		position.x = -3000;
+		position.y = -3000;
+	}
 }
 
 void FloorEnemy::Save(pugi::xml_node& save) const
 {
 	//save.append_attribute("lives");
 	//save.attribute("lives").set_value(lives);
-
-	save.append_child("position");
-	save.child("position").append_attribute("x");
-	save.child("position").append_attribute("y");
-	save.child("position").attribute("x").set_value(position.x);
-	save.child("position").attribute("y").set_value(position.y);
-
+	if (lives != 0)
+	{
+		save.append_child("position");
+		save.child("position").append_attribute("x");
+		save.child("position").append_attribute("y");
+		save.child("position").attribute("x").set_value(position.x);
+		save.child("position").attribute("y").set_value(position.y);
+	}
+		
 	save.append_child("initial_position");
 	save.child("initial_position").append_attribute("x");
 	save.child("initial_position").append_attribute("y");
 	save.child("initial_position").attribute("x").set_value(initialPosition.x);
 	save.child("initial_position").attribute("y").set_value(initialPosition.y);
+	
 }
 
 void FloorEnemy::Reset()
@@ -158,27 +167,27 @@ void FloorEnemy::Update(float dt)
 
 			if (position.x > app->player->position.x) {
 				//flip = SDL_FLIP_HORIZONTAL;
-				Current_animation = &lIdleAnim;
+				CurrentAnimation = &lIdleAnim;
 
 				if (vel.x != 0) {
-					Current_animation = &lWalkAnim;
+					CurrentAnimation = &lWalkAnim;
 				}
 
 			}
 			else if (position.x < app->player->position.x) {
-				Current_animation = &rIdleAnim;
+				CurrentAnimation = &rIdleAnim;
 
 				if (vel.x != 0) {
-					Current_animation = &rWalkAnim;
+					CurrentAnimation = &rWalkAnim;
 				}
 			}
 
 			if (falling == true) {
 				if (position.x < app->player->position.x) {
-					Current_animation = &rJumpAnim;
+					CurrentAnimation = &rJumpAnim;
 				}
 				else if (position.x > app->player->position.x) {
-					Current_animation = &lJumpAnim;
+					CurrentAnimation = &lJumpAnim;
 				}
 			}
 
@@ -189,8 +198,8 @@ void FloorEnemy::Update(float dt)
 		}
 	}
 	else if (dead == true) {
-		Current_animation = &death;
-		app->render->DrawTexture(sprite, position.x, position.y, &Current_animation->GetCurrentFrame(), 1, 1.0f, NULL, NULL, NULL);
+		CurrentAnimation = &death;
+		app->render->DrawTexture(sprite, position.x, position.y, &CurrentAnimation->GetCurrentFrame(), 1, 1.0f, NULL, NULL, NULL);
 	}
 }
 
@@ -255,7 +264,7 @@ void FloorEnemy::HandeInput()
 void FloorEnemy::Draw()
 {
 	if(app->player->lifes > 0)
-		app->render->DrawTexture(sprite, position.x, position.y, &Current_animation->GetCurrentFrame(), 1, 1.0f, NULL, NULL, NULL);
+		app->render->DrawTexture(sprite, position.x, position.y, &CurrentAnimation->GetCurrentFrame(), 1, 1.0f, NULL, NULL, NULL);
 }
 
 void FloorEnemy::OnCollision(Collider* c1, Collider* c2)
