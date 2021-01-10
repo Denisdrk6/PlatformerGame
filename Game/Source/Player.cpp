@@ -70,11 +70,11 @@ Player::Player() : Module()
 
 	rFallAnim.PushBack({ 128, 0, 32, 32 });
 	rFallAnim.PushBack({ 160, 0, 32, 32 });
-	rFallAnim.speed = 0.015f;
+	rFallAnim.speed = 0.025f;
 
 	lFallAnim.PushBack({ 96, 36, 32, 32 });
 	lFallAnim.PushBack({ 64, 36, 32, 32 });
-	lFallAnim.speed = 0.015f;
+	lFallAnim.speed = 0.025f;
 
 	loadingAnim.PushBack({ 0, 0, 370, 46 });
 	loadingAnim.PushBack({ 0, 47, 370, 46 });
@@ -640,7 +640,7 @@ void Player::ChangeMap(int mapNum)
 		app->sceneManager->gameplay->checkPoints[0].activated = false;
 		if (externMap != map || currentMap != map)
 		{
-			app->col->DeleteCollider(app->sceneManager->gameplay->checkPoints[0].collider);
+			if (app->sceneManager->gameplay->checkPoints[0].collider != nullptr)app->col->DeleteCollider(app->sceneManager->gameplay->checkPoints[0].collider);
 			app->sceneManager->gameplay->checkPoints[0].collider = app->col->AddCollider({ app->sceneManager->gameplay->checkPoints[0].position.x * app->map->data.tileWidth, app->sceneManager->gameplay->checkPoints[0].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
 		}
 
@@ -648,7 +648,7 @@ void Player::ChangeMap(int mapNum)
 		app->sceneManager->gameplay->checkPoints[1].activated = false;
 		if (externMap != map || currentMap != map)
 		{
-			app->col->DeleteCollider(app->sceneManager->gameplay->checkPoints[1].collider);
+			if(app->sceneManager->gameplay->checkPoints[1].collider != nullptr) app->col->DeleteCollider(app->sceneManager->gameplay->checkPoints[1].collider);
 			app->sceneManager->gameplay->checkPoints[1].collider = app->col->AddCollider({ app->sceneManager->gameplay->checkPoints[1].position.x * app->map->data.tileWidth, app->sceneManager->gameplay->checkPoints[1].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
 		}
 
@@ -732,7 +732,7 @@ void Player::ChangeMap(int mapNum)
 		app->sceneManager->gameplay->checkPoints[0].activated = false;
 		if (externMap != map || currentMap != map)
 		{
-			app->col->DeleteCollider(app->sceneManager->gameplay->checkPoints[0].collider);
+			if (app->sceneManager->gameplay->checkPoints[0].collider != nullptr) app->col->DeleteCollider(app->sceneManager->gameplay->checkPoints[0].collider);
 			app->sceneManager->gameplay->checkPoints[0].collider = app->col->AddCollider({ app->sceneManager->gameplay->checkPoints[0].position.x * app->map->data.tileWidth, app->sceneManager->gameplay->checkPoints[0].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
 		}
 
@@ -740,7 +740,7 @@ void Player::ChangeMap(int mapNum)
 		app->sceneManager->gameplay->checkPoints[1].activated = false;
 		if (externMap != map || currentMap != map)
 		{
-			app->col->DeleteCollider(app->sceneManager->gameplay->checkPoints[1].collider);
+			if (app->sceneManager->gameplay->checkPoints[1].collider != nullptr) app->col->DeleteCollider(app->sceneManager->gameplay->checkPoints[1].collider);
 			app->sceneManager->gameplay->checkPoints[1].collider = app->col->AddCollider({ app->sceneManager->gameplay->checkPoints[1].position.x * app->map->data.tileWidth, app->sceneManager->gameplay->checkPoints[1].position.y * app->map->data.tileHeight + 16, app->map->data.tileWidth + 10, app->map->data.tileHeight + 16 }, COLLIDER_TYPE::COLLIDER_CHECKPOINT, this);
 		}
 

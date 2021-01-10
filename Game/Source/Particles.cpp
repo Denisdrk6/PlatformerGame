@@ -6,25 +6,43 @@
 #include "App.h"
 #include "Window.h"
 
-#define SPEED 500
+#define SPEED 10
 
 Particle::Particle(iPoint pos, int x, int y) : Entity(EntityType::particle)
 {
+	position = pos;
+
 	sprite = app->player->shot;
 	
 	idle.PushBack({ 57,57,36,36 });
 	idle.PushBack({ 57,57,36,36 });
 	idle.speed = 7.0f;
 
-	diferentialY = y - pos.y;
-	diferentialX = x - pos.x;
+	iPoint vOrigin = { x - pos.x, 0 };
+	iPoint vDestination = { x - pos.x, y - pos.y };
 
-	destination.x = x + 33;
-	destination.y = y + 15;
-	position = pos;
+	float pointProduct = (vOrigin.x * vDestination.x) + (vOrigin.y * vDestination.y);
+
+	float originMagnitude = sqrt(pow(vOrigin.x, 2) + pow(vOrigin.y, 2));
+	float destinationMagnitude = sqrt(pow(vDestination.x, 2) + pow(vDestination.y, 2));
+
+	float angle = acos(pointProduct / (originMagnitude * destinationMagnitude));
+
+	if (x > pos.x)
+	{
+		speedX = SPEED * cos(angle);
+	}
+
+	else speedX = -SPEED * cos(angle);
+
+	if (y > pos.y)
+	{
+		speedY = SPEED * sin(angle);
+	}
+
+	else speedY = SPEED * sin(-angle);
 
 	col = app->col->AddCollider({ position.x,position.x,30,30 }, COLLIDER_SHOT, app->entities);
-	playerY = app->player->position.y;
 
 	lives = 1;
 }
@@ -53,77 +71,8 @@ void Particle::Update(float dt)
 		app->col->DeleteCollider(col);
 	}
 
-	if (diferentialX > 0)
-	{
-		position.x += SPEED * dt;
-		if (diferentialY > 0) {
-			float s = (float)diferentialY / diferentialX;
-
-			if (app->fpsCapped == true)
-			{
-				position.y += s * SPEED * dt;
-			}
-
-			else
-			{
-				position.y = (s * position.x) + playerY;
-			}
-		}
-
-		else if (diferentialY < 0)
-		{
-			int aux1;
-			aux1 = diferentialY * -1;
-			float s = (float)aux1 / diferentialX;
-
-			if (app->fpsCapped == true)
-			{
-				position.y += -s * SPEED * dt;
-			}
-
-			else
-			{
-				position.y = (-s * position.x) + playerY;
-			}
-		}
-	}
-
-	else if (diferentialX < 0)
-	{
-		position.x -= SPEED * dt;
-
-		if (diferentialY > 0)
-		{
-			float s = (float)diferentialY / diferentialX;
-
-			if (app->fpsCapped == true)
-			{
-				position.y += -s * SPEED * dt;
-			}
-
-			else
-			{
-				position.y = (-s * position.x) + playerY;
-			}
-
-		}
-		else if (diferentialY < 0)
-		{
-			int aux2;
-			aux2 = diferentialY * -1;
-			float s = (float)aux2 / diferentialX;
-
-			if (app->fpsCapped == true)
-			{
-				position.y += s * SPEED * dt;
-			}
-
-			else
-			{
-				position.y = (s * position.x) + playerY;
-			}
-		}
-	}
+	position.x += speedX;
+	position.y += speedY;
 
 	col->SetPos(position.x, position.y);
 	Draw();

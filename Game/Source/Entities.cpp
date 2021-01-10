@@ -149,12 +149,13 @@ void Entities::UpdateEntities(float dt, bool do_logic)
 }
 
 
-Entity* Entities::CreateEntity(Entity::EntityType type, iPoint pos, int dest_X, int dest_Y){
+Entity* Entities::CreateEntity(Entity::EntityType type, iPoint pos, int destX, int destY)
+{
 	Entity* ret = nullptr;
 	switch (type) {
 	case Entity::EntityType::FLY_ENEMY: ret = new FlyEnemy(pos); break;
 	case Entity::EntityType::FLOOR_ENEMY: ret = new FloorEnemy(pos); break;
-	case Entity::EntityType::particle: ret = new Particle(pos, dest_X, dest_Y); break;
+	case Entity::EntityType::particle: ret = new Particle(pos, destX, destY); break;
 	}
 
 	if (ret != nullptr)

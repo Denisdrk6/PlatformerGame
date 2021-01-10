@@ -16,12 +16,10 @@ public:
 
 private:
 	iPoint destination;
-	int playerY;
-
-	int diferentialY;
-	int diferentialX;
 	Animation idle;
 
+	float speedX;
+	float speedY;
 };
 
 #endif

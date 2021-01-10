@@ -8,7 +8,7 @@
 	<:anonymous />
 	<map />
 	<player>
-		<player x="2385" y="2818" coins="2" points="550" time="26" />
+		<player x="682" y="2401" coins="0" points="100" time="19" />
 		<map num="1" />
 	</player>
 	<entities>
@@ -17,6 +17,7 @@
 				<initial_position x="883" y="2391" />
 			</Fly_Enemy>
 			<Fly_Enemy>
+				<position x="1959" y="2638" />
 				<initial_position x="1959" y="2638" />
 			</Fly_Enemy>
 			<Fly_Enemy>
@@ -32,6 +33,7 @@
 				<initial_position x="2005" y="634" />
 			</Fly_Enemy>
 			<Fly_Enemy>
+				<position x="2552" y="2350" />
 				<initial_position x="2552" y="2350" />
 			</Fly_Enemy>
 			<Fly_Enemy>
@@ -65,6 +67,7 @@
 				<initial_position x="2439" y="625" />
 			</Floor_Enemy>
 			<Floor_Enemy>
+				<position x="2440" y="2827" />
 				<initial_position x="2440" y="2814" />
 			</Floor_Enemy>
 			<Floor_Enemy>
@@ -76,6 +79,7 @@
 				<initial_position x="691" y="669" />
 			</Floor_Enemy>
 			<Floor_Enemy>
+				<position x="773" y="3050" />
 				<initial_position x="773" y="3018" />
 			</Floor_Enemy>
 		</Floor_Enemies>
@@ -84,6 +88,6 @@
 	<pathfinding />
 	<:anonymous />
 	<renderer>
-		<camera x="-1890" y="-2385" />
+		<camera x="-347" y="-2136" />
 	</renderer>
 </game_state>

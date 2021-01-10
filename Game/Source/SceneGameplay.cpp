@@ -522,7 +522,7 @@ bool SceneGameplay::Unload()
 	app->player->active = false;
 	app->map->active = false;
 	app->col->active = false;
-	app->audio->MusicVolumeControl(app->audio->musicVolume/2);
+	app->audio->MusicVolumeControl(0);
 	settings = false;
 	//app->entities->DestroyAll();
 
