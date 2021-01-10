@@ -7,15 +7,6 @@
 
 struct SDL_Texture;
 
-/*class BlendTexture
-{
-public:
-	SDL_Texture* texture;
-	int alpha;
-	bool loaded = false;
-	SDL_Rect rect;
-};*/
-
 class SceneWin : public Scene
 {
 public:

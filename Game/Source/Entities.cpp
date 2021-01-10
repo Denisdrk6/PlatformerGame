@@ -121,19 +121,7 @@ bool Entities::PreUpdate(float dt)
 
 bool Entities::Update(float dt)
 {
-	/*
-	accumulated_time += dt;
-
-	if (accumulated_time >= update_ms_cycle) {
-		do_logic = true;
-	}*/
-
 	UpdateEntities(dt, doLogic);
-	/*
-		if (do_logic == true) {
-			accumulated_time = 0.0f;
-			do_logic = false;
-		}*/
 
 	return true;
 }
@@ -182,7 +170,8 @@ void Entities::DestroyEntity(Entity* entity)
 	ListItem<Entity*>* AuxEntity;
 
 	entity_pos = entities.Find(entity);
-	if (entity_pos != -1) {
+	if (entity_pos != -1)
+	{
 		AuxEntity = entities.At(entity_pos);
 		entities.Del(AuxEntity);
 	}

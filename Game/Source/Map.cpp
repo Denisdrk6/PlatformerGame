@@ -35,16 +35,17 @@ bool Map::LoadObjLayer(pugi::xml_node & node, ObjectLayer * layer)
 	layer->name = node.attribute("name").as_string();
 
 	pugi::xml_node object;
-	for (object = node.child("object"); object; object = object.next_sibling("object")) {
-		ObjectData* obj_data = new ObjectData();
+	for (object = node.child("object"); object; object = object.next_sibling("object"))
+	{
+		ObjectData* objData = new ObjectData();
 
-		obj_data->name = object.attribute("name").as_string();
-		obj_data->x = object.attribute("x").as_int();
-		obj_data->y = object.attribute("y").as_int();
-		obj_data->w = object.attribute("width").as_int();
-		obj_data->h = object.attribute("height").as_int();
+		objData->name = object.attribute("name").as_string();
+		objData->x = object.attribute("x").as_int();
+		objData->y = object.attribute("y").as_int();
+		objData->w = object.attribute("width").as_int();
+		objData->h = object.attribute("height").as_int();
 
-		layer->list.Add(obj_data);
+		layer->list.Add(objData);
 	}
 
 	return ret;
@@ -136,10 +137,10 @@ iPoint Map::WorldToMap(int x, int y) const
 	else if (data.type == MAPTYPE_ISOMETRIC)
 	{
 
-		float half_width = data.tileWidth * 0.5f;
-		float half_height = data.tileHeight * 0.5f;
-		ret.x = int((x / half_width + y / half_height) / 2) - 1;
-		ret.y = int((y / half_height - (x / half_width)) / 2);
+		float halfWidth = data.tileWidth * 0.5f;
+		float halfHeight = data.tileHeight * 0.5f;
+		ret.x = int((x / halfWidth + y / halfHeight) / 2) - 1;
+		ret.y = int((y / halfHeight - (x / halfWidth)) / 2);
 	}
 	else
 	{
@@ -329,15 +330,15 @@ bool Map::Load(const char* filename)
 				item = item->next;
 			}
 
-			ListItem<MapLayer*>* item_layer = data.layers.start;
-			while (item_layer != NULL)
+			ListItem<MapLayer*>* itemLayer = data.layers.start;
+			while (itemLayer != NULL)
 			{
-				MapLayer* l = item_layer->data;
+				MapLayer* l = itemLayer->data;
 				LOG("Layer ----");
 				LOG("name: %s", l->name.GetString());
 				LOG("tile width: %d tile height: %d", l->width, l->height);
 				LOG("");
-				item_layer = item_layer->next;
+				itemLayer = itemLayer->next;
 			}
 		}
 		i++;

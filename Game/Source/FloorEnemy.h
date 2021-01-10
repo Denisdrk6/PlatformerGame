@@ -45,7 +45,7 @@ private:
 
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
 
-	float private_dt;
+	float privateDt;
 	//---------------------------------
 	Animation* CurrentAnimation;
 	Animation rIdleAnim;

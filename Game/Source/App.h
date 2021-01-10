@@ -21,7 +21,6 @@ class Map;
 class Animation;
 class Player;
 class Collisions;
-class FadeToBlack;
 //class SceneIntro;
 //class SceneWin;
 class Fonts;
@@ -99,14 +98,10 @@ public:
 	Render* render;
 	Textures* tex;
 	Audio* audio;
-	//SceneGameplay* gameplay;
 	Map* map;
 	Animation* animation;
 	Player* player;
 	Collisions* col;
-	FadeToBlack* fade;
-	//SceneIntro* intro;
-	//SceneWin* winScene;
 	SceneManager* sceneManager;
 	Fonts* fonts;
 	PathFinding* pathfinding;
@@ -134,7 +129,6 @@ private:
 	SString title;
 	SString organization;
 
-
 	List<Module *> modules;
 
 	// L01: DONE 2: Create new variables from pugui namespace
@@ -158,7 +152,6 @@ private:
 	Timer lastSecFrameTime;
 	uint lastSecFrameCount = 0;
 	uint prevLastSecFrameCount = 0;
-
 	
 	float maxFrameMs;
 };

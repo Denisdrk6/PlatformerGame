@@ -10,7 +10,6 @@
 #include "Log.h"
 #include "Map.h"
 #include "Window.h"
-#include "FadeToBlack.h"
 #include "Entities.h"
 #include "SceneManager.h"
 
@@ -142,7 +141,8 @@ bool Player::Start()
 	scoreFont = app->fonts->Load("Assets/Fonts/score_font.png", lookupTable, 1);
 	return ret;
 }
-void Player::Death() {
+void Player::Death()
+{
 
 	if (deadScreen.loaded == false)
 	{
@@ -449,7 +449,8 @@ bool Player::Update(float dt)
 
 	return ret;
 }
-void Player::DrawPointer() {
+void Player::DrawPointer()
+{
 	int x;
 	int y;
 
@@ -458,7 +459,8 @@ void Player::DrawPointer() {
 
 	app->render->DrawTexture(weaponPointer, p.x - 16, p.y - 16);
 
-	if (app->input->GetMouseButtonDown(1) == KEY_DOWN) {
+	if (app->input->GetMouseButtonDown(1) == KEY_DOWN)
+	{
 		Particle* shoot;
 		shoot = (Particle*)app->entities->CreateEntity(Entity::EntityType::PARTICLE, position, p.x, p.y);
 		bullets.Add(shoot);

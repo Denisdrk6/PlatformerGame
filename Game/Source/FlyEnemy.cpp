@@ -106,7 +106,6 @@ void FlyEnemy::Update(float dt)
 
 			app->col->DeleteCollider(col);
 			col = nullptr;
-			//app->sceneManager->gameplay->FlyEnemies.Del(app->sceneManager->gameplay->FlyEnemies.At(app->sceneManager->gameplay->FlyEnemies.Find(this)));
 			falling = true;
 
 			app->pathfinding->lastPath.Clear();
@@ -131,10 +130,12 @@ void FlyEnemy::Update(float dt)
 
 
 			//FLip texture
-			if (position.x > app->player->position.x) {
+			if (position.x > app->player->position.x)
+			{
 				flip = SDL_FLIP_HORIZONTAL;
 			}
-			else if (position.x < app->player->position.x) {
+			else if (position.x < app->player->position.x)
+			{
 				flip = SDL_FLIP_NONE;
 			}
 
@@ -143,11 +144,14 @@ void FlyEnemy::Update(float dt)
 		}
 	}
 
-	else if (dead == true) {
-		if (falling == true) {
+	else if (dead == true)
+	{
+		if (falling == true)
+		{
 			vel.y = 100;
 			position.y += vel.y * dt;
-			if (col != nullptr) {
+			if (col != nullptr)
+			{
 				col->SetPos(position.x, position.y);
 			}
 		}
@@ -178,11 +182,11 @@ void FlyEnemy::HandeInput()
 
 		const DynArray<Path>* path = app->pathfinding->GetLastPath();
 
-		const Path* path_dir = path->At(1);
-		if (path_dir != nullptr)
+		const Path* pathDir = path->At(1);
+		if (pathDir != nullptr)
 		{
 
-			switch (path_dir->dir)
+			switch (pathDir->dir)
 			{
 			case DIR_UP:
 				vel.y = SPEED;

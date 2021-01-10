@@ -25,7 +25,8 @@ public:
 	SDL_Rect& GetCurrentFrame()
 	{
 		currentFrame += speed;
-		if (currentFrame >= lastFrame) {
+		if (currentFrame >= lastFrame)
+		{
 			currentFrame = 0;
 			finished = 1;
 		}

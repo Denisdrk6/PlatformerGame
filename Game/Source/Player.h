@@ -100,7 +100,6 @@ public:
 
 	Animation loadingAnim;
 
-
 	bool wallCol = false;
 	bool downCol = false;
 	bool groundCol = true;
@@ -112,7 +111,6 @@ public:
 	bool changingSavedMap = false;
 	bool mapChanged = false;
 	bool reload = false;
-	
 
 	int lifes = 3;
 	int	lifeWait = 0;
@@ -148,7 +146,6 @@ public:
 
 	List<Particle*> bullets;
 	SDL_Texture* weaponPointer;
-	
 };
 
 #endif //!__MODULE_PLAYER_H__

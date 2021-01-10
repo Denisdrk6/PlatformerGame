@@ -8,7 +8,6 @@
 #include "Render.h"
 #include "Audio.h"
 #include "Input.h"
-#include "FadeToBlack.h"
 #include "Player.h"
 #include "Log.h"
 #include "Collisions.h"
@@ -147,15 +146,6 @@ bool SceneIntro::Update(Input* input, float dt)
 
 	// Alpha speed is the same for all fps
 	if(alphaModifier >= 0) alphaModifier = (int)(120 / (1/dt));
-
-	//if (input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && bgTexture.loaded == false)
-	//	TransitionToScene(SceneType::GAMEPLAY);
-	//	//app->sceneManager->current->transitionRequired == true;
-	//	//app->fade->Fade(this, (Module*)app->gameplay, 60);
-
-	/*if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;*/
-
 	
 	return ret;
 }

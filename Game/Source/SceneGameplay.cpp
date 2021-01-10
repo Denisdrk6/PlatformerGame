@@ -231,7 +231,6 @@ bool SceneGameplay::Update(Input* input, float dt)
 
 		// Load texture parameters
 		loadTexBlending.rect = { 234, 0, 224, 83 };
-		//if (loadTexBlending.loaded == false) loadTexBlending = app->tex->Load("Assets/Textures/Save_load.png");
 		loadTexBlending.alpha = 255;
 		loadTexBlending.loaded = true;
 	}
@@ -242,7 +241,6 @@ bool SceneGameplay::Update(Input* input, float dt)
 
 		// Save texture parameters
 		saveTexBlending.rect = { 0, 0, 224, 83 };
-		//if (saveTexBlending.loaded == false) saveTex = app->tex->Load("Assets/Textures/save_load.png");
 		saveTexBlending.alpha = 255;
 		saveTexBlending.loaded = true;
 	}
@@ -273,7 +271,8 @@ bool SceneGameplay::Update(Input* input, float dt)
 		else  app->player->collider->type = COLLIDER_PLAYER;
 	}
 
-	if (input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) {// FPS cap to 30
+	if (input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) // FPS cap to 30
+	{
 		if (app->maxFramerate != 30) {
 			app->ChangeFrameCap(30);
 		}
@@ -544,14 +543,6 @@ bool SceneGameplay::OnGuiMouseClickEvent(GuiControl* control)
 		else if (control->id == 12) settings = !settings;
 
 		else if (control->id == 13) return false; // TODO: Exit request
-
-		/*else if (control->id == 14)
-		{
-			//TransitionToScene(SceneType::INTRO);
-			//transitionRequired = true;
-			app->sceneManager->current->TransitionToScene(SceneType::INTRO);
-			Unload();
-		}*/
 
 		break;
 	}

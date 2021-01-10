@@ -96,7 +96,6 @@
   <ItemGroup>
     <ClCompile Include="Source\Collisions.cpp" />
     <ClCompile Include="Source\Entities.cpp" />
-    <ClCompile Include="Source\FadeToBlack.cpp" />
     <ClCompile Include="Source\FloorEnemy.cpp" />
     <ClCompile Include="Source\FlyEnemy.cpp" />
     <ClCompile Include="Source\Fonts.cpp" />
@@ -124,7 +123,6 @@
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Collisions.h" />
     <ClInclude Include="Source\Entities.h" />
-    <ClInclude Include="Source\FadeToBlack.h" />
     <ClInclude Include="Source\FloorEnemy.h" />
     <ClInclude Include="Source\FlyEnemy.h" />
     <ClInclude Include="Source\Fonts.h" />

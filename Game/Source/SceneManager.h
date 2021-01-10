@@ -39,9 +39,6 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	/*SceneIntro* intro = nullptr;
-	SceneWin* win = nullptr;*/
-
 	SceneGameplay* gameplay;
 
 	Scene* current;

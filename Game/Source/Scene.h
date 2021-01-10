@@ -81,11 +81,6 @@ public:
     bool transitionRequired;
     SceneType nextScene;
     SceneType currentScene;
-    //SceneType currentScene;
-
-    //SceneIntro* intro;
-    //SceneGameplay* gameplay;
-    //SceneWin* win;
 };
 
 #endif // __SCENE_H__

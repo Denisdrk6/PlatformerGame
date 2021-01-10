@@ -75,7 +75,6 @@ Collisions::Collisions()
 	matrix[COLLIDER_END][COLLIDER_COIN] = false;
 	matrix[COLLIDER_END][COLLIDER_HEART] = false;
 
-
 	matrix[COLLIDER_WIN][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_WIN][COLLIDER_FLOOR] = false;
 	matrix[COLLIDER_WIN][COLLIDER_WALL] = false;
@@ -86,7 +85,6 @@ Collisions::Collisions()
 	matrix[COLLIDER_WIN][COLLIDER_CHECKPOINT] = false;
 	matrix[COLLIDER_WIN][COLLIDER_COIN] = false;
 	matrix[COLLIDER_WIN][COLLIDER_HEART] = false;
-
 
 	matrix[COLLIDER_CHECKPOINT][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_CHECKPOINT][COLLIDER_FLOOR] = false;

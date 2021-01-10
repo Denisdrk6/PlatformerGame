@@ -11,7 +11,6 @@
 #include "GuiManager.h"
 #include "Map.h"
 #include "Player.h"
-#include "FadeToBlack.h"
 #include "Collisions.h"
 #include "Fonts.h"
 #include "Defs.h"
@@ -39,7 +38,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	map = new Map();
 	player = new Player();
 	col = new Collisions();
-	fade = new FadeToBlack();
 	sceneManager = new SceneManager(input, render, tex);
 	//intro = new SceneIntro();
 	//winScene = new SceneWin();
@@ -54,9 +52,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(input);
 	AddModule(tex);
 	AddModule(audio);
-	/*AddModule(intro);
-	AddModule(gameplay);
-	AddModule(winScene);*/
 	AddModule(sceneManager);
 	AddModule(fonts);
 	AddModule(map);
@@ -64,7 +59,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entities);
 	AddModule(col);
 	AddModule(pathfinding);
-	AddModule(fade);
 
 	// Render last to swap buffer
 	AddModule(render);

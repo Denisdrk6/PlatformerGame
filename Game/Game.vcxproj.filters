@@ -23,7 +23,6 @@
     <ClCompile Include="Source\Timer.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Source\FadeToBlack.cpp" />
     <ClCompile Include="Source\SceneIntro.cpp" />
     <ClCompile Include="Source\Fonts.cpp" />
     <ClCompile Include="Source\Pathfinding.cpp" />
@@ -81,7 +80,6 @@
     <ClInclude Include="Source\Timer.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Source\FadeToBlack.h" />
     <ClInclude Include="Source\SceneIntro.h" />
     <ClInclude Include="Source\Fonts.h" />
     <ClInclude Include="Source\Pathfinding.h" />

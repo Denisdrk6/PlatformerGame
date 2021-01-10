@@ -5,7 +5,6 @@
 #include "Render.h"
 #include "Audio.h"
 #include "Input.h"
-#include "FadeToBlack.h"
 #include "Player.h"
 #include "Log.h"
 #include "Collisions.h"
@@ -56,9 +55,6 @@ bool SceneWin::Start()
 bool SceneWin::Update(Input* input, float dt)
 {
 	bool ret = true;
-
-	/*if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
-		app->fade->Fade(this, (Module*)app->scene, 60);*/
 
 	if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;

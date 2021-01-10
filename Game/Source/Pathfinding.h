@@ -15,7 +15,8 @@
 // Intro: http://www.raywenderlich.com/4946/introduction-to-a-pathfinding
 // Details: http://theory.stanford.edu/~amitp/GameProgramming/
 // --------------------------------------------------
-enum direction {
+enum Direction
+{
 	DIR_UP,
 	DIR_DOWN,
 	DIR_LEFT,
@@ -23,13 +24,15 @@ enum direction {
 	DIR_NONE
 };
 
-struct Path {
+struct Path
+{
 	int PosX;
 	int PosY;
-	direction dir;
+	Direction dir;
 
 	Path() {}
-	Path(int posx, int posy, direction dire) {
+	Path(int posx, int posy, Direction dire)
+	{
 		PosX = posx;
 		PosY = posy;
 		dir = dire;
@@ -95,10 +98,10 @@ struct PathNode
 	int h;
 	iPoint pos;
 	const PathNode* parent; // needed to reconstruct the path in the end
-	direction nextNodeDir;
+	Direction nextNodeDir;
 	// Convenient constructors
 	PathNode();
-	PathNode(int g, int h, const iPoint& pos, const PathNode* parent, direction nextNodeDir);
+	PathNode(int g, int h, const iPoint& pos, const PathNode* parent, Direction nextNodeDir);
 	PathNode(const PathNode& node);
 
 	// Fills a list (PathList) of all valid adjacent pathnodes

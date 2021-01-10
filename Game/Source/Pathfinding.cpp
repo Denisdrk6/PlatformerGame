@@ -117,7 +117,7 @@ ListItem<PathNode>* PathList::GetNodeLowestScore() const
 PathNode::PathNode() : g(-1), h(-1), pos(-1, -1), parent(NULL)
 {}
 
-PathNode::PathNode(int g, int h, const iPoint& pos, const PathNode* parent, direction nextNodeDir) : g(g), h(h), pos(pos), parent(parent), nextNodeDir(nextNodeDir)
+PathNode::PathNode(int g, int h, const iPoint& pos, const PathNode* parent, Direction nextNodeDir) : g(g), h(h), pos(pos), parent(parent), nextNodeDir(nextNodeDir)
 {}
 
 PathNode::PathNode(const PathNode& node) : g(node.g), h(node.h), pos(node.pos), parent(node.parent)
@@ -181,7 +181,8 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, boo
 	//Clear the last path
  	lastPath.Clear();
 	// L12b: TODO 1: if origin or destination are not walkable, return -1
-	if (IsWalkable(origin, Fly) == false || IsWalkable(destination, Fly) == false) {
+	if (IsWalkable(origin, Fly) == false || IsWalkable(destination, Fly) == false)
+	{
 		return -1;
 	}
 
@@ -196,7 +197,8 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, boo
 	PathNode originNode(0, origin.DistanceManhattan(destination), origin, NULL, DIR_NONE);
 	open.list.Add(originNode);
 
-	while (open.list.Count() > 0) {
+	while (open.list.Count() > 0)
+	{
 		// L12b: TODO 3: Move the lowest score cell from open list to the closed list
 		ListItem<PathNode>* nodeVisited = open.GetNodeLowestScore();
 		close.list.Add(nodeVisited->data);
@@ -205,7 +207,8 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, boo
 		// Backtrack to create the final path
 		// Use the Pathnode::parent and Flip() the path when you are finish
 		ListItem<PathNode>* node = close.list.end;
-		if (node->data.pos == destination && Fly) {
+		if (node->data.pos == destination && Fly)
+		{
 			Path finalPath(node->data.pos.x, node->data.pos.y, node->data.nextNodeDir);
 			lastPath.PushBack(finalPath);
 
@@ -213,7 +216,8 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, boo
 			const PathNode* auxNode;
 			prevNode = &node->data;
 
-			for (auxNode = prevNode->parent; auxNode; auxNode = auxNode->parent) {
+			for (auxNode = prevNode->parent; auxNode; auxNode = auxNode->parent)
+			{
 				Path auxPath(auxNode->pos.x, auxNode->pos.y, auxNode->nextNodeDir);
 				lastPath.PushBack(auxPath);
 
@@ -224,7 +228,8 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, boo
 			return 1;
 
 		}
-		else if (node->data.pos.x == destination.x && !Fly) {
+		else if (node->data.pos.x == destination.x && !Fly)
+		{
 			Path finalPath(node->data.pos.x, node->data.pos.y, node->data.nextNodeDir);
 			lastPath.PushBack(finalPath);
 
@@ -232,8 +237,10 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, boo
 			const PathNode* auxNode;
 			prevNode = &node->data;
 
-			for (auxNode = prevNode->parent; auxNode; auxNode = auxNode->parent) {
-				if (auxNode->nextNodeDir != prevNode->nextNodeDir) {
+			for (auxNode = prevNode->parent; auxNode; auxNode = auxNode->parent)
+			{
+				if (auxNode->nextNodeDir != prevNode->nextNodeDir)
+				{
 					Path auxPath(auxNode->pos.x, auxNode->pos.y, auxNode->nextNodeDir);
 					lastPath.PushBack(auxPath);
 				}
@@ -254,13 +261,16 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, boo
 		// If it is a better path, Update the parent
 		while (adjacentNode != NULL) {
 			adjacentNode->data.CalculateF(destination);
-			if (close.Find(adjacentNode->data.pos) != NULL) {
+			if (close.Find(adjacentNode->data.pos) != NULL)
+			{
 				adjacentNode = adjacentNode->next;
 				continue;
 			}
 
-			if (open.Find(adjacentNode->data.pos) != NULL) {
-				if (adjacentNode->data.g < open.Find(adjacentNode->data.pos)->data.g) {
+			if (open.Find(adjacentNode->data.pos) != NULL)
+			{
+				if (adjacentNode->data.g < open.Find(adjacentNode->data.pos)->data.g)
+				{
 
 					open.Find(adjacentNode->data.pos)->data.g = adjacentNode->data.pos.DistanceTo(origin);
 
@@ -268,7 +278,8 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, boo
 					continue;
 				}
 			}
-			else {
+			else
+			{
 				PathNode NextNode(adjacentNode->data.g, adjacentNode->data.h, adjacentNode->data.pos, adjacentNode->data.parent, adjacentNode->data.nextNodeDir);
 				open.list.Add(NextNode);
 

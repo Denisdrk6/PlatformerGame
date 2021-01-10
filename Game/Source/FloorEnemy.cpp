@@ -167,28 +167,35 @@ void FloorEnemy::Update(float dt)
 
 			position.y += vel.y * dt;
 
-			if (position.x > app->player->position.x) {
+			if (position.x > app->player->position.x)
+			{
 				//flip = SDL_FLIP_HORIZONTAL;
 				CurrentAnimation = &lIdleAnim;
 
-				if (vel.x != 0) {
+				if (vel.x != 0)
+				{
 					CurrentAnimation = &lWalkAnim;
 				}
 
 			}
-			else if (position.x < app->player->position.x) {
+			else if (position.x < app->player->position.x)
+			{
 				CurrentAnimation = &rIdleAnim;
 
-				if (vel.x != 0) {
+				if (vel.x != 0)
+				{
 					CurrentAnimation = &rWalkAnim;
 				}
 			}
 
-			if (falling == true) {
-				if (position.x < app->player->position.x) {
+			if (falling == true)
+			{
+				if (position.x < app->player->position.x)
+				{
 					CurrentAnimation = &rJumpAnim;
 				}
-				else if (position.x > app->player->position.x) {
+				else if (position.x > app->player->position.x)
+				{
 					CurrentAnimation = &lJumpAnim;
 				}
 			}
@@ -199,7 +206,8 @@ void FloorEnemy::Update(float dt)
 			falling = true;
 		}
 	}
-	else if (dead == true) {
+	else if (dead == true)
+	{
 		CurrentAnimation = &death;
 		app->render->DrawTexture(sprite, position.x, position.y, &CurrentAnimation->GetCurrentFrame(), 1, 1.0f, NULL, NULL, NULL);
 	}
@@ -210,8 +218,10 @@ bool FloorEnemy::ChasePlayer(iPoint player)
 	player.x = (int)player.x;
 	player.y = (int)player.y;
 
-	if (player.x + 16 > position.x - 500 && player.x + 16 < position.x + 500) {
-		if (player.y > position.y - 200 && player.y < position.y + 300) {
+	if (player.x + 16 > position.x - 500 && player.x + 16 < position.x + 500)
+	{
+		if (player.y > position.y - 200 && player.y < position.y + 300)
+		{
 			return true;
 		}
 	}
@@ -286,9 +296,6 @@ void FloorEnemy::OnCollision(Collider* c1, Collider* c2)
 
 	if (c1->type == COLLIDER_TYPE::COLLIDER_ENEMY && c2->type == COLLIDER_TYPE::COLLIDER_FLOOR)
 	{
-		//int offset = -2 - (120 / (1 / app->dt));
-		//if (offset < -7) offset = -7;
-		//SDL_Rect nextCollision = { c1->rect.x, c1->rect.y + vel.y, c1->rect.w, c1->rect.h };
 		vel.y = 0;
 		falling = false;
 	}

@@ -60,10 +60,8 @@ bool SceneManager::Start()
 	current = new SceneIntro();
 	current->Start();
 	gameplay = new SceneGameplay();
-	//current->intro = new SceneIntro();
 	current->currentScene = SceneType::INTRO;
 	current->Load(tex);
-	//current->intro->Start();
 
 	next = nullptr;
 
@@ -108,11 +106,6 @@ bool SceneManager::Update(float dt)
 
 	if (!onTransition)
 	{
-		//if (input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) render->camera.y -= 1;
-		//if (input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) render->camera.y += 1;
-		//if (input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) render->camera.x -= 1;
-		//if (input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) render->camera.x += 1;
-
 		if (current->currentScene != SceneType::GAMEPLAY || (onTransition == true && fadeOutCompleted == false))
 			ret = current->Update(input, dt);
 
@@ -177,22 +170,6 @@ bool SceneManager::Update(float dt)
 
 	// Draw current scene
 	current->Draw(render);
-
-	// L12b: Debug pathfinding
-	/*
-	app->input->GetMousePosition(mouseX, mouseY);
-	iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
-	p = app->map->WorldToMap(p.x, p.y);
-	p = app->map->MapToWorld(p.x, p.y);
-
-	const DynArray<iPoint>* path = app->pathFinding->GetLastPath();
-
-	for(uint i = 0; i < path->Count(); ++i)
-	{
-		iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-		app->render->DrawTexture(debugTex, pos.x, pos.y);
-	}
-	*/
 
 	if (current->transitionRequired || gameplay->transitionRequired)
 	{
