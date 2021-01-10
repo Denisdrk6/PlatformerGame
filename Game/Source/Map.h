@@ -88,7 +88,7 @@ struct MapInfo
     List<TileSetInfo*> tilesets;
 	List<MapLayer*> layers;
     List<Collider*> colliders;
-    List<ObjectLayer*> obj_layers;
+    List<ObjectLayer*> objLayers;
 };
 
 

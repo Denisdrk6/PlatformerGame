@@ -4,11 +4,12 @@
 #include "Player.h"
 #include "Collisions.h"
 #include "App.h"
+#include "Pathfinding.h"
 #include "Window.h"
 
 #define SPEED 10
 
-Particle::Particle(iPoint pos, int x, int y) : Entity(EntityType::particle)
+Particle::Particle(iPoint pos, int x, int y) : Entity(EntityType::PARTICLE)
 {
 	position = pos;
 
@@ -45,6 +46,8 @@ Particle::Particle(iPoint pos, int x, int y) : Entity(EntityType::particle)
 	col = app->col->AddCollider({ position.x,position.x,30,30 }, COLLIDER_SHOT, app->entities);
 
 	lives = 1;
+
+	app->pathfinding->lastPath.Clear();
 }
 
 void Particle::Reset()

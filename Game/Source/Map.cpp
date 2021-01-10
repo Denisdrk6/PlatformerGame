@@ -225,7 +225,7 @@ bool Map::CleanUp()
 	}
 	data.colliders.Clear();
 
-	data.obj_layers.Clear();
+	data.objLayers.Clear();
 
 	// Clean up the pugui tree
 	mapFile.reset();
@@ -286,7 +286,7 @@ bool Map::Load(const char* filename)
 
 				if (ret == true) ret = LoadObjLayer(object, set3 );
 
-				data.obj_layers.Add(set3);
+				data.objLayers.Add(set3);
 			}
 		}
 

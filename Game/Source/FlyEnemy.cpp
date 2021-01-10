@@ -11,8 +11,8 @@
 FlyEnemy::FlyEnemy(iPoint pos) : Entity(EntityType::FLY_ENEMY)
 {
 	//load graphics
-	sprite = app->tex->Load("Assets/enemies/flying_enemy.png");
-	debugTex = app->tex->Load("Assets/maps/pathRect.png");
+	sprite = app->tex->Load("Assets/Enemies/flying_enemy.png");
+	debugTex = app->tex->Load("Assets/Textures/path_rect.png");
 
 	//Load animations
 	idle.PushBack({ 0 , 51 , 46 , 45 });
@@ -108,6 +108,8 @@ void FlyEnemy::Update(float dt)
 			col = nullptr;
 			//app->sceneManager->gameplay->FlyEnemies.Del(app->sceneManager->gameplay->FlyEnemies.At(app->sceneManager->gameplay->FlyEnemies.Find(this)));
 			falling = true;
+
+			app->pathfinding->lastPath.Clear();
 		}
 
 		else

@@ -460,7 +460,7 @@ void Player::DrawPointer() {
 
 	if (app->input->GetMouseButtonDown(1) == KEY_DOWN) {
 		Particle* shoot;
-		shoot = (Particle*)app->entities->CreateEntity(Entity::EntityType::particle, position, p.x, p.y);
+		shoot = (Particle*)app->entities->CreateEntity(Entity::EntityType::PARTICLE, position, p.x, p.y);
 		bullets.Add(shoot);
 		app->audio->PlayFx(shootFx);
 		//app->audio->PlayFx(shotsound, 0);
@@ -690,7 +690,7 @@ void Player::ChangeMap(int mapNum)
 			app->sceneManager->gameplay->FlyEnemies.Clear();
 			app->sceneManager->gameplay->FloorEnemies.Clear();
 			ListItem<ObjectLayer*>* obLay;
-			for (obLay = app->map->data.obj_layers.start; obLay; obLay = obLay->next)
+			for (obLay = app->map->data.objLayers.start; obLay; obLay = obLay->next)
 			{
 				if (obLay->data->name == "Entities") {
 					app->entities->LoadFromObjectLayer(obLay->data);
@@ -782,7 +782,7 @@ void Player::ChangeMap(int mapNum)
 			app->sceneManager->gameplay->FlyEnemies.Clear();
 			app->sceneManager->gameplay->FloorEnemies.Clear();
 			ListItem<ObjectLayer*>* obLay2;
-			for (obLay2 = app->map->data.obj_layers.start; obLay2; obLay2 = obLay2->next)
+			for (obLay2 = app->map->data.objLayers.start; obLay2; obLay2 = obLay2->next)
 			{
 				if (obLay2->data->name == "Entities") {
 					app->entities->LoadFromObjectLayer(obLay2->data);

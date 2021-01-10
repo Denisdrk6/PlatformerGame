@@ -13,7 +13,7 @@
 FloorEnemy::FloorEnemy(iPoint pos) : Entity(EntityType::FLOOR_ENEMY)
 {
 	//Load Sprite
-	sprite = app->tex->Load("Assets/enemies/floor_enemy.png");
+	sprite = app->tex->Load("Assets/Enemies/floor_enemy.png");
 
 	//Load Animations
 	rIdleAnim.PushBack({ 1*2, 2*2, 17*2, 26*2 });
@@ -146,6 +146,7 @@ void FloorEnemy::Update(float dt)
 			app->col->DeleteCollider(col);
 			col = nullptr;
 			//app->sceneManager->gameplay->FloorEnemies.Del(app->sceneManager->gameplay->FloorEnemies.At(app->sceneManager->gameplay->FloorEnemies.Find(this)));
+			app->pathfinding->lastPath.Clear();
 		}
 
 		else

@@ -116,7 +116,7 @@ bool SceneGameplay::Start()
 		RELEASE_ARRAY(data);
 
 		ListItem<ObjectLayer*>* obLay;
-		for (obLay = app->map->data.obj_layers.start; obLay; obLay = obLay->next)
+		for (obLay = app->map->data.objLayers.start; obLay; obLay = obLay->next)
 		{
 			if (obLay->data->name == "Entities") {
 				app->entities->LoadFromObjectLayer(obLay->data);

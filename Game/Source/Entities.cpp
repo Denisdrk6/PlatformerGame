@@ -155,7 +155,7 @@ Entity* Entities::CreateEntity(Entity::EntityType type, iPoint pos, int destX, i
 	switch (type) {
 	case Entity::EntityType::FLY_ENEMY: ret = new FlyEnemy(pos); break;
 	case Entity::EntityType::FLOOR_ENEMY: ret = new FloorEnemy(pos); break;
-	case Entity::EntityType::particle: ret = new Particle(pos, destX, destY); break;
+	case Entity::EntityType::PARTICLE: ret = new Particle(pos, destX, destY); break;
 	}
 
 	if (ret != nullptr)
