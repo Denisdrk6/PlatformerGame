@@ -5,6 +5,9 @@
  - This game has been made by a CITM's students team and presents a quick platformer game where the player must move arround the map and dodge or kill the enemies around it 
  in order to reach the blue sphere and later on, Iton's iglu. Some coins appear along your way home, there's 7 in every map, can you grab them all?
 
+# Web Page
+https://denisdrk6.github.io/PlatformerGame/
+
 # Key Features
 
   - This game features player movement, jumping, double jumping and shooting deadly snowballs.
