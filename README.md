@@ -6,7 +6,7 @@
  in order to reach the blue sphere and later on, Iton's iglu. Some coins appear along your way home, there's 7 in every map, can you grab them all?
 
 # Web Page
-https://denisdrk6.github.io/PlatformerGame/
+Game can be downloaded at https://denisdrk6.github.io/PlatformerGame/
 
 # Key Features
 
@@ -16,7 +16,7 @@ https://denisdrk6.github.io/PlatformerGame/
    
   - There're some coins and hearts along the way, for a full 100% run you will end with 14 coins(7 in each level), 5 hearts and 3175 points.
    
-  - Speedrunning the game without any coin or enemies killed should give you a timer of 120.
+  - Speedrunning the game without any coin or enemies killed should give you a timer of 120s.
    
   - The points system works as follows: Birds are worth 100 points, Ground monsters for 75 points, coins add 50 points and losing a heart -200 points.
  
