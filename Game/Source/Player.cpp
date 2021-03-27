@@ -502,7 +502,7 @@ bool Player::PostUpdate()
 		// Lifes texture rendering
 		for (int i = 0, j = 0; i < lifes; ++i, j += 30)
 		{
-			app->render->DrawTexture(heart, (app->render->camera.x * -1) + 1180 - (30 * lifes) + j, app->render->camera.y * -1 + 25, NULL, 1);
+			app->render->DrawTexture(heart, (app->render->camera.x * -1) + 1180 - (30 * lifes) + j, app->render->camera.y * -1 + 25, NULL, 1, 0.3f, 0.3f);
 		}
 
 		// Level 1 to level 2 transition
